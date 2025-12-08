@@ -208,7 +208,7 @@ def test_hodge():
     val_zero = star_dx(dx_vec, dy)
     print(f"*(dx) applied to (dx, dy): {val_zero} (Expected: 0)")
 
-def test_vector_identities():
+def test_ddf_hodge_zero():
     print("\n=== 向量微積分恆等式驗證 (d^2 = 0) ===")
     
     # 1. 設置環境 (3D 歐幾里得空間)
@@ -291,4 +291,4 @@ def test_vector_identities():
 
 if __name__ == "__main__":
     test_hodge()
-    test_vector_identities()
+    test_ddf_hodge_zero()

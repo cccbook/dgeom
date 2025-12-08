@@ -1,8 +1,9 @@
 # dgeom: Symbolic Differential Geometry & General Relativity
 
-$\int_{M} d\omega = \int_{\partial M} \omega$
 
-$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$
+$$\int_{M} d\omega = \int_{\partial M} \omega$$
+
+$$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
 > 本專案由 [ccckmit](https://github.com/ccckmit)  指揮 Gemini 撰寫
 

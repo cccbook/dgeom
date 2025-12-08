@@ -1,10 +1,10 @@
 # dgeom: 微分幾何 $\to$ 相對論
 
+> 本專案由 [ccckmit](https://github.com/ccckmit)  指揮 Gemini 撰寫
+
 $$\int_{M} d\omega = \int_{\partial M} \omega$$
 
 $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
-
-> 本專案由 [ccckmit](https://github.com/ccckmit)  指揮 Gemini 撰寫
 
 **dgeom** 是一個基於 [SymPy](https://www.sympy.org/) 的輕量級 Python 函式庫，專為微分幾何與廣義相對論的符號運算而設計。
 

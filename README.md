@@ -112,9 +112,12 @@ python -m tests.test_num_dvector
 
 ## 📂 專案結構 (Project Structure)
 
-*  [dvector.py](dgeom/sym/dvector.py): 實作 `TangentVector`, `Form`, `d` (外微分), `lie_bracket`。
-*  [riemann.py](dgeom/sym/riemann.py) : 實作 `metric_tensor`, `christoffel`, `riemann_tensor`, `ricci_tensor` (矩陣化), `ricci_scalar`。
-*  [relativity.py](dgeom/sym/relativity.py): 實作 `einstein_tensor` (矩陣化)。
+程式模組 | 原理 | 說明
+-------|-------|----------
+[dvector.py](dgeom/sym/dvector.py) | [外微分]() |  $d(d(f)) = 0$ 
+[gstoke.py](dgeom/sym/dvector.py) | [廣義史托克定理]() | $\int_{M} d\omega = \int_{\partial M} \omega$
+[riemann.py](dgeom/sym/riemann.py) | [黎曼幾何]() | 實作 `metric_tensor`, `christoffel`, `riemann_tensor`, `ricci_tensor` , `ricci_scalar`。
+[relativity.py](dgeom/sym/relativity.py) | [相對論]() | 實作 `einstein_tensor` 。
 
 ## 📝 License
 

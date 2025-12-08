@@ -1,4 +1,4 @@
-# dgeom: 微分幾何 => 相對論
+# dgeom: 微分幾何 $\to$ 相對論
 
 $$\int_{M} d\omega = \int_{\partial M} \omega$$
 

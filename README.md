@@ -1,4 +1,4 @@
-# dgeom: Symbolic Differential Geometry & General Relativity
+# dgeom: 『微分幾何 => 相對論』的 python 套件
 
 $$\int_{M} d\omega = \int_{\partial M} \omega$$
 

@@ -2,7 +2,7 @@
 
 $\int_{M} d\omega = \int_{\partial M} \omega$
 
-$\underbrace{R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu}}_{\text{愛因斯坦張量 } G_{\mu\nu}} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} \underbrace{T_{\mu\nu}}_{\text{能量-動量張量}}$
+$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$
 
 > 本專案由 [ccckmit](https://github.com/ccckmit)  指揮 Gemini 撰寫
 

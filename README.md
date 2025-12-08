@@ -67,42 +67,20 @@ from dgeom.sym import Form, d, integrate_form, ParametricPatch
 # 驗證 ∫ d(omega) = ∫ omega 在邊界
 ```
 
-## 🌌 物理驗證案例 (Verification Cases)
-
-本專案包含多個高強度的物理測試案例，證明了計算引擎的強健性：
-
-| 測試案例 | 描述 | 驗證目標 |
-| :--- | :--- | :--- |
-| **Minkowski** | 狹義相對論平坦時空 | 確認所有曲率張量均為 0 |
-| **Schwarzschild** | 靜態、不帶電黑洞 | 驗證 $G_{\mu\nu} = 0$ (真空解) |
-| **Reissner-Nordström** | 帶電黑洞 | 驗證幾何與電磁能量動量張量的耦合 |
-| **Kerr Metric** | **旋轉黑洞** (高難度) | 處理非對角度規與參考系拖曳，驗證 $R_{\mu\nu}=0$ |
-| **FLRW Metric** | 宇宙學標準模型 | 推導弗里德曼方程式 (Friedmann Eqs) |
-| **Mercury Precession** | 水星近日點進動 | 推導測地線方程式與有效位能修正項 $-3ML^2/r^4$ |
-
 ## dgeom 測試案例與數學原理解說
 
 以下使用 dgeom.sym 套件（背後是 sympy）
 
-* [test_minkowski.py](tests/test_minkowski.py) ： 狹義相對論『閩可夫斯基空間』範例
-    * 數學原理 -- https://gemini.google.com/share/1f70c33d6a06
-* [test_murcury_procession.py](tests/test_murcury_procession.py) ：廣義相對論『水星進動』範例
-    * 數學原理 -- https://gemini.google.com/share/9a7c48879a1a
-* [test_black_hole.py](tests/test_black_hole.py) ：廣義相對論『黑洞』範例
-    * 數學原理 -- https://gemini.google.com/share/529f1fee7e0e
-* [test_flrw_cosmology.py](test_flrw_cosmology.py) ： 廣義相對論 FLRW 度規 (均勻且各向同性的宇宙)
-    * 數學原理 -- https://gemini.google.com/share/0dfe745d2040
-* [test_schwarzschild_de_sitter.py](tests/test_schwarzschild_de_sitter.py) ： 廣義相對論 SdS 度規範例
-    * 數學原理 -- https://gemini.google.com/share/10ac77736c53
-* [test_riemann.py](tests/test_riemann.py) ：微分幾何範例（度規）
-    * 數學原理 -- https://gemini.google.com/share/de0e3b5ee633
-* [test_dvector.py](tests/test_dvector.py) : 向量微積分範例（含外微分與廣義史托克定理）(使用 sympy 實作)
-    * 數學原理 -- https://gemini.google.com/share/66966e45f718
-
-以下使用 dgeom.num 套件 (背後是 numpy)
-
-* [test_num_dvector.py](tests/test_num_dvector.py) ：向量微積分範例（含外微分與廣義史托克定理）
-    * 數學原理 -- https://gemini.google.com/share/cf1526765a9f
+詳細原理說明 | 程式 
+-----|-------------------------------------------------
+[狹義相對論-閩可夫斯基空間](tests/test_minkowski.md) | [test_minkowski.py](tests/test_minkowski.py) | 閩可夫斯基空間
+[水星進動-修正軌道誤差](tests/test_murcury_procession.md) | [test_murcury_procession.py](tests/test_murcury_procession.py)
+[黑洞-史瓦希度規](tests/test_black_hole.md) | [test_black_hole.py](tests/test_black_hole.py)
+[FLRW-均勻且各向同性的宇宙](tests/test_flrw_cosmology.md) | [test_flrw_cosmology.py](tests/test_flrw_cosmology.py)
+[SdS 度規](tests/test_schwarzschild_de_sitter.md) |  [test_schwarzschild_de_sitter.py](tests/test_schwarzschild_de_sitter.py)
+[微分幾何範例(黎曼度規)](tests/test_riemann.md) | [test_riemann.py](tests/test_riemann.py)
+[向量微積分:外微分)](tests/test_d_operator.md) | [test_d_operator.py](tests/test_d_operator.py) 
+[廣義史托克定理](tests/test_stoke.md) | [test_stoke.py](tests/test_stoke.py) 
 
 ## 🧪 執行測試 (Running Tests)
 

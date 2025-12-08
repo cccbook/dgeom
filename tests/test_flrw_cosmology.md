@@ -1,0 +1,1 @@
+| **FLRW Metric** | 宇宙學標準模型 | 推導弗里德曼方程式 (Friedmann Eqs) |

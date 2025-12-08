@@ -208,10 +208,6 @@ def integrate_form(form, domain, manifold_coords):
 # Part 3: 幾何形狀 - 超立方體 (HyperCube)
 # ==========================================
 
-# ==========================================
-# Part 3: 幾何形狀 - 超立方體 (HyperCube)
-# ==========================================
-
 class HyperCube(ParametrizedDomain):
     def __init__(self, u_vars, bounds):
         """

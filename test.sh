@@ -9,7 +9,9 @@ python -m tests.test_mercury_precession # 水星近日點進動
 python -m tests.test_black_hole # 黑洞度規測試
 
 # dgeom.sym 版的向量微積分測試
+python -m tests.test_vcalculus
 python -m tests.test_dvector
+python -m tests.test_hodge
 
 # dgeom.num 版的向量微積分測試
 python -m tests.test_num_dvector

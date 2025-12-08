@@ -214,4 +214,4 @@ def test_kretschmann_scalar_schwarzschild():
 if __name__ == "__main__":
     test_reissner_nordstrom()
     test_kretschmann_scalar_schwarzschild()
-    test_kerr_metric() # 把最慢的放最後
+    # test_kerr_metric() # 把最慢的放最後

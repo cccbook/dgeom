@@ -28,11 +28,9 @@ def test_dd_f_is_zero():
     # 我們使用 undefined functions u_x(x,y,z) 等，代表任意向量場
     # 這樣可以確保測試涵蓋了 [U, V] 非零的一般情況
     
-    #u_funcs = [sp.Function(name)(x, y, z) for name in ['u_x', 'u_y', 'u_z']]
-    #v_funcs = [sp.Function(name)(x, y, z) for name in ['v_x', 'v_y', 'v_z']]
-    # 用這個取代 u_funcs = ...
-    u_funcs = [x*y, y**2, z+x] 
-    v_funcs = [sp.sin(x), z, 1]
+    u_funcs = [sp.Function(name)(x, y, z) for name in ['u_x', 'u_y', 'u_z']]
+    v_funcs = [sp.Function(name)(x, y, z) for name in ['v_x', 'v_y', 'v_z']]
+    
     # --- 修改點開始 ---
     U = TangentVector(u_funcs, coords, name="U")
     V = TangentVector(v_funcs, coords, name="V")

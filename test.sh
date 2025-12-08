@@ -1,12 +1,15 @@
-# dgeom.sym 版的黎曼幾何與相對論測試
-python -m tests.test_riemann
-python -m tests.test_minkowski
-python -m tests.test_schwarzschild_de_sitter
-python -m tests.test_flrw_cosmology
-python -m tests.test_mercury_precession
-python -m tests.test_black_hole
+# dgeom.sym 版的微分幾何測試
+python -m tests.test_riemann # 黎曼曲率張量測試
 
-# dgeom.sym 版的 dvector 測試
+# dgeom.sym 版的相對論案例測試
+python -m tests.test_minkowski # 閔可夫斯基空間(狹義相對論)
+python -m tests.test_schwarzschild_de_sitter # 史瓦西-德西特度規
+python -m tests.test_flrw_cosmology # FLRW 宇宙學模型
+python -m tests.test_mercury_precession # 水星近日點進動
+python -m tests.test_black_hole # 黑洞度規測試
+
+# dgeom.sym 版的向量微積分測試
 python -m tests.test_dvector
-# dgeom.num 版的測試
+
+# dgeom.num 版的向量微積分測試
 python -m tests.test_num_dvector

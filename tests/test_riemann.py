@@ -1,4 +1,5 @@
 # 數學原理解說 -- 
+from dgeom.sym import riemann_tensor, ricci_tensor, ricci_scalar, einstein_tensor, christoffel, metric_tensor
 import sympy as sp
 from sympy import symbols, Matrix, simplify, cos, sin, eye
 

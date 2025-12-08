@@ -78,8 +78,8 @@ from dgeom.sym import Form, d, integrate_form, ParametricPatch
 [黑洞-史瓦希度規](tests/test_black_hole.md) | [test_black_hole.py](tests/test_black_hole.py)
 [FLRW-均勻且各向同性的宇宙](tests/test_flrw_cosmology.md) | [test_flrw_cosmology.py](tests/test_flrw_cosmology.py)
 [SdS 度規](tests/test_schwarzschild_de_sitter.md) |  [test_schwarzschild_de_sitter.py](tests/test_schwarzschild_de_sitter.py)
-[微分幾何範例(黎曼度規)](tests/test_riemann.md) | [test_riemann.py](tests/test_riemann.py)
-[向量微積分:外微分)](tests/test_d_operator.md) | [test_d_operator.py](tests/test_d_operator.py) 
+[微分幾何-黎曼度規](tests/test_riemann.md) | [test_riemann.py](tests/test_riemann.py)
+[外微分算子](tests/test_d_operator.md) | [test_d_operator.py](tests/test_d_operator.py)
 [廣義史托克定理](tests/test_stoke.md) | [test_stoke.py](tests/test_stoke.py) 
 
 ## 🧪 執行測試 (Running Tests)

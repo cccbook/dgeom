@@ -1,5 +1,7 @@
 # dgeom: Symbolic Differential Geometry & General Relativity
 
+> 本專案由 @ccckmit 指揮 Gemini 撰寫
+
 **dgeom** 是一個基於 [SymPy](https://www.sympy.org/) 的輕量級 Python 函式庫，專為微分幾何與廣義相對論的符號運算而設計。
 
 它旨在縮短抽象數學定義（如外微分、流形微積分）與具體物理計算（如愛因斯坦張量、黑洞解）之間的距離。從基礎的 **Stokes 定理** 驗證，到複雜的 **Kerr 旋轉黑洞** 真空解驗證，本專案皆能精確處理。

@@ -1,4 +1,4 @@
-from dgeom.sym.vcalculus import gradient, divergence, curl, Metric, EUCLIDEAN_METRIC, euclidean_coords
+from dgeom.sym.vcalculus import gradient, divergence, curl, Metric, EUCLIDEAN_METRIC
 import sympy as sp
 # --------------------------------------------------
 # IV. 測試範例 (Test Cases)
@@ -10,7 +10,7 @@ if __name__ == "__main__":
 
     # --- 1. 歐幾里得度規 (直角坐標 x, y, z) 測試 ---
     print("## 範例 1: 歐幾里得度規 (直角坐標) - 預設參數")
-    x, y, z = euclidean_coords
+    x, y, z = EUCLIDEAN_METRIC.coords # euclidean_coords
     # 純量場 f = x*y*z
     f_euc = x * y * z
     grad_f_euc = gradient(f_euc) 

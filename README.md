@@ -72,7 +72,7 @@ from dgeom.sym import Form, d, integrate_form, ParametricPatch
 以下使用 dgeom.sym 套件（背後是 sympy）
 
 詳細原理說明 | 程式 
------|-------------------------------------------------
+-----|------------
 [狹義相對論-閩可夫斯基空間](tests/test_minkowski.md) | [test_minkowski.py](tests/test_minkowski.py) | 閩可夫斯基空間
 [水星進動-修正軌道誤差](tests/test_murcury_procession.md) | [test_murcury_procession.py](tests/test_murcury_procession.py)
 [黑洞-史瓦希度規](tests/test_black_hole.md) | [test_black_hole.py](tests/test_black_hole.py)

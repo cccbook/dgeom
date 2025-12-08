@@ -71,8 +71,6 @@ from dgeom.sym import Form, d, integrate_form, ParametricPatch
 
 ## dgeom 測試案例與數學原理解說
 
-以下使用 dgeom.sym 套件（背後是 sympy）
-
 詳細原理說明 | 程式 
 -----|------------
 [狹義相對論-閩可夫斯基空間](tests/test_minkowski.md) | [test_minkowski.py](tests/test_minkowski.py) | 閩可夫斯基空間
@@ -112,13 +110,11 @@ python -m tests.test_dvector
 python -m tests.test_num_dvector
 ```
 
-
-
 ## 📂 專案結構 (Project Structure)
 
-*   `dgeom/sym/dvector.py`: 實作 `TangentVector`, `Form`, `d` (外微分), `lie_bracket`。
-*   `dgeom/sym/riemann.py`: 實作 `metric_tensor`, `christoffel`, `riemann_tensor`, `ricci_tensor` (矩陣化), `ricci_scalar`。
-*   `dgeom/sym/relativity.py`: 實作 `einstein_tensor` (矩陣化)。
+*  [dvector.py](dgeom/sym/dvector.py): 實作 `TangentVector`, `Form`, `d` (外微分), `lie_bracket`。
+*  [riemann.py](dgeom/sym/riemann.py) : 實作 `metric_tensor`, `christoffel`, `riemann_tensor`, `ricci_tensor` (矩陣化), `ricci_scalar`。
+*  [relativity.py](dgeom/sym/relativity.py): 實作 `einstein_tensor` (矩陣化)。
 
 ## 📝 License
 

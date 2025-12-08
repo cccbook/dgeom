@@ -114,8 +114,8 @@ python -m tests.test_num_dvector
 
 程式模組 | 原理 | 說明
 -------|-------|----------
-[dvector.py](dgeom/sym/dvector.py) | [外微分]() |  $d(d(f)) = 0$ 
-[gstoke.py](dgeom/sym/dvector.py) | [廣義史托克定理]() | $\int_{M} d\omega = \int_{\partial M} \omega$
+[d_operator.py](dgeom/sym/dvector.py) | [外微分]() |  $d(d(f)) = 0$ 
+[gstoke.py](dgeom/sym/dvector.py) | [積分：廣義史托克定理]() | $\int_{M} d\omega = \int_{\partial M} \omega$
 [riemann.py](dgeom/sym/riemann.py) | [黎曼幾何]() | 實作 `metric_tensor`, `christoffel`, `riemann_tensor`, `ricci_tensor` , `ricci_scalar`。
 [relativity.py](dgeom/sym/relativity.py) | [相對論]() | 實作 `einstein_tensor` 。
 

@@ -1,4 +1,4 @@
-from dgeom.sym.vcalculus import gradient, divergence, curl, Metric, EUCLIDEAN_METRIC
+from dgeom.sym.dvcalculus import d_gradient, d_divergence, d_curl, Metric, EUCLIDEAN_METRIC
 import sympy as sp
 # --------------------------------------------------
 # IV. 測試範例 (Test Cases)
@@ -13,15 +13,15 @@ if __name__ == "__main__":
     x, y, z = EUCLIDEAN_METRIC.coords # euclidean_coords
     # 純量場 f = x*y*z
     f_euc = x * y * z
-    grad_f_euc = gradient(f_euc) 
+    grad_f_euc = d_gradient(f_euc) 
     print(f"純量場 f = {f_euc}")
     print(f"梯度 ∇f (協變分量): {grad_f_euc}")
 
     # 向量場 F (直角坐標系下，協變/逆變分量相同): F^i = F_i = [x, y, 0]
     F_euc = sp.Matrix([x, y, 0]) 
     
-    div_F_euc = divergence(F_euc) 
-    curl_F_euc = curl(F_euc)       
+    div_F_euc = d_divergence(F_euc) 
+    curl_F_euc = d_curl(F_euc)       
     
     print(f"向量場 F (分量) = {F_euc}")
     print(f"散度 ∇·F: {div_F_euc}")
@@ -50,13 +50,13 @@ if __name__ == "__main__":
     
     # 散度測試：逆變向量場 F^i = [1/r1, 0, 0]
     F_cyl_contravariant = sp.Matrix([1/r1, 0, 0])
-    div_F_cyl = divergence(F_cyl_contravariant, metric=cyl_metric)
+    div_F_cyl = d_divergence(F_cyl_contravariant, metric=cyl_metric)
     print(f"逆變向量場 F^i: {F_cyl_contravariant}")
     print(f"散度 ∇·F: {div_F_cyl}")
     
     # 旋度測試：協變向量場 A_i = [r1*r2, 0, 0]
     A_cyl_covariant = sp.Matrix([r1*r2, 0, 0])
-    curl_A_cyl = curl(A_cyl_covariant, metric=cyl_metric)
+    curl_A_cyl = d_curl(A_cyl_covariant, metric=cyl_metric)
     print(f"協變向量場 A_i: {A_cyl_covariant}")
     print(f"旋度 ∇×A (協變分量): {curl_A_cyl}")
     
@@ -84,10 +84,10 @@ if __name__ == "__main__":
     f_test = r1**2 * sp.cos(r2) * r3 
     
     # 步驟 1: 計算梯度 ∇f (結果是協變分量)
-    grad_f = gradient(f_test, metric=cyl_metric)
+    grad_f = d_gradient(f_test, metric=cyl_metric)
     
     # 步驟 2: 計算梯度的旋度 ∇ × (∇f)
-    curl_grad_f = curl(grad_f, metric=cyl_metric)
+    curl_grad_f = d_curl(grad_f, metric=cyl_metric)
     
     print("\n--- 1. ∇ × (∇f) = 0 驗證 ---")
     print(f"測試純量場 f: {f_test}")
@@ -105,14 +105,14 @@ if __name__ == "__main__":
     A_covariant_test = sp.Matrix([r1 * r2, 0, r3**2])
     
     # 步驟 1: 計算旋度 ∇ × A (結果是協變分量)
-    curl_A_covariant = curl(A_covariant_test, metric=cyl_metric)
+    curl_A_covariant = d_curl(A_covariant_test, metric=cyl_metric)
     
-    # ⚠️ 轉換：散度函數 `divergence` 需要**逆變分量**，
+    # ⚠️ 轉換：散度函數 `d_d_divergence` 需要**逆變分量**，
     #   故我們必須將協變的 (∇×A)_i 轉換為逆變的 (∇×A)^i
     curl_A_contravariant = cyl_metric.g_inv * curl_A_covariant
     
     # 步驟 2: 計算旋度的散度 ∇ ⋅ (∇ × A)
-    div_curl_A = divergence(curl_A_contravariant, metric=cyl_metric)
+    div_curl_A = d_divergence(curl_A_contravariant, metric=cyl_metric)
     
     print("\n--- 2. ∇ ⋅ (∇ × A) = 0 驗證 ---")
     print(f"測試協變向量場 A_i: {A_covariant_test}")

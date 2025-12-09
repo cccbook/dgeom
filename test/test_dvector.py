@@ -63,30 +63,6 @@ def test_dd_f_is_zero():
              print("驗證成功: d(d(f)) 恆等於 0 (需 simplify)")
         else:
              print(f"驗證失敗: 結果不為 0, 餘項: {final_res}")
-    """
-    U = TangentVector(u_funcs, coords, name="U")
-    V = TangentVector(v_funcs, coords, name="V")
-    
-    print("定義符號向量場 U, V (分量為任意函數，非交換)...")
-
-    # 4. 評估 d(d(f))(U, V)
-    # 根據定義：d(df)(U, V) = U(df(V)) - V(df(U)) - df([U, V])
-    #                      = U(V(f))  - V(U(f))  - [U, V](f)
-    # 這應該要自動化簡為 0
-    result = ddf(U, V)
-    
-    print("正在計算 d(d(f))(U, V) 的符號表達式...")
-    simplified_result = sp.simplify(result)
-    
-    print(f"結果: {simplified_result}")
-    
-    if simplified_result == 0:
-        print("驗證成功: d(d(f)) 恆等於 0")
-    else:
-        print("驗證失敗: 結果不為 0")
-        # 如果失敗，通常是因為表達式太複雜 sympy 沒有完全化簡，
-        # 或者 lie_bracket 的實作有錯
-    """
 
 def test_stoke_theorem():
     # 定義座標系

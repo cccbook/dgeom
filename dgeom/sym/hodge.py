@@ -2,7 +2,7 @@ import sympy as sp
 import itertools
 from functools import reduce
 from .dvector import TangentVector, Form, d, lie_bracket
-from .vcalculus import Metric
+from .dvcalculus import Metric
 
 # ==========================================
 # Part 2: 黎曼幾何與通用 Hodge Star (Full Impl)

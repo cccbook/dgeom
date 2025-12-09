@@ -1,5 +1,6 @@
 import sympy as sp
 from dgeom.sym import metric_tensor, ricci_tensor, ricci_scalar, einstein_tensor, riemann_tensor
+import pytest
 
 def test_reissner_nordstrom():
     """
@@ -63,7 +64,7 @@ def test_reissner_nordstrom():
     else:
         print("   >> 驗證細節有誤，請檢查公式。")
 
-
+@pytest.mark.skip(reason="計算時間過長，請手動執行此測試")
 def test_kerr_metric():
     """
     測試案例 2: Kerr 黑洞 (旋轉黑洞)

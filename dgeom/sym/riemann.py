@@ -111,7 +111,8 @@ def ricci_tensor(G_cont, G_cov, coords):
 def ricci_scalar(R_mn, G_cont):
     """
     計算 Ricci 純量 R (Scalar Curvature)
-    定義: R = g^mu_nu * R_mu_nu
+    定義：R = g^mu_nu * R_mu_nu
+    意義：從 p 點發出的所有方向的平均截面曲率
     """
     # 矩陣乘法 G_cont * R_mn 得到 R^mu_nu，然後取 Trace (跡)
     # 或者直接使用雙重迴圈縮約

@@ -4,18 +4,12 @@ $$\int_{M} d\omega = \int_{\partial M} \omega$$
 
 $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
-
 > 本專案由 [ccckmit](https://github.com/ccckmit) 與 Gemini 3 (Pro+Flash) 協作撰寫。
 
-## 書籍：從微分幾何到廣義相對論
+## 書籍
 
-> -- 以 Python 用 Gemini 實作 dgeom 套件學習
-
-* [00-前言](00-前言.md)
-* [01-向量微積分](01-向量微積分.md)
-* [02-微分幾何](02-微分幾何.md)
-* [03-狹義相對論](03-狹義相對論.md)
-* [04-廣義相對論](04-廣義相對論.md)
+* [AI 電子書：向量微積分+微分幾何+相對論](https://gemini.google.com/share/d13c1e93468b)
+    * [前言：寫作動機](book/00.b-前言.md)
 
 ## 套件：dgeom
 
@@ -28,7 +22,6 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 [relativity.py](dgeom/sym/relativity.py) | [相對論]() | 愛因斯坦張量 `einstein_tensor` 。
 
 ## 範例
-
 
 詳細原理說明 | 程式 
 -----|------------

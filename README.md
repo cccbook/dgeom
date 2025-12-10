@@ -4,7 +4,7 @@ $$\int_{M} d\omega = \int_{\partial M} \omega$$
 
 $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
-> 本專案由 [ccckmit](https://github.com/ccckmit) 與 Gemini 3 (Pro+Flash) 協作撰寫。
+> 本專案由 [陳鍾誠](https://github.com/ccckmit) 與 Gemini 3 (Pro+Flash) 協作撰寫。
 
 ## 書籍
 

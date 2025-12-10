@@ -1,0 +1,1 @@
+pytest -s test1 # Run tests in verbose mode

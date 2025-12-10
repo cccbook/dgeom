@@ -1,0 +1,143 @@
+import sympy as sp
+from dgeom.sym._hodge import HodgeMetric, d_operator
+from dgeom.sym.dgeometry import TangentVector, Form
+from dgeom.sym._metrics import EUCLIDEAN_METRIC
+
+# --------------------------------------------------
+# I. 基礎設定
+# --------------------------------------------------
+
+# 3D 歐幾里得直角坐標
+x, y, z = sp.symbols('x y z')
+coords = [x, y, z]
+
+# 歐幾里得度規 (g = diag(1, 1, 1))
+euclidean_hodge = HodgeMetric(EUCLIDEAN_METRIC.g, coords)
+
+# --------------------------------------------------
+# II. 測試案例
+# --------------------------------------------------
+
+def test_flat_and_sharp_identity():
+    """
+    測試: 尖升 (Sharp) 與平降 (Flat) 互逆
+    V^b sharp = V
+    """
+    # 向量場 V = x * d/dx + y^2 * d/dy + z * d/dz
+    V_comp = [x, y**2, z]
+    V = TangentVector(V_comp, coords, name="V")
+    
+    # 1. V -> 1-Form (平降: V^b)
+    omega_flat = euclidean_hodge.flat(V)
+    
+    # 2. 1-Form -> Vector (尖升: V^b sharp)
+    V_sharp_flat = euclidean_hodge.sharp(omega_flat)
+    
+    # 應證 V_sharp_flat 的分量與 V 相同
+    expected_comp = sp.Matrix(V_comp)
+    
+    # 在歐幾里得空間中，V 的分量與 V^b 的係數相同，且 V^b sharp 的分量亦相同。
+    assert omega_flat.k == 1
+    assert sp.simplify(V_sharp_flat.components - expected_comp) == sp.Matrix([0, 0, 0])
+    print("Test Passed: Flat and Sharp Identity (V^b sharp = V)")
+
+
+def test_hodge_star_0_form():
+    """
+    測試: 0-Form (純量函數 f) 的 Hodge Star 
+    *f = f * sqrt(|det(g)|) * dx^1 ^ ... ^ dx^n
+    歐幾里得空間: *f = f * dx ^ dy ^ dz
+    """
+    # 0-Form (純量函數) f = x * y
+    f = sp.sympify("x * y")
+    
+    # 1. 計算 *f
+    omega_0 = Form(0, f)
+    star_f = euclidean_hodge.hodge_star(omega_0)
+    
+    # 2. 預期結果: 3-Form 的係數應為 x*y
+    # *f = (x*y) * dx^1 ^ dx^2 ^ dx^3
+    
+    # star_f.coeffs_dict 應該只有一個鍵值 (0, 1, 2) 對應 x, y, z 順序
+    expected_coeffs = { (0, 1, 2): x * y }
+    
+    # 驗證 k 值和係數
+    assert star_f.k == euclidean_hodge.dim
+    assert star_f.coeffs_dict == expected_coeffs
+    print("Test Passed: Hodge Star of 0-Form")
+
+
+def test_hodge_star_1_form():
+    """
+    測試: 1-Form (dy) 的 Hodge Star (3D 歐幾里得)
+    *dy = (-1)^(2-1) * dx^1 ^ ... ^ ^dx^2 ^ ... ^ dx^3 = dx ^ dz
+    (使用 dx^1=dx, dx^2=dy, dx^3=dz, 簽名 (+,+,+) => 忽略 (-1)^s 因子)
+    一般公式: *(dx^i) = epsilon_{i j k} * g^{j l} * g^{k m} ... * dx^l ^ dx^m ...
+    
+    在歐幾里得空間中: *dx^i = (1/sqrt(|det(g)|)) * epsilon_{i j k} * dx^j ^ dx^k
+    *dy = (1/1) * (1 * dx^3 ^ dx^1) = dz ^ dx = -dx ^ dz
+    錯了, *dy = dx ^ dz (外積順序為 (x, y, z) 的偶置換)
+    
+    正確歐氏 3D: *(dx) = dy ^ dz, *(dy) = dz ^ dx, *(dz) = dx ^ dy
+    我們要測試 dy 的 Hodge Star 應為 dz ^ dx
+    """
+    # 1-Form omega_1 = dy
+    def dy_eval(vectors):
+        # 僅取第二個座標 (y) 上的分量
+        return vectors[0].components[1]
+    omega_1 = Form(1, dy_eval, coeffs_dict={(1,): 1}) # (1,) 是 dy 的索引
+    
+    # 1. 計算 *dy
+    star_dy = euclidean_hodge.hodge_star(omega_1)
+    
+    # 2. 預期結果: 2-Form dz ^ dx
+    # dz ^ dx 對應的係數是 (-1) * dx^1 ^ dx^3
+    # 我們的索引是 (0, 1, 2) 對應 (x, y, z)
+    # dx^2 ^ dx^3 的係數應為 1 (即 1-Form dy 的係數)
+    # *dx^i = 1/sqrt(|g|) * sum_{j<k} sign(i,j,k) dx^j ^ dx^k
+    # *dy = *dx^1 = 1 * (1 * dx^0 ^ dx^2) = dx ^ dz (錯了，這是 i=1, j=0, k=2)
+    # *dy = *dx^1: i=1 (y), j=0 (x), k=2 (z) => sign(1, 0, 2) = -1
+    # 係數是 (-1) * dx^0 ^ dx^2 = -dx ^ dz
+    
+    # 根據右手定則，*dy = dz ^ dx = -dx ^ dz
+    # 係數 (0, 2) 應為 -1 
+    expected_coeffs = { (0, 2): -1 } 
+    
+    assert star_dy.k == 2
+    assert star_dy.coeffs_dict == expected_coeffs
+    print("Test Passed: Hodge Star of 1-Form dy (*dy = -dx ^ dz)")
+
+
+def test_hodge_star_identity():
+    """
+    測試: 雙重 Hodge Star 恆等式 **omega = (-1)^(k(n-k)) * omega
+    在 n=3, k=1 時，k(n-k) = 1(3-1) = 2 (偶數)
+    **dy = dy
+    """
+    # 1-Form omega_1 = dy
+    def dy_eval(vectors):
+        return vectors[0].components[1]
+    omega_1 = Form(1, dy_eval, coeffs_dict={(1,): 1}) 
+    
+    # 1. 計算 *dy
+    star_dy = euclidean_hodge.hodge_star(omega_1)
+    
+    # 2. 計算 **dy
+    star_star_dy = euclidean_hodge.hodge_star(star_dy)
+    
+    # 預期結果: **dy = dy (係數應為 {(1,): 1})
+    expected_coeffs = {(1,): 1}
+    
+    assert star_star_dy.k == 1
+    assert star_star_dy.coeffs_dict == expected_coeffs
+    print("Test Passed: Double Hodge Star Identity (**dy = dy)")
+
+
+# 執行所有測試
+if __name__ == "__main__":
+    print("--- 執行 Hodge Star, Flat, Sharp 測試 ---")
+    test_flat_and_sharp_identity()
+    test_hodge_star_0_form()
+    test_hodge_star_1_form()
+    test_hodge_star_identity()
+    print("--- 所有測試完成 ---")

@@ -1,4 +1,4 @@
-from dgeom.sym.hodge import HodgeMetric, gradient, divergence, curl, TangentVector
+from dgeom.sym.hodge import HodgeMetric, h_gradient, h_divergence, h_curl, TangentVector
 import sympy as sp
 # ==========================================
 # Part 4: 測試與驗證

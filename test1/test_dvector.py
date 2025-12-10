@@ -1,5 +1,5 @@
 # 數學原理解說 -- https://gemini.google.com/app/74730454e47a988b
-from dgeom.sym import Form, TangentVector, d, ParametricPatch, integrate_form
+from dgeom.sym import Form, TangentVector, d_operator, ParametricPatch, integrate_form
 import sympy as sp
 
 def test_dd_f_is_zero():
@@ -19,8 +19,8 @@ def test_dd_f_is_zero():
     print(f"純量場 f = {f_expr}")
 
     # 2. 計算 d(f) 和 d(d(f))
-    df = d(f_form)      # 1-form
-    ddf = d(df)         # 2-form
+    df = d_operator(f_form)      # 1-form
+    ddf = d_operator(df)         # 2-form
     
     print("已建構 2-form: d(d(f))")
 
@@ -93,7 +93,7 @@ def test_stoke_theorem():
     
     # 計算 d(omega)
     # 理論上 d(-y dx + x dy) = -dy^dx + dx^dy = dx^dy + dx^dy = 2 dx^dy
-    d_omega = d(omega)
+    d_omega = d_operator(omega)
     
     # === 測試區域：拋物面 Patch ===
     # z = x^2 + y^2 defined on [-1, 1] x [-1, 1]

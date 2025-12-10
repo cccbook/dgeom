@@ -1,8 +1,7 @@
 import sympy as sp
 import itertools
 from functools import reduce
-from .dvector import TangentVector, Form, d, lie_bracket
-from .dvcalculus import Metric
+from .dgeometry import TangentVector, Form, d_operator, lie_bracket, Metric
 
 # ==========================================
 # Part 2: 黎曼幾何與通用 Hodge Star (Full Impl)
@@ -143,17 +142,17 @@ class HodgeMetric(Metric):
 # Part 3: 向量微積分 (Gradient, Curl, Divergence)
 # ==========================================
 
-def gradient(f, metric): # Grad f = (df)^#
+def h_gradient(f, metric): # Grad f = (df)^#
     return metric.sharp(d(Form(0, f)))
 
-def curl(vector, metric): # Curl V = (* d V^b)^#
+def h_curl(vector, metric): # Curl V = (* d V^b)^#
     if metric.dim != 3: raise ValueError("Curl only for 3D")
     v_flat = metric.flat(vector)
     dv = d(v_flat)
     star_dv = metric.star(dv)
     return metric.sharp(star_dv)
 
-def divergence(vector, metric): # Div V = * d (* V^b)
+def h_divergence(vector, metric): # Div V = * d (* V^b)
     v_flat = metric.flat(vector)
     star_v = metric.star(v_flat)
     d_star_v = d(star_v)

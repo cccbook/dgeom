@@ -8,8 +8,10 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
 ## 書籍
 
-* [AI 電子書：向量微積分+微分幾何+相對論](https://gemini.google.com/share/d13c1e93468b)
-    * [前言：寫作動機](book/00.b-前言.md)
+* [AI 電子書：向量微積分+微分幾何+相對論](https://gemini.google.com/share/d13c1e93468b) -- (作者：陳鍾誠+Gemini 3 Flash)
+    * [提示詞](book/00.a-提示詞.md)
+    * [寫作動機](book/00.b-前言.md)
+    * [專有名詞索引](book/00.c-專有名詞索引.md)
 
 ## 套件：dgeom
 

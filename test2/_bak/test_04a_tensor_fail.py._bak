@@ -1,0 +1,132 @@
+import sympy as sp
+from dgeom.sym._metrics import Metric, SCHWARZSCHILD_METRIC, EUCLIDEAN_METRIC
+# 假設所有張量計算函式和單一分量 christoffel 函式都在 relativity.py 中
+from dgeom.sym.relativity import (
+    christoffel,  # <--- 使用使用者要求的單一分量函式
+    riemann_tensor, 
+    ricci_tensor, 
+    ricci_scalar, 
+    einstein_tensor
+)
+
+# --------------------------------------------------
+# I. 基礎設定
+# --------------------------------------------------
+
+# 歐幾里得空間度規
+euclidean_metric = EUCLIDEAN_METRIC
+euclidean_coords = euclidean_metric.coords
+
+# 舒瓦西度規
+schwarzschild_metric = SCHWARZSCHILD_METRIC
+
+# --------------------------------------------------
+# II. 輔助函式 (為滿足後續張量計算的輸入要求)
+# --------------------------------------------------
+
+def get_all_christoffel_symbols(metric, christoffel_func):
+    """
+    使用單一分量計算函式，計算所有 Christoffel 符號並儲存於字典。
+    """
+    G_cont = metric.g_inv
+    G_cov = metric.g
+    coords = metric.coords
+    dim = metric.dim
+    Gamma = {}
+    
+    for mu in range(dim): 
+        for alpha in range(dim): 
+            for beta in range(dim): 
+                
+                # 利用 Christoffel 符號的對稱性：Γ^mu_{alpha beta} = Γ^mu_{beta alpha}
+                if alpha > beta:
+                    if (mu, beta, alpha) in Gamma:
+                        Gamma[(mu, alpha, beta)] = Gamma[(mu, beta, alpha)]
+                        continue
+                
+                # 調用使用者提供的單一分量計算函式
+                Gamma[(mu, alpha, beta)] = christoffel_func(mu, alpha, beta, G_cont, G_cov, coords)
+                
+    return Gamma
+
+# --------------------------------------------------
+# III. 測試案例
+# --------------------------------------------------
+
+def test_riemann_and_ricci_flat_space():
+    """
+    測試: 歐幾里得平坦空間的黎曼張量和里奇張量應為零。
+    R^rho_{sigma mu nu} = 0, R_{mu nu} = 0
+    """
+    # 1. 計算克里斯托費爾符號 (透過輔助函式調用單一分量 christoffel)
+    Gamma = get_all_christoffel_symbols(euclidean_metric, christoffel)
+    
+    # 2. 計算黎曼張量 (Riemann Tensor)
+    R_tensor = riemann_tensor(euclidean_metric, Gamma)
+    
+    # 3. 計算里奇張量 (Ricci Tensor)
+    R_ricci = ricci_tensor(euclidean_metric, R_tensor)
+    
+    # 4. 驗證 R^rho_{sigma mu nu} 的所有分量是否為零
+    all_riemann_zero = all(sp.simplify(R_comp) == 0 for R_comp in R_tensor.values())
+            
+    # 5. 驗證 R_{mu nu} 的所有分量是否為零
+    R_ricci_zero = (sp.simplify(R_ricci) == sp.zeros(euclidean_metric.dim))
+    
+    assert all_riemann_zero
+    assert R_ricci_zero
+    print("Test Passed: Riemann and Ricci Tensors are zero in flat space (using component-wise Gamma)")
+
+
+def test_ricci_scalar_flat_space():
+    """
+    測試: 歐幾里得平坦空間的里奇純量應為零。
+    R = 0
+    """
+    Gamma = get_all_christoffel_symbols(euclidean_metric, christoffel)
+    R_tensor = riemann_tensor(euclidean_metric, Gamma)
+    R_ricci = ricci_tensor(euclidean_metric, R_tensor)
+    
+    R_scalar = ricci_scalar(euclidean_metric, R_ricci)
+    
+    # 驗證 R 是否為零
+    assert sp.simplify(R_scalar) == 0
+    print("Test Passed: Ricci Scalar is zero in flat space (using component-wise Gamma)")
+
+
+def test_einstein_tensor_schwarzschild_vacuum():
+    """
+    測試: 舒瓦西解 (Schwarzschild Solution) 在真空中的愛因斯坦張量應為零。
+    G_{mu nu} = 0
+    """
+    # 1. 計算所有張量，從單一分量 christoffel 開始
+    Gamma = get_all_christoffel_symbols(schwarzschild_metric, christoffel)
+    R_tensor = riemann_tensor(schwarzschild_metric, Gamma)
+    R_ricci = ricci_tensor(schwarzschild_metric, R_tensor)
+    
+    # 2. 驗證 里奇張量 R_{mu nu} 在舒瓦西解中應為零 (R_{mu nu} = 0)
+    R_ricci_zero = (sp.simplify(R_ricci) == sp.zeros(schwarzschild_metric.dim))
+    
+    # 3. 計算愛因斯坦張量 G_{mu nu}
+    G_matrix = einstein_tensor(R_ricci, schwarzschild_metric.g)
+    
+    # 4. 驗證 G_{mu nu} 是否為零
+    G_matrix_zero = (sp.simplify(G_matrix) == sp.zeros(schwarzschild_metric.dim))
+    
+    assert R_ricci_zero
+    assert G_matrix_zero
+    
+    # 額外檢查 R
+    R_scalar = ricci_scalar(schwarzschild_metric, R_ricci)
+    assert sp.simplify(R_scalar) == 0
+    
+    print("Test Passed: Einstein Tensor is zero for Schwarzschild vacuum solution (using component-wise Gamma)")
+
+
+# 執行所有測試
+if __name__ == "__main__":
+    print("--- 執行黎曼幾何與愛因斯坦張量測試 (使用單一分量 Christoffel 介面) ---")
+    test_riemann_and_ricci_flat_space()
+    test_ricci_scalar_flat_space()
+    test_einstein_tensor_schwarzschild_vacuum()
+    print("--- 所有測試完成 ---")

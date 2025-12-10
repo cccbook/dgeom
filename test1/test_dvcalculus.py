@@ -1,4 +1,4 @@
-from dgeom.sym.dvcalculus import d_gradient, d_divergence, d_curl, Metric, EUCLIDEAN_METRIC
+from dgeom.sym import d_gradient, d_divergence, d_curl, Metric, EUCLIDEAN_METRIC
 import sympy as sp
 # --------------------------------------------------
 # IV. 測試範例 (Test Cases)

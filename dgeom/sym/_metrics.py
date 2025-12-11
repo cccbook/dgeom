@@ -21,46 +21,8 @@ class Metric:
         self._christoffel = None
         self._riemann = None
         self._ricci = None
-        self._scalar_curvature = None
+        self._ricci_scalar = None
         
-    
-    """
-    def christoffel_symbols(self):
-        
-        #計算克里斯多福符號 (第二類): Gamma^k_{ij}。
-        #Gamma^k_{ij} = g^{kl} * Gamma_{lij}
-        #
-        #回傳:
-        #    一個 sympy.MutableDenseNDimArray 代表 Christoffel 符號。
-    
-        if self._christoffel is not None:
-            return self._christoffel
-        
-        Gamma = MutableDenseNDimArray.zeros(self.dim, self.dim, self.dim)
-        
-        # 第一類克里斯多福符號: Gamma_{ijk} = 0.5 * (g_{jk,i} + g_{ik,j} - g_{ij,k})
-        Gamma_first_kind = MutableDenseNDimArray.zeros(self.dim, self.dim, self.dim)
-        for i in range(self.dim):
-            for j in range(self.dim):
-                for k in range(self.dim):
-                    g_jk_i = sp.diff(self.g[j, k], self.coords[i])
-                    g_ik_j = sp.diff(self.g[i, k], self.coords[j])
-                    g_ij_k = sp.diff(self.g[i, j], self.coords[k])
-                    Gamma_first_kind[i, j, k] = sp.simplify(sp.Rational(1, 2) * (g_jk_i + g_ik_j - g_ij_k))
-        
-        # 第二類克里斯多福符號: Gamma^k_{ij} = g^{kl} * Gamma_{lij}
-        for k in range(self.dim):
-            for i in range(self.dim):
-                for j in range(self.dim):
-                    sum_l = 0
-                    for l in range(self.dim):
-                        sum_l += self.g_inv[k, l] * Gamma_first_kind[l, i, j] 
-                    Gamma[k, i, j] = sp.simplify(sum_l)
-
-        self._christoffel = Gamma
-        return Gamma
-    """
-
     def christoffel_symbols(self):
         """
         計算克里斯多福符號 (第二類): Gamma^k_{ij}。
@@ -73,7 +35,7 @@ class Metric:
             return self._christoffel
         
         Gamma = MutableDenseNDimArray.zeros(self.dim, self.dim, self.dim)
-        
+
         # 第一類克里斯多福符號 Gamma_{l, i, j}
         # 公式: Gamma_{l, i, j} = 0.5 * (g_{il, j} + g_{jl, i} - g_{ij, l})
         Gamma_first_kind = MutableDenseNDimArray.zeros(self.dim, self.dim, self.dim)
@@ -161,15 +123,15 @@ class Metric:
         self._ricci = Ricci
         return Ricci
 
-    def scalar_curvature(self):
+    def ricci_scalar(self):
         """
         計算純量曲率 (Scalar Curvature): R = g^{ij} R_{ij}。
         
         回傳:
             一個 sympy 表達式 (純量) 代表 Scalar 曲率。
         """
-        if self._scalar_curvature is not None:
-            return self._scalar_curvature
+        if self._ricci_scalar is not None:
+            return self._ricci_scalar
             
         Ricci = self.ricci_tensor()
         R = 0
@@ -178,8 +140,8 @@ class Metric:
             for j in range(self.dim):
                 R += self.g_inv[i, j] * Ricci[i, j]
                 
-        self._scalar_curvature = sp.simplify(R)
-        return self._scalar_curvature
+        self._ricci_scalar = sp.simplify(R)
+        return self._ricci_scalar
 
     def arc_length(self, path_param, param_var, start_param, end_param):
         """

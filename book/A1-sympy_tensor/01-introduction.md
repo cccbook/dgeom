@@ -55,7 +55,7 @@ init_printing(use_latex='mathjax')
 print(f"SymPy Version: {sympy.__version__}")
 ```
 
-> SymPy Version: 1.14.0
+![](./img/1.1.png)
 
 ### 步驟 3：Hello Tensor World (測試環境)
 
@@ -83,6 +83,8 @@ print("Text Output:", expr)
 # 在 Jupyter Notebook 中，直接輸入變數名稱會顯示 LaTeX 格式
 expr
 ```
+
+![](./img/1.2.png)
 
 **預期輸出結果：**
 

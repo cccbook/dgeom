@@ -23,26 +23,11 @@ init_printing(use_latex='mathjax')
 ### 程式碼範例
 
 ```python
-# 1. 定義一個洛倫茲空間 (Lorentzian Manifold)
-# structure=TensorIndexType.Lorentz 表示這是一個相對論時空 (擁有 Minkowski 度規)
-# dummy_name='L' 用於自動生成求和時的虛設指標名稱
-L = TensorIndexType('L', dummy_name='L')
+from sympy import symbols, init_printing, diag
+from sympy.tensor.tensor import TensorIndexType, TensorIndex, TensorHead, tensor_indices
 
-# 2. 定義歐幾里得空間 (Euclidean Space)
-# metric_symmetry=1 表示度規是對稱的 (g_ij = g_ji)
-# dim=3 指定維度為 3
-E = TensorIndexType('E', dummy_name='E', dim=3, metric_symmetry=1)
-
-# 3. 定義指標符號 (Indices)
-# mu, nu, rho 屬於洛倫茲空間 L
-mu, nu, rho, sigma = tensor_indices('mu nu rho sigma', L)
-
-# i, j, k 屬於歐幾里得空間 E
-i, j, k = tensor_indices('i j k', E)
-
-print("空間定義完成。")
-print(f"Lorentz Indices: {mu}, {nu}")
-print(f"Euclidean Indices: {i}, {j}")
+# 啟用 LaTeX 數學顯示
+init_printing(use_latex='mathjax')
 ```
 
 ![](./img/3.1.png)
@@ -87,6 +72,8 @@ display(expr_vec_up)
 display(expr_vec_down)
 display(expr_tensor)
 ```
+
+![](./img/3.1.png)
 
 > **關鍵語法**：
 > *   **上指標 (Contravariant)**：直接傳入 `mu`。
@@ -138,6 +125,8 @@ display(complex_expr)
 print(f"Free indices: {complex_expr.get_free_indices()}")
 # 注意：虛設指標在內部會被重新命名，以避免衝突
 ```
+
+![](./img/3.2.png)
 
 ---
 

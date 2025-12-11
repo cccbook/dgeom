@@ -214,6 +214,7 @@ class Metric:
         tau = sp.simplify(numerator / denominator)
         return tau
 
+
 # --------------------------------------------------
 # I. 基礎符號與常數宣告 (單一事實來源)
 # --------------------------------------------------
@@ -223,16 +224,8 @@ x, y, z = sp.symbols('x y z')
 euclidean_coords = [x, y, z]
 
 # 球坐標/時空坐標 (4D: t, r, theta, phi)
-t, r, theta, phi = sp.symbols('t r theta phi')
+t, r, theta, phi = sp.symbols('t r theta phi', real=True, positive=True)
 spherical_coords = [r, theta, phi] # 3D 空間部分
-
-# 狹義相對論空間坐標 (若與直角坐標不同，則單獨宣告)
-x_m, y_m, z_m = sp.symbols('x_m y_m z_m')
-minkowski_coords = [t, x_m, y_m, z_m]
-
-# 宇宙學參數與常數
-M, G, c = sp.symbols('M G c', real=True, positive=True) # 質量、萬有引力常數、光速
-k = sp.symbols('k', integer=True) # 空間曲率 k
 
 # --------------------------------------------------
 # I. 歐幾里得度規實例
@@ -253,17 +246,6 @@ spherical_g_matrix = sp.Matrix([
     [0, 0, r**2 * sp.sin(theta)**2]
 ])
 SPHERICAL_METRIC = Metric(spherical_g_matrix, spherical_coords)
-
-# --------------------------------------------------
-# IV. 閔可夫斯基度規實例
-# --------------------------------------------------
-minkowski_g_matrix = sp.Matrix([
-    [1, 0, 0, 0],
-    [0, -1, 0, 0],
-    [0, 0, -1, 0],
-    [0, 0, 0, -1]
-])
-MINKOWSKI_METRIC = Metric(minkowski_g_matrix, minkowski_coords)
 
 # --------------------------------------------------
 # V. 圓柱坐標系 (略，保持不變)
@@ -287,36 +269,3 @@ polar_g_matrix = sp.Matrix([
     [0, r_polar**2]
 ])
 POLAR_METRIC = Metric(polar_g_matrix, polar_coords)
-
-# --------------------------------------------------
-# VII. 施瓦西度規實例
-# --------------------------------------------------
-# 使用統一後的符號 t, r, theta, phi
-schwarzschild_coords = [t, r, theta, phi] 
-R_s = 2 * G * M / c**2
-f_r = 1 - R_s / r
-f_inv_r = 1 / f_r
-r_sq = r**2
-sin_sq_theta = sp.sin(theta)**2
-schwarzschild_g_matrix = sp.Matrix([
-    [c**2 * f_r, 0, 0, 0],
-    [0, -f_inv_r, 0, 0],
-    [0, 0, -r_sq, 0],
-    [0, 0, 0, -r_sq * sin_sq_theta]
-])
-SCHWARZSCHILD_METRIC = Metric(schwarzschild_g_matrix, schwarzschild_coords)
-
-# --------------------------------------------------
-# VIII. FLRW 度規實例
-# --------------------------------------------------
-# 使用統一後的符號 t, r, theta, phi
-flrw_coords = [t, r, theta, phi] 
-a_t = sp.Function('a')(t) # 宇宙標度因子 a(t)
-D_r = 1 / (1 - k * r**2)
-flrw_g_matrix = sp.Matrix([
-    [c**2, 0, 0, 0],
-    [0, -a_t**2 * D_r, 0, 0],
-    [0, 0, -a_t**2 * r**2, 0],
-    [0, 0, 0, -a_t**2 * r**2 * sp.sin(theta)**2]
-])
-FLRW_METRIC = Metric(flrw_g_matrix, flrw_coords)

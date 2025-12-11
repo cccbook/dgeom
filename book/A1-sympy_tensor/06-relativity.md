@@ -10,7 +10,8 @@
 ## 6.1 座標系與度規設定
 
 首先，我們定義史瓦西黑洞的度規。
-$$ ds^2 = \left(1 - \frac{r_s}{r}\right)dt^2 - \left(1 - \frac{r_s}{r}\right)^{-1}dr^2 - r^2 d\theta^2 - r^2 \sin^2\theta d\phi^2 $$
+
+$$ds^2 = \left(1 - \frac{r_s}{r}\right)dt^2 - \left(1 - \frac{r_s}{r}\right)^{-1}dr^2 - r^2 d\theta^2 - r^2 \sin^2\theta d\phi^2$$
 
 ```python
 from sympy import symbols, diag, sin, cos, simplify, diff, Matrix, init_printing
@@ -49,7 +50,8 @@ display(g_inv_matrix)
 ## 6.2 克里斯多福符號 (Christoffel Symbols)
 
 克里斯多福符號的定義為：
-$$ \Gamma^\sigma_{\mu\nu} = \frac{1}{2} g^{\sigma\rho} (\partial_\mu g_{\nu\rho} + \partial_\nu g_{\mu\rho} - \partial_\rho g_{\mu\nu}) $$
+
+$$\Gamma^\sigma_{\mu\nu} = \frac{1}{2} g^{\sigma\rho} (\partial_\mu g_{\nu\rho} + \partial_\nu g_{\mu\rho} - \partial_\rho g_{\mu\nu})$$
 
 雖然可以用 `derive_by_array` 一行寫完，但為了教學清晰度與避免維度順序混淆，我們使用**三層迴圈**來顯式計算每一個分量。這也是物理學家寫程式時最常用的方法。
 
@@ -96,8 +98,9 @@ display(Gamma[2, 1, 2])
 
 ## 6.3 曲率張量計算 (Riemann & Ricci)
 
-接下來計算黎曼張量 $R^\rho_{\sigma\mu\nu}$。公式涉及 $\Gamma$ 的導數與乘積。
-$$ R^\rho_{\sigma\mu\nu} = \partial_\mu \Gamma^\rho_{\nu\sigma} - \partial_\nu \Gamma^\rho_{\mu\sigma} + \Gamma^\rho_{\mu\lambda}\Gamma^\lambda_{\nu\sigma} - \Gamma^\rho_{\nu\lambda}\Gamma^\lambda_{\mu\sigma} $$
+接下來計算黎曼張量 $R^\rho_{\sigma\mu\nu}$ 。公式涉及  $\Gamma$ 的導數與乘積。
+
+$$R^\rho_{\sigma\mu\nu} = \partial_\mu \Gamma^\rho_{\nu\sigma} - \partial_\nu \Gamma^\rho_{\mu\sigma} + \Gamma^\rho_{\mu\lambda}\Gamma^\lambda_{\nu\sigma} - \Gamma^\rho_{\nu\lambda}\Gamma^\lambda_{\mu\sigma}$$
 
 ```python
 # 初始化黎曼張量 R[rho, sigma, mu, nu]
@@ -148,8 +151,9 @@ display(Array(Ricci))
 
 ## 6.4 實戰驗證：史瓦西解
 
-史瓦西度規是真空解，這意味著愛因斯坦場方程式 $G_{\mu\nu} = 8\pi T_{\mu\nu}$ 在真空處 ($T_{\mu\nu}=0$) 應該導致：
-$$ R_{\mu\nu} = 0 $$
+史瓦西度規是真空解，這意味著愛因斯坦場方程式 $G_{\mu\nu} = 8\pi T_{\mu\nu}$ 在真空處 ( $T_{\mu\nu}=0$ ) 應該導致：
+
+$$R_{\mu\nu} = 0$$
 
 讓我們檢查上面的 `Ricci` 張量是否全為零。
 

@@ -32,9 +32,23 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
 主題 | 程式模組 | 概念
 ----|---------|-------
-[向量微積分] | [vcalculus.py](dgeom/sym/vcalculus.py) |  [梯度] $\nabla f(\mathbf{x})$ <br/> [散度] $\nabla \cdot \mathbf{F}$ <br/> [旋度]$\nabla \times \mathbf{F}$ <br/> [線積分] $\int_C f(x, y, z) \, ds$
-[微分幾何] |  [dgeometry.py](dgeom/sym/dgeometry.py) | [外微分] $d\omega = \sum_I df_I \wedge dx_I$ <br/> [廣義史托克定理] $\int_{M} d\omega = \int_{\partial M} \omega$ <br/>[黎曼度規] $g_{ij}(p) = g_p\left(\frac{\partial}{\partial x^i}, \frac{\partial}{\partial x^j}\right)$    <br/><br/>  <br/><br/> 
-[相對論] | [relativity.py](dgeom/sym/relativity.py) | [狹義相對論] $ds^2 = -c^2 dt^2 + dx^2 + dy^2 + dz^2$ <br/>[廣義相對論]  $G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$
+[向量微積分] | [vcalculus.py](dgeom/sym/vcalculus.py) |  [梯度] / [散度] / [旋度] / [線積分] 
+[微分幾何] |  [dgeometry.py](dgeom/sym/dgeometry.py) | [外微分] / [廣義史托克定理] / [黎曼度規]
+[相對論] | [relativity.py](dgeom/sym/relativity.py) | [狹義相對論] / [廣義相對論] 
+
+## 數學
+
+概念 | 符號公式 | 實作
+----|------|----------
+[梯度] | $\nabla f(\mathbf{x})$ | gradient
+[散度] | $\nabla \cdot \mathbf{F}$ | divergence
+[旋度] | $\nabla \times \mathbf{F}$ | curl
+[線積分] | $\int_C f(x, y, z) \, ds$ | line_integral
+[外微分] | $d\omega = \sum_I df_I \wedge dx_I$ |
+[廣義史托克定理] | $\int_{M} d\omega = \int_{\partial M} \omega$ | 
+[黎曼度規] | $g_{ij}(p) = g_p\left(\frac{\partial}{\partial x^i}, \frac{\partial}{\partial x^j}\right)$ |
+[狹義相對論] | $ds^2 = -c^2 dt^2 + dx^2 + dy^2 + dz^2$  | minkowski_metric()
+[廣義相對論] | $G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$ | gravity_field_equations
 
 ## 📝 License
 

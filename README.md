@@ -34,7 +34,7 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 ----|---------|--------|----
 [向量微積分] | [vcalculus.py](dgeom/sym/vcalculus.py) |  [梯度] / [散度] / [旋度] / [線積分] | $\nabla f(\mathbf{x})$ <br/> $\nabla \cdot \mathbf{F}$ <br/> $\nabla \times \mathbf{F}$ <br/> $\int_C f(x, y, z) \, ds$
 [微分幾何] |  [dgeometry.py](dgeom/sym/dgeometry.py) | [外微分] / [霍奇星算子] / [廣義史托克定理] / [黎曼度規] |   $d\omega = \sum_I df_I \wedge dx_I$ <br/><br/> $\int_{M} d\omega = \int_{\partial M} \omega$ <br/><br/> $g_{ij}(p) = g_p\left(\frac{\partial}{\partial x^i}, \frac{\partial}{\partial x^j}\right)$
-[相對論] | [relativity.py](dgeom/sym/relativity.py) | [狹義相對論] / [廣義相對論] | $ds^2 = c^2 dt^2 - (dx)^2 - (dy)^2 - (dz)^2$ <br/><br/> $G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$
+[相對論] | [relativity.py](dgeom/sym/relativity.py) | [狹義相對論] / [廣義相對論] | $ds^2 = -c^2 dt^2 + dx^2 + dy^2 + dz^2$ <br/><br/> $G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$
 
 ## 📝 License
 

@@ -4,7 +4,8 @@ from functools import reduce
 from .dgeometry import TangentVector, Form, d_operator, lie_bracket, Metric
 
 # ==========================================
-# Part 2: 黎曼幾何與通用 Hodge Star (Full Impl)
+# 霍奇星算子 Hodge Star (Full Impl)
+# AI 解說：https://gemini.google.com/share/9541acdda1cf
 # ==========================================
 
 class HodgeMetric(Metric):

@@ -9,4 +9,3 @@ from .dgeometry import * # 通用微分幾何函式
 # 相對論模組
 from .constants import * # 基本物理常數
 from .relativity import * # 相對論相關函式與度規
-from ._relativity_metrics import * # 愛因斯坦張量與重力場方程式

@@ -1,11 +1,7 @@
 import sympy as sp
 import numpy as np
 import pytest
-# 引用新的工廠函數
 from dgeom.sym import get_euclidean_metric, get_spherical_metric, Metric
-
-# 假設這些類別與函數也在 dgeom 套件中 (或是您專案的其他模組)
-# 這裡保留原樣引用，若它們在不同檔案請自行調整 import
 from dgeom.sym import HodgeMetric, TangentVector, Form, d_gradient, d_curl, d_operator
 
 # --------------------------------------------------

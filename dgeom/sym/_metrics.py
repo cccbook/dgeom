@@ -1,9 +1,8 @@
 import sympy as sp
 from sympy.tensor.array import MutableDenseNDimArray
 
-# --------------------------------------------------
-# II. Metric 類別 (度規數據封裝與幾何計算)
-# --------------------------------------------------
+# 度規 metrics
+# AI 解說： https://gemini.google.com/share/a3c23e660d10
 
 class Metric:
     def __init__(self, g_matrix, coords):
@@ -263,7 +262,4 @@ def get_polar_metric():
     g_matrix = sp.diag(1, r**2)
     return Metric(g_matrix, coords)
 
-EUCLIDEAN_METRIC = get_euclidean_metric()
-#SPHERICAL_METRIC = get_spherical_metric()
-#CYLINDRICAL_METRIC = get_cylindrical_metric()
-#POLAR_METRIC = get_polar_metric()
+

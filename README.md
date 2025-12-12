@@ -17,8 +17,8 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
 程式模組 | 原理 | 說明
 -------|-------|----------
-[vcalculus.py](dgeom/sym/dvector.py) | [向量微積分] |  梯度 / 散度 / 旋度 / 線積分
-[d_operator.py](dgeom/sym/dvector.py) | [外微分] |  $d(d(f)) = 0$
+[vcalculus.py](dgeom/sym/vcalculus.py) | [向量微積分] |  梯度 / 散度 / 旋度 / 線積分
+[dgeometry.py](dgeom/sym/dgeometry.py) | [微分幾何] |  [度規]:[_metrics.py](dgeom/sym/_metrics.py) / [外微分] / [霍奇星算子](dgeom/sym/_hodge.py)
 [gstoke.py](dgeom/sym/gstoke.py) | [廣義史托克定理] | $\int_{M} d\omega = \int_{\partial M} \omega$
 [riemann.py](dgeom/sym/riemann.py) | [黎曼幾何] | 實作 `metric_tensor`, `christoffel`, `riemann_tensor`, `ricci_tensor` , `ricci_scalar`。
 [relativity.py](dgeom/sym/relativity.py) | [相對論]() | 愛因斯坦張量 `einstein_tensor` 。

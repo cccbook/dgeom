@@ -2,6 +2,10 @@ import sympy as sp
 import pytest
 from dgeom.sym import get_minkowski_metric
 
+# --------------------------------------------------
+# 閔可夫斯基度規的平坦性驗證
+# AI 解說: https://gemini.google.com/share/df7e8b241da6
+# --------------------------------------------------
 def test_relativity_minkowski_flatness():
     r"""
     ### 🧪 驗證 relativity.py：閔可夫斯基度規的平坦性
@@ -16,7 +20,10 @@ def test_relativity_minkowski_flatness():
     assert sp.simplify(R_mn) == sp.zeros(4, 4), \
         r"閔可夫斯基度規的 Ricci 張量 $R_{\mu \nu}$ 應為零"
 
-
+# --------------------------------------------------
+# 鐘慢效應 (Time Dilation) 的幾何驗證
+# AI 解說: https://gemini.google.com/share/0af6296a6790
+# --------------------------------------------------
 def test_time_dilation():
     r"""
     ### 🧪 驗證狹義相對論：鐘慢效應 (Time Dilation)
@@ -61,6 +68,10 @@ def test_time_dilation():
     print("-> [PASS] 鐘慢效應驗證成功。")
 
 
+# --------------------------------------------------
+# 尺縮效應 (Length Contraction) 的幾何驗證
+# AI 解說: https://gemini.google.com/share/e4bc5d4031fd
+# --------------------------------------------------
 def test_length_contraction():
     r"""
     ### 🧪 驗證狹義相對論：尺縮效應 (Length Contraction)
@@ -118,7 +129,8 @@ def test_length_contraction():
     print("-> [PASS] 尺縮效應驗證成功。")
 
 # --------------------------------------------------
-# 額外測試: 雙生子佯謬 (Twin Paradox) 的路徑積分驗證
+# 雙生子佯謬 (Twin Paradox) 的路徑積分驗證
+# AI 解說: https://gemini.google.com/share/0c63b35dea3c
 # --------------------------------------------------
 def test_twin_paradox_path_integral():
     r"""

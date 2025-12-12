@@ -2,6 +2,7 @@
 from .vcalculus import * # 梯度、散度、旋度等函式
 
 # 微分幾何模組
+from ._tensor import * # 張量 (GeometricTensor)
 from ._metrics import * # 度規與基本符號
 from ._hodge import * # Hodge 指標升降與星算子
 from .dgeometry import * # 通用微分幾何函式

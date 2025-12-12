@@ -214,58 +214,56 @@ class Metric:
         tau = sp.simplify(numerator / denominator)
         return tau
 
+# --------------------------------------------------
+# Factory Functions (度規工廠函數)
+# --------------------------------------------------
 
-# --------------------------------------------------
-# I. 基礎符號與常數宣告 (單一事實來源)
-# --------------------------------------------------
+def get_euclidean_metric():
+    """
+    建立 3D 歐幾里得度規 (直角坐標)。
+    坐標: x, y, z
+    度規: diag(1, 1, 1)
+    """
+    x, y, z = sp.symbols('x y z')
+    coords = [x, y, z]
+    g_matrix = sp.eye(3)
+    return Metric(g_matrix, coords)
 
-# 歐幾里得直角坐標 (3D)
-x, y, z = sp.symbols('x y z')
-euclidean_coords = [x, y, z]
+def get_spherical_metric():
+    """
+    建立 3D 球坐標度規。
+    坐標: r, theta, phi
+    度規: diag(1, r^2, r^2 * sin(theta)^2)
+    """
+    # 物理坐標通常假設為實數且 r>0
+    r, theta, phi = sp.symbols('r theta phi', real=True, positive=True)
+    coords = [r, theta, phi]
+    g_matrix = sp.diag(1, r**2, r**2 * sp.sin(theta)**2)
+    return Metric(g_matrix, coords)
 
-# 球坐標/時空坐標 (4D: t, r, theta, phi)
-t, r, theta, phi = sp.symbols('t r theta phi', real=True, positive=True)
-spherical_coords = [r, theta, phi] # 3D 空間部分
+def get_cylindrical_metric():
+    """
+    建立 3D 圓柱坐標度規。
+    坐標: rho, phi, z
+    度規: diag(1, rho^2, 1)
+    """
+    rho, phi, z = sp.symbols(r'\rho \phi z', real=True, positive=True)
+    coords = [rho, phi, z]
+    g_matrix = sp.diag(1, rho**2, 1)
+    return Metric(g_matrix, coords)
 
-# --------------------------------------------------
-# I. 歐幾里得度規實例
-# --------------------------------------------------
-euclidean_g_matrix = sp.Matrix([
-    [1, 0, 0],
-    [0, 1, 0],
-    [0, 0, 1]
-])
-EUCLIDEAN_METRIC = Metric(euclidean_g_matrix, euclidean_coords)
+def get_polar_metric():
+    """
+    建立 2D 極坐標度規。
+    坐標: r, theta
+    度規: diag(1, r^2)
+    """
+    r, theta = sp.symbols('r theta', real=True, positive=True)
+    coords = [r, theta]
+    g_matrix = sp.diag(1, r**2)
+    return Metric(g_matrix, coords)
 
-# --------------------------------------------------
-# III. 球坐標系實例
-# --------------------------------------------------
-spherical_g_matrix = sp.Matrix([
-    [1, 0, 0],
-    [0, r**2, 0],
-    [0, 0, r**2 * sp.sin(theta)**2]
-])
-SPHERICAL_METRIC = Metric(spherical_g_matrix, spherical_coords)
-
-# --------------------------------------------------
-# V. 圓柱坐標系 (略，保持不變)
-# --------------------------------------------------
-rho, phi_cyl, z_cyl = sp.symbols(r'\rho \phi_c z_c') 
-cylindrical_coords = [rho, phi_cyl, z_cyl]
-cylindrical_g_matrix = sp.Matrix([
-    [1, 0, 0],
-    [0, rho**2, 0],
-    [0, 0, 1]
-])
-CYLINDRICAL_METRIC = Metric(cylindrical_g_matrix, cylindrical_coords)
-
-# --------------------------------------------------
-# VI. 極坐標系 (略，保持不變)
-# --------------------------------------------------
-r_polar, theta_polar = sp.symbols(r'r_p \theta_p') 
-polar_coords = [r_polar, theta_polar]
-polar_g_matrix = sp.Matrix([
-    [1, 0],
-    [0, r_polar**2]
-])
-POLAR_METRIC = Metric(polar_g_matrix, polar_coords)
+EUCLIDEAN_METRIC = get_euclidean_metric()
+#SPHERICAL_METRIC = get_spherical_metric()
+#CYLINDRICAL_METRIC = get_cylindrical_metric()
+#POLAR_METRIC = get_polar_metric()

@@ -51,90 +51,82 @@ class RelativityMetric(Metric):
             # 回傳差值，若為 0 則滿足方程
             return sp.simplify(G_uv - kappa * T_uv)
 
-# 狹義相對論空間坐標 (若與直角坐標不同，則單獨宣告)
-x_m, y_m, z_m = sp.symbols('x_m y_m z_m')
-minkowski_coords = [t, x_m, y_m, z_m]
-# t = sp.symbols('t r theta phi', real=True, positive=True)
+def get_minkowski_metric():
+    """
+    建立 4D 閔可夫斯基度規 (狹義相對論, SR)。
+    
+    簽名慣例: (+, -, -, -)
+    度規形式: diag(1, -1, -1, -1)
+    
+    注意: 此處 g_tt = 1，隱含了使用的是自然單位制 (c=1) 
+          或者是將時間坐標定義為 x^0 = ct。
+    """
+    # 局部定義符號，避免與全域變數衝突
+    t = sp.Symbol('t', real=True)
+    x_m, y_m, z_m = sp.symbols('x_m y_m z_m', real=True)
+    
+    coords = [t, x_m, y_m, z_m]
+    
+    # 根據您提供的矩陣定義
+    g_matrix = sp.diag(1, -1, -1, -1)
+    
+    return RelativityMetric(g_matrix, coords)
 
-# 宇宙學參數與常數
-M, G, c = sp.symbols('M G c', real=True, positive=True) # 質量、萬有引力常數、光速
-k = sp.symbols('k', integer=True) # 空間曲率 k
+def get_schwarzschild_metric():
+    """
+    建立史瓦西度規 (Schwarzschild Metric)。
+    坐標: t, r, theta, phi
+    常數: G, M, c
+    """
+    t, r, theta, phi = sp.symbols('t r theta phi')
+    G, M, c = sp.symbols('G M c', real=True, positive=True)
+    
+    R_s = 2 * G * M / c**2
+    f_r = 1 - R_s / r
+    
+    # 簽名慣例 (+, -, -, -)
+    g_matrix = sp.diag(
+        c**2 * f_r,
+        -1 / f_r,
+        -r**2,
+        -r**2 * sp.sin(theta)**2
+    )
+    
+    coords = [t, r, theta, phi]
+    return RelativityMetric(g_matrix, coords)
 
-# --------------------------------------------------
-# IV. 閔可夫斯基度規實例
-# --------------------------------------------------
-minkowski_g_matrix = sp.Matrix([
-    [1, 0, 0, 0],
-    [0, -1, 0, 0],
-    [0, 0, -1, 0],
-    [0, 0, 0, -1]
-])
-MINKOWSKI_METRIC = Metric(minkowski_g_matrix, minkowski_coords)
+def get_flrw_metric(k_val=None):
+    """
+    建立 FLRW 度規 (宇宙學)。
+    坐標: t, r, theta, phi
+    函數: a(t)
+    常數: c, k (若 k_val 未指定則為符號 k)
+    
+    參數:
+        k_val: 空間曲率常數 (如 -1, 0, 1)，若為 None 則使用符號變數。
+    """
+    t, r, theta, phi = sp.symbols('t r theta phi')
+    c = sp.symbols('c', real=True, positive=True)
+    a = sp.Function('a')(t)
+    
+    if k_val is None:
+        k = sp.symbols('k', real=True)
+    else:
+        k = k_val
+        
+    D_r = 1 / (1 - k * r**2)
+    
+    # 簽名慣例 (+, -, -, -)
+    g_matrix = sp.diag(
+        c**2,
+        -a**2 * D_r,
+        -a**2 * r**2,
+        -a**2 * r**2 * sp.sin(theta)**2
+    )
+    
+    coords = [t, r, theta, phi]
+    return RelativityMetric(g_matrix, coords)
 
-# --------------------------------------------------
-# VII. 施瓦西度規實例
-# --------------------------------------------------
-# 使用統一後的符號 t, r, theta, phi
-schwarzschild_coords = [t, r, theta, phi] 
-R_s = 2 * G * M / c**2
-f_r = 1 - R_s / r
-f_inv_r = 1 / f_r
-r_sq = r**2
-sin_sq_theta = sp.sin(theta)**2
-schwarzschild_g_matrix = sp.Matrix([
-    [c**2 * f_r, 0, 0, 0],
-    [0, -f_inv_r, 0, 0],
-    [0, 0, -r_sq, 0],
-    [0, 0, 0, -r_sq * sin_sq_theta]
-])
-SCHWARZSCHILD_METRIC = RelativityMetric(schwarzschild_g_matrix, schwarzschild_coords)
-
-
-"""
-# --------------------------------------------------
-# VIII. FLRW 度規實例
-# --------------------------------------------------
-# 使用統一後的符號 t, r, theta, phi
-flrw_coords = [t, r, theta, phi] 
-a_t = sp.Function('a')(t) # 宇宙標度因子 a(t)
-D_r = 1 / (1 - k * r**2)
-flrw_g_matrix = sp.Matrix([
-    [c**2, 0, 0, 0],
-    [0, -a_t**2 * D_r, 0, 0],
-    [0, 0, -a_t**2 * r**2, 0],
-    [0, 0, 0, -a_t**2 * r**2 * sp.sin(theta)**2]
-])
-FLRW_METRIC = RelativityMetric(flrw_g_matrix, flrw_coords)
-
-"""
-
-# 注意: k 是曲率常數 (-1, 0, +1)，這裡設為整數或實數皆可
-k = sp.symbols('k', real=True) 
-c = sp.symbols('c', real=True, positive=True)
-
-# 定義宇宙標度因子 a(t) 為時間的函數
-a = sp.Function('a')(t)
-
-# 對時間的導數符號 (用於顯示更漂亮的輸出)
-adot = sp.diff(a, t)
-addot = sp.diff(a, t, t)
-
-coords = [t, r, theta, phi]
-
-# --------------------------------------------------
-# 2. 定義 FLRW 度規矩陣
-# --------------------------------------------------
-# 根據您的輸入: g_tt = c^2 (簽名 + - - -)
-# g_rr = -a(t)^2 / (1 - k*r^2)
-D_r = 1 / (1 - k * r**2)
-
-flrw_g_matrix = sp.Matrix([
-    [c**2, 0, 0, 0],
-    [0, -a**2 * D_r, 0, 0],
-    [0, 0, -a**2 * r**2, 0],
-    [0, 0, 0, -a**2 * r**2 * sp.sin(theta)**2]
-])
-
-print("初始化 FLRW Metric 物件...")
-# 假設類別名稱為 Metric，若您的類別名為 RelativityMetric 請自行修改
-FLRW_METRIC = RelativityMetric(flrw_g_matrix, coords)
+SCHWARZSCHILD_METRIC = get_schwarzschild_metric()
+FLRW_METRIC = get_flrw_metric()
+MINKOWSKI_METRIC = get_minkowski_metric()

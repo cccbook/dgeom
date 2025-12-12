@@ -213,6 +213,119 @@ class Metric:
         tau = sp.simplify(numerator / denominator)
         return tau
 
+    # -------------------------------------------------------
+    # 新增功能：測地線相關
+    # -------------------------------------------------------
+    def get_geodesic_equations(self, param_var=sp.Symbol('tau')):
+        """
+        生成測地線的符號微分方程組。
+        方程: d^2x^k/dtau^2 + Gamma^k_ij * (dx^i/dtau) * (dx^j/dtau) = 0
+        
+        參數:
+            param_var: 沿曲線的參數變數 (預設為 tau)
+            
+        回傳:
+            一個列表，包含 dim 個 sympy.Eq 物件，形式為 Eq(x_k'', RHS)。
+        """
+        Gamma = self.christoffel_symbols()
+        
+        # 定義未知函數 x^0(tau), x^1(tau)...
+        funcs = [sp.Function(c.name)(param_var) for c in self.coords]
+        
+        # 定義導數
+        derivatives = [sp.diff(f, param_var) for f in funcs]
+        second_derivatives = [sp.diff(d, param_var) for d in derivatives]
+        
+        equations = []
+        for k in range(self.dim):
+            # 計算 - Gamma^k_ij * u^i * u^j
+            term = 0
+            for i in range(self.dim):
+                for j in range(self.dim):
+                    # 注意：Gamma 裡的坐標變數 (self.coords) 需要替換成函數 (funcs)
+                    # 例如 r 要替換成 r(tau)
+                    subs_dict = dict(zip(self.coords, funcs))
+                    gamma_val = Gamma[k, i, j].subs(subs_dict)
+                    
+                    term += gamma_val * derivatives[i] * derivatives[j]
+            
+            # 方程式: x'' + term = 0  =>  x'' = -term
+            eq = sp.Eq(second_derivatives[k], sp.simplify(-term))
+            equations.append(eq)
+            
+        return equations
+
+    def solve_geodesic_bvp(self, start_point, end_point, num_points=100):
+        """
+        給定起點與終點，數值求解測地線路徑 (邊界值問題 BVP)。
+        需要安裝 numpy 和 scipy。
+        
+        參數:
+            start_point: 起點坐標列表 [x1, x2, ...]
+            end_point: 終點坐標列表 [y1, y2, ...]
+            num_points: 輸出的路徑點數量
+            
+        回傳:
+            一個 numpy array，形狀為 (dim, num_points)，包含路徑上的點。
+        """
+        try:
+            import numpy as np
+            from scipy.integrate import solve_bvp
+        except ImportError:
+            raise ImportError("此功能需要安裝 numpy 和 scipy。請執行 pip install numpy scipy")
+
+        if len(start_point) != self.dim or len(end_point) != self.dim:
+            raise ValueError("起點或終點的維度與度規不符。")
+
+        # 1. 準備 Christoffel 符號的快速計算函數 (Lambdify)
+        Gamma = self.christoffel_symbols()
+        
+        # [FIX] 使用 .tolist() 將 SymPy Array 轉為嵌套 List，避免 NotImplementedError
+        gamma_func = sp.lambdify(self.coords, Gamma.tolist(), modules='numpy')
+
+        # 2. 定義 ODE 系統
+        def ode_system(tau, y):
+            positions = y[:self.dim] 
+            velocities = y[self.dim:] 
+            
+            n = positions.shape[1]
+            acc = np.zeros_like(velocities)
+            
+            for t_idx in range(n):
+                pos_t = positions[:, t_idx]
+                vel_t = velocities[:, t_idx]
+                
+                # 計算該點的 Gamma 矩陣
+                # gamma_func 回傳的是 list 或 array，經 np.array 確保格式統一
+                G = np.array(gamma_func(*pos_t)) 
+                
+                # 測地線方程: a^k = - Gamma^k_ij * v^i * v^j
+                acc_t = -np.einsum('kij, i, j -> k', G, vel_t, vel_t)
+                acc[:, t_idx] = acc_t
+
+            return np.vstack((velocities, acc))
+
+        # 3. 定義邊界條件
+        def bc(ya, yb):
+            return np.concatenate((ya[:self.dim] - start_point, yb[:self.dim] - end_point))
+
+        # 4. 初始猜測
+        tau_eval = np.linspace(0, 1, num_points)
+        y_guess = np.zeros((2 * self.dim, num_points))
+        
+        for i in range(self.dim):
+            y_guess[i, :] = np.linspace(start_point[i], end_point[i], num_points)
+            y_guess[self.dim + i, :] = end_point[i] - start_point[i]
+
+        # 5. 求解 BVP
+        res = solve_bvp(ode_system, bc, tau_eval, y_guess, tol=1e-3)
+
+        if not res.success:
+            print("警告: 數值求解測地線未能收斂。")
+            print(res.message)
+            
+        return res.y[:self.dim]
+
 # --------------------------------------------------
 # Factory Functions (度規工廠函數)
 # --------------------------------------------------

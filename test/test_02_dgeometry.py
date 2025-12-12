@@ -103,3 +103,64 @@ def test_hodge_flat_sharp_inversion():
     
     assert sp.simplify(V_sharp_comps - V_orig_comps) == sp.zeros(3, 1), \
         r"指標升降運算應為逆運算"
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+def test_geodesic():
+    # 1. 建立球坐標度規
+    metric = get_spherical_metric()
+    # 坐標: [r, theta, phi]
+    # 我們固定 r = 1 (單位球)，只在 theta, phi 上移動
+    # 但因為我們的度規是 3D 的，我們需要給出 3D 坐標，並讓 r 保持恆定。
+    # 實際上，為了解得漂亮，最好直接建立一個 2D 球面度規，或者在 3D 中給定 r=1 的邊界條件。
+    # 為了簡單演示，我們這裡建立一個 2D 球面度規 (r=1)
+
+    # --- 建立 2D 球面度規 (Unit Sphere) ---
+    theta, phi = sp.symbols('theta phi', real=True)
+    coords_2d = [theta, phi]
+    # ds^2 = dtheta^2 + sin^2(theta) dphi^2
+    g_matrix_2d = sp.diag(1, sp.sin(theta)**2)
+    sphere_metric = Metric(g_matrix_2d, coords_2d)
+
+    print("--- 測地線方程式 (符號) ---")
+    eqs = sphere_metric.get_geodesic_equations()
+    for eq in eqs:
+        sp.pprint(eq)
+    print("\n")
+
+    # --- 數值求解測地線 (BVP) ---
+    # 定義起點 A: 北極附近 (theta=0.1, phi=0)
+    # 定義終點 B: 赤道上某點 (theta=pi/2, phi=pi/2)
+    start = [0.1, 0] 
+    end = [np.pi/2, np.pi/2]
+
+    print(f"正在計算從 {start} 到 {end} 的測地線...")
+    path = sphere_metric.solve_geodesic_bvp(start, end, num_points=50)
+
+    # path[0] 是 theta 陣列, path[1] 是 phi 陣列
+    thetas = path[0]
+    phis = path[1]
+
+    # --- 視覺化 (轉換回直角坐標繪圖) ---
+    X = np.sin(thetas) * np.cos(phis)
+    Y = np.sin(thetas) * np.sin(phis)
+    Z = np.cos(thetas)
+
+    # 畫出球體網格
+    u, v = np.mgrid[0:2*np.pi:20j, 0:np.pi:10j]
+    x_sphere = np.cos(u)*np.sin(v)
+    y_sphere = np.sin(u)*np.sin(v)
+    z_sphere = np.cos(v)
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.plot_wireframe(x_sphere, y_sphere, z_sphere, color="gray", alpha=0.3)
+
+    # 畫出測地線
+    ax.plot(X, Y, Z, color='r', linewidth=2, label='Geodesic')
+    ax.scatter([X[0]], [Y[0]], [Z[0]], color='g', s=50, label='Start')
+    ax.scatter([X[-1]], [Y[-1]], [Z[-1]], color='b', s=50, label='End')
+
+    ax.legend()
+    plt.show()

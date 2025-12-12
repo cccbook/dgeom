@@ -58,7 +58,7 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 [外微分] | $d\omega = \sum_I df_I \wedge dx_I$ | d_operator
 [龐加萊引理] | $d(d\omega) = 0$ | 
 [廣義史托克定理] | $\int_{M} d\omega = \int_{\partial M} \omega$ | 
-[張量] | $\mathbf{T}: \underbrace{T_p^*\mathcal{M} \times \cdots \times T_p^*\mathcal{M}}_{k \text{ 次}} \times \underbrace{T_p\mathcal{M} \times \cdots \times T_p\mathcal{M}}_{l \text{ 次}} \to \mathbb{R}$ | [numpy+sympy](https://gemini.google.com/share/012d20119bb9)
+[張量] | $\mathbf{T}: \underbrace{T_p^*\mathcal{M} \times \cdots \times T_p^*\mathcal{M}}_{k} \times \underbrace{T_p\mathcal{M} \times \cdots \times T_p\mathcal{M}}_{l} \to \mathbb{R}$ | [numpy+sympy](https://gemini.google.com/share/012d20119bb9)
 [黎曼度規] | $g_{ij}(p) = g_p\left(\frac{\partial}{\partial x^i}, \frac{\partial}{\partial x^j}\right)$ | class Metrics
 [狹義相對論] | $ds^2 = -c^2 dt^2 + dx^2 + dy^2 + dz^2$  | minkowski_metric()
 [廣義相對論] | $G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$ | class RelativityMetrics

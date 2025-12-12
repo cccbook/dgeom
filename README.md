@@ -32,9 +32,9 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
 主題 | 程式模組 | 概念 | 數學
 ----|---------|--------|----
-[向量微積分] | [vcalculus.py](dgeom/sym/vcalculus.py) |  [梯度] / [散度] / [旋度] / [線積分] | $\nabla f(\mathbf{x}) = \left\langle \frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, \ldots, \frac{\partial f}{\partial x_n} \right\rangle$ $\nabla \cdot \mathbf{F} = \frac{\partial P}{\partial x} + \frac{\partial Q}{\partial y} + \frac{\partial R}{\partial z}$ $\nabla \times \mathbf{F} = \begin{vmatrix} \mathbf{i} & \mathbf{j} & \mathbf{k} \\ \frac{\partial}{\partial x} & \frac{\partial}{\partial y} & \frac{\partial}{\partial z} \\ P & Q & R \end{vmatrix}$
-[微分幾何] |  [dgeometry.py](dgeom/sym/dgeometry.py) | [外微分] / [霍奇星算子] / [廣義史托克定理] / [黎曼度規] |   $d\omega = \sum_I df_I \wedge dx_I$ $\int_{M} d\omega = \int_{\partial M} \omega$ $g_{ij}(p) = g_p\left(\frac{\partial}{\partial x^i}, \frac{\partial}{\partial x^j}\right)$
-[相對論] | [relativity.py](dgeom/sym/relativity.py) | [狹義相對論] / [廣義相對論] | $ds^2 = c^2 dt^2 - (dx)^2 - (dy)^2 - (dz)^2$ $G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$
+[向量微積分] | [vcalculus.py](dgeom/sym/vcalculus.py) |  [梯度] / [散度] / [旋度] / [線積分] | $\nabla f(\mathbf{x}) = \left\langle \frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, \ldots, \frac{\partial f}{\partial x_n} \right\rangle$ <br/> $\nabla \cdot \mathbf{F} = \frac{\partial P}{\partial x} + \frac{\partial Q}{\partial y} + \frac{\partial R}{\partial z}$ <br/> $\nabla \times \mathbf{F} = \begin{vmatrix} \mathbf{i} & \mathbf{j} & \mathbf{k} \\ \frac{\partial}{\partial x} & \frac{\partial}{\partial y} & \frac{\partial}{\partial z} \\ P & Q & R \end{vmatrix}$
+[微分幾何] |  [dgeometry.py](dgeom/sym/dgeometry.py) | [外微分] / [霍奇星算子] / [廣義史托克定理] / [黎曼度規] |   $d\omega = \sum_I df_I \wedge dx_I$ <br/> $\int_{M} d\omega = \int_{\partial M} \omega$ <br/> $g_{ij}(p) = g_p\left(\frac{\partial}{\partial x^i}, \frac{\partial}{\partial x^j}\right)$
+[相對論] | [relativity.py](dgeom/sym/relativity.py) | [狹義相對論] / [廣義相對論] | $ds^2 = c^2 dt^2 - (dx)^2 - (dy)^2 - (dz)^2$ <br/> $G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$
 
 ## 📝 License
 

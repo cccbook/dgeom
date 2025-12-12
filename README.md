@@ -29,7 +29,7 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 [旋度]:https://gemini.google.com/share/4c454d319204
 [線積分]:https://gemini.google.com/share/a372b1ed96ee
 [黎曼度規]:https://gemini.google.com/share/c094e1f36905
-[]:https://gemini.google.com/share/1073261c1e39
+[龐加萊引理]:https://gemini.google.com/share/1073261c1e39
 
 主題 | 程式模組 | 概念
 ----|---------|-------

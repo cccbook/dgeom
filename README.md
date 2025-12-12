@@ -13,7 +13,7 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
     * [第 2 章：向量微分運算子 (Vector Differential Operators)](https://gemini.google.com/share/2d6251fbd9dd)
     * [第 3 章：向量積分定理 (Vector Integral Theorems)](https://gemini.google.com/share/82fb86743540)
     * [第 4 章：曲線與曲面的基礎 (Fundamentals of Curves and Surfaces)](https://gemini.google.com/share/a24bd9a52fcb)
-    * [第 5 章：流形與張量 (Manifolds and Tensors)](hhttps://gemini.google.com/share/2f088b3530f5)
+    * [第 5 章：流形與張量 (Manifolds and Tensors)](https://gemini.google.com/share/6d2b62fc5bd1)
     * [第 6 章：彎曲時空幾何 (Geometry of Curved Spacetime)](https://gemini.google.com/share/4595f6614491)
     * [第 7 章：狹義相對論的原理 (The Principles of Special Relativity)](https://gemini.google.com/share/f305a4d555bb)
     * [第 8 章：閔可夫斯基時空 (Minkowski Spacetime)](https://gemini.google.com/share/2ca1e0f4eaee)

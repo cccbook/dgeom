@@ -29,6 +29,7 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 [旋度]:https://gemini.google.com/share/4c454d319204
 [線積分]:https://gemini.google.com/share/a372b1ed96ee
 [黎曼度規]:https://gemini.google.com/share/c094e1f36905
+[]:https://gemini.google.com/share/1073261c1e39
 
 主題 | 程式模組 | 概念
 ----|---------|-------
@@ -44,7 +45,8 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 [散度] | $\nabla \cdot \mathbf{F}$ | divergence
 [旋度] | $\nabla \times \mathbf{F}$ | curl
 [線積分] | $\int_C f(x, y, z) \, ds$ | line_integral
-[外微分] | $d\omega = \sum_I df_I \wedge dx_I$ |
+[外微分] | $d\omega = \sum_I df_I \wedge dx_I$ | d_operator
+[龐加萊引理] | $$d(d\omega) = 0$$
 [廣義史托克定理] | $\int_{M} d\omega = \int_{\partial M} \omega$ | 
 [黎曼度規] | $g_{ij}(p) = g_p\left(\frac{\partial}{\partial x^i}, \frac{\partial}{\partial x^j}\right)$ | class Metrics
 [狹義相對論] | $ds^2 = -c^2 dt^2 + dx^2 + dy^2 + dz^2$  | minkowski_metric()

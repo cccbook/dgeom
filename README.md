@@ -15,26 +15,26 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
 ## 套件：dgeom
 
-程式模組 | 原理 | 說明
--------|-------|----------
-[vcalculus.py](dgeom/sym/vcalculus.py) | [向量微積分] |  梯度 / 散度 / 旋度 / 線積分
-[dgeometry.py](dgeom/sym/dgeometry.py) | [微分幾何] |  [度規]:[_metrics.py](dgeom/sym/_metrics.py) / [外微分] / [霍奇星算子](dgeom/sym/_hodge.py)
-[gstoke.py](dgeom/sym/gstoke.py) | [廣義史托克定理] | $\int_{M} d\omega = \int_{\partial M} \omega$
-[riemann.py](dgeom/sym/riemann.py) | [黎曼幾何] | 實作 `metric_tensor`, `christoffel`, `riemann_tensor`, `ricci_tensor` , `ricci_scalar`。
-[relativity.py](dgeom/sym/relativity.py) | [相對論]() | 愛因斯坦張量 `einstein_tensor` 。
+[向量微積分]:https://gemini.google.com/share/696c3b3e23d4
+[微分幾何]:https://gemini.google.com/share/5b5da9a9a179
+[相對論]:https://gemini.google.com/share/53f1d73cc51c
+[狹義相對論]:https://gemini.google.com/share/d8d96751f5b1
+[廣義相對論]:https://gemini.google.com/share/23e50017bf00
+[廣義史托克定理]:https://gemini.google.com/share/548c3712f2f7
+[度規]:https://gemini.google.com/share/ae5f5d47714d
+[外微分]:https://gemini.google.com/share/1202f0099ce2
+[霍奇星算子]:https://gemini.google.com/share/867983c498e6
+[梯度]:https://gemini.google.com/share/7a3b689e32b0
+[散度]:https://gemini.google.com/share/8e63457e5dca
+[旋度]:https://gemini.google.com/share/4c454d319204
+[線積分]:https://gemini.google.com/share/a372b1ed96ee
+[黎曼度規]:https://gemini.google.com/share/c094e1f36905
 
-## 範例
-
-詳細原理說明 | 程式 
------|------------
-[狹義相對論-閩可夫斯基空間](tests/test_minkowski.md) | [test_minkowski.py](tests/test_minkowski.py) | 閩可夫斯基空間
-[水星進動-修正軌道誤差](tests/test_murcury_procession.md) | [test_murcury_procession.py](tests/test_murcury_procession.py)
-[黑洞-史瓦希度規](tests/test_black_hole.md) | [test_black_hole.py](tests/test_black_hole.py)
-[FLRW-均勻且各向同性的宇宙](tests/test_flrw_cosmology.md) | [test_flrw_cosmology.py](tests/test_flrw_cosmology.py)
-[SdS 度規](tests/test_schwarzschild_de_sitter.md) |  [test_schwarzschild_de_sitter.py](tests/test_schwarzschild_de_sitter.py)
-[微分幾何-黎曼度規](tests/test_riemann.md) | [test_riemann.py](tests/test_riemann.py)
-[外微分算子](tests/test_d_operator.md) | [test_d_operator.py](tests/test_d_operator.py)
-[廣義史托克定理](tests/test_stoke.md) | [test_stoke.py](tests/test_stoke.py) 
+主題 | 程式模組 | 概念 | 數學
+----|---------|--------|----
+[向量微積分] | [vcalculus.py](dgeom/sym/vcalculus.py) |  [梯度] / [散度] / [旋度] / [線積分] | $\nabla f(\mathbf{x}) = \left\langle \frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, \ldots, \frac{\partial f}{\partial x_n} \right\rangle$ $\nabla \cdot \mathbf{F} = \frac{\partial P}{\partial x} + \frac{\partial Q}{\partial y} + \frac{\partial R}{\partial z}$ $\nabla \times \mathbf{F} = \begin{vmatrix} \mathbf{i} & \mathbf{j} & \mathbf{k} \\ \frac{\partial}{\partial x} & \frac{\partial}{\partial y} & \frac{\partial}{\partial z} \\ P & Q & R \end{vmatrix}$
+[微分幾何] |  [dgeometry.py](dgeom/sym/dgeometry.py) | [外微分] / [霍奇星算子] / [廣義史托克定理] / [黎曼度規] |   $d\omega = \sum_I df_I \wedge dx_I$ $\int_{M} d\omega = \int_{\partial M} \omega$ $g_{ij}(p) = g_p\left(\frac{\partial}{\partial x^i}, \frac{\partial}{\partial x^j}\right)$
+[相對論] | [relativity.py](dgeom/sym/relativity.py) | [狹義相對論] / [廣義相對論] | $ds^2 = c^2 dt^2 - (dx)^2 - (dy)^2 - (dz)^2$ $G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$
 
 ## 📝 License
 

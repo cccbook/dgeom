@@ -46,9 +46,9 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 [線積分] | $\int_C f(x, y, z) \, ds$ | line_integral
 [外微分] | $d\omega = \sum_I df_I \wedge dx_I$ |
 [廣義史托克定理] | $\int_{M} d\omega = \int_{\partial M} \omega$ | 
-[黎曼度規] | $g_{ij}(p) = g_p\left(\frac{\partial}{\partial x^i}, \frac{\partial}{\partial x^j}\right)$ |
+[黎曼度規] | $g_{ij}(p) = g_p\left(\frac{\partial}{\partial x^i}, \frac{\partial}{\partial x^j}\right)$ | class Metrics
 [狹義相對論] | $ds^2 = -c^2 dt^2 + dx^2 + dy^2 + dz^2$  | minkowski_metric()
-[廣義相對論] | $G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$ | gravity_field_equations
+[廣義相對論] | $G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$ | class RelativityMetrics
 
 ## 📝 License
 

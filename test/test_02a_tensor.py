@@ -134,8 +134,8 @@ def test_error_handling():
     
     # 測試1: 縮併相同類型的指標 (應報錯)
     T = GeometricTensor([[1, 0], [0, 1]], [x, y], [1, 1]) # 兩個上標
-    with pytest.raises(ValueError, match="必須縮併一個協變指標和一個逆變指標"):
-        T.contract(0, 1)
+    with pytest.raises(ValueError, match="必須縮併一上一下指標"):
+            T.contract(0, 1)
 
     # 測試2: 不同座標系運算 (應報錯)
     z = sp.symbols('z')

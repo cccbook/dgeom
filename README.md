@@ -51,7 +51,7 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
 概念 | 類別 | 符號公式 | 說明
 -----|----|------|----------
-流形 | [目前不實作（太抽象，沒程式價值）](https://gemini.google.com/share/579fd8bc5a76) | 高維曲面，可以微分的多維實函數
+流形 | [不實作（太抽象，沒程式價值）](https://gemini.google.com/share/579fd8bc5a76) | 高維曲面，可以微分的多維實函數
 張量 | [class GeometricTensor](https://gemini.google.com/share/3cf638068d2e) | $T^{\mu_1\cdots\mu_k}{}_{\nu_1\cdots\nu_l}$ | 座標轉換的函數 (用『高維陣列』表示)
 度規張量 | [class MetricTensor(GeometricTensor)](https://gemini.google.com/share/844b156e3149) | $g_p(\mathbf{u}, \mathbf{v}) \in \mathbb{R}$ | 對稱正定的二階協變張量，用來測量（長度、角度、體積...）
 相對論時空 | [class Spacetime](https://gemini.google.com/share/43e3d66179e0) | $G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu}$ | 愛因斯坦重力場方程式

@@ -1,166 +1,259 @@
+import pytest
 import sympy as sp
 import numpy as np
-import pytest
-from dgeom.sym import get_euclidean_metric, get_spherical_metric, Metric
-from dgeom.sym import HodgeMetric, TangentVector, Form, d_gradient, d_curl, d_operator
+import matplotlib.pyplot as plt
+from dgeom.sym import *
 
-# --------------------------------------------------
-# 測試函式
-# --------------------------------------------------
+# ===================================================================
+# 測試 1: 向量微積分 (Vector Calculus)
+# ===================================================================
 
-def test_dvcalculus_curl_of_gradient_is_zero():
+def test_calculus_curl_of_gradient_euclidean():
     """
-    ### 🧪 驗證 vcalculus.py：梯度的旋度為零
-    數學公式: $\nabla \times (\nabla f) = \mathbf{0}$
+    ### 🧪 驗證：梯度的旋度為零 (Euclidean)
+    數學公式: ∇ × (∇f) = 0
     """
-    # 1. 取得度規與坐標
-    metric_obj = get_euclidean_metric()
-    x, y, z = metric_obj.coords  # 【關鍵】從物件解包坐標
+    # 1. 取得新版 TensorMetric
+    tm = euclidean_metric()
+    x, y, z = tm.coords 
 
-    # 2. 定義純量場 f (使用解包出來的符號)
+    # 2. 定義純量場 f
     f = x**2 * y * sp.cos(z)
     
-    # [修正] 將 Metric 包裝成 HodgeMetric
-    # 注意：這裡傳入的是 Metric 物件內部的 g 和 coords
-    h_metric = HodgeMetric(metric_obj.g, metric_obj.coords)
+    # 3. 計算梯度 (Gradient) -> 回傳 Covariant Vector [-1]
+    grad_f = d_gradient(f, tm)
     
-    # 3. 計算
-    grad_f = d_gradient(f, h_metric)      
-    curl_grad_f = d_curl(grad_f, h_metric) 
+    # 驗證梯度類型
+    assert isinstance(grad_f, GeometricTensor)
+    assert grad_f.index_config == [-1]
+    
+    # 4. 計算旋度 (Curl) -> 回傳 Covariant Vector [-1] (視實作而定)
+    # 由於 d_curl 內部會處理指標升降，我們直接傳入
+    curl_grad_f = d_curl(grad_f, tm) 
 
-    assert sp.simplify(curl_grad_f) == sp.zeros(3, 1), \
-        r"∇ × (∇f) 應為零向量"
+    # 5. 驗證結果為零張量
+    # 展開 NDimArray 檢查每個分量
+    for val in np.array(curl_grad_f.data).flatten():
+        assert sp.simplify(val) == 0, f"分量 {val} 應為 0"
 
 
-def test_dvcalculus_curl_of_gradient_spherical():
+def test_calculus_curl_of_gradient_spherical():
     """
-    ### 🧪 驗證 dvcalculus.py：球坐標下的 $\nabla \times (\nabla f) = \mathbf{0}$
+    ### 🧪 驗證：球坐標下的梯度旋度為零
+    這驗證了新版 d_curl 是否正確處理了 sqrt(g) 和 Levi-Civita 符號
     """
     # 1. 取得球坐標度規
-    metric_obj = get_spherical_metric()
-    r, theta, phi = metric_obj.coords # 【關鍵】解包坐標
+    tm = spherical_metric()
+    r, theta, phi = tm.coords
 
     # 2. 定義純量場 f
     f = r**2 * sp.cos(theta) * sp.sin(phi)
 
-    # 假設 d_gradient 支援直接傳入 Metric 物件 (或需要轉為 HodgeMetric，視您實作而定)
-    # 這裡依照您原本的寫法直接傳入 metric
-    grad_f_cov = d_gradient(f, metric_obj) 
-    curl_grad_f_cov = d_curl(grad_f_cov, metric_obj) 
+    # 3. 計算
+    grad_f = d_gradient(f, tm) 
+    curl_grad_f = d_curl(grad_f, tm) 
 
-    # [新修正] d_curl 回傳的是 SymPy Matrix
-    assert sp.simplify(curl_grad_f_cov) == sp.zeros(3, 1), \
-        r"在球坐標下，d_curl(d_gradient(f)) 應為零向量"
+    # 4. 驗證
+    for val in np.array(curl_grad_f.data).flatten():
+        assert sp.simplify(val) == 0, f"球坐標下 Curl(Grad) 分量 {val} 應為 0"
 
 
-def test_dvector_exterior_derivative_dd_is_zero():
+# ===================================================================
+# 測試 2: 外微分 (Exterior Derivative)
+# ===================================================================
+
+def test_exterior_derivative_squared_is_zero():
     """
-    ### 🧪 驗證 dvector.py：外微分的平方為零
-    數學公式: $d(d(\omega)) = 0$
+    ### 🧪 驗證：外微分的平方為零 d(d(omega)) = 0
+    依賴 TangentVector 和 Form 的新實作
     """
-    # 為了定義函數 f，我們需要 x, y, z 符號
-    # 最乾淨的方式是從歐幾里得度規工廠取得
-    metric_obj = get_euclidean_metric()
-    x, y, z = metric_obj.coords
+    tm = euclidean_metric()
+    x, y, z = tm.coords
     
+    # 0-form (純量場)
     f = x*y*z
     omega_0 = Form(0, f) 
     
+    # d(f) -> 1-form
     d_omega_0 = d_operator(omega_0)  
+    
+    # d(d(f)) -> 2-form
     dd_omega_0 = d_operator(d_omega_0) 
     
-    expected_coeffs = 0 
+    # 驗證算子作用在任意向量場上是否為 0
+    # 隨機定義兩個切向量
+    v1 = TangentVector([1, 0, 0], tm.coords)
+    v2 = TangentVector([0, 1, z], tm.coords)
     
-    # 呼叫 .op() 取得係數矩陣 (視您的 Form 實作而定)
-    # 如果 Form.op 是屬性而非方法，請拿掉括號
-    result = dd_omega_0.op() if callable(dd_omega_0.op) else dd_omega_0.op
+    # 2-form 作用在兩個向量上應回傳純量
+    result = dd_omega_0(v1, v2)
     
-    assert sp.simplify(result) == expected_coeffs, \
-        r"外微分的平方 $d(d(\omega))$ 的所有分量應為零"
+    assert sp.simplify(result) == 0
 
 
-def test_hodge_flat_sharp_inversion():
+# ===================================================================
+# 測試 3: 指標升降 (Musical Isomorphisms)
+# ===================================================================
+
+def test_tensor_index_raising_lowering():
     """
-    ### 🧪 驗證 hodge.py：指標升降的逆運算
+    ### 🧪 驗證：指標升降 (取代舊版 HodgeMetric.flat/sharp)
+    Flat (降指標): v_i = g_ij v^j
+    Sharp (升指標): v^i = g^ij v_j
     """
     # 1. 準備度規
-    base_metric = get_euclidean_metric()
-    x, y, z = base_metric.coords
+    tm = euclidean_metric()
+    x, y, z = tm.coords
     
-    # 建立 HodgeMetric
-    metric = HodgeMetric(base_metric.g, base_metric.coords)
-
-    # 2. 建立向量 V
-    # 使用 base_metric.coords 確保坐標一致
-    V = TangentVector(sp.Matrix([x**2, y, sp.cos(z)]), base_metric.coords, name='V') 
+    # 2. 建立逆變向量 V (Contravariant, Rank 1, [+1])
+    # V = x^2 ∂x + y ∂y + cos(z) ∂z
+    # 注意: TangentVector 繼承 GeometricTensor，預設為 [1]
+    V = TangentVector([x**2, y, sp.cos(z)], tm.coords, name='V')
     
-    # 3. 執行升降運算
-    V_flat = metric.flat(V)     
-    V_sharp = metric.sharp(V_flat)
+    assert V.index_config == [1]
     
-    V_orig_comps = V.components
-    V_sharp_comps = V_sharp.components
+    # 3. 執行降指標 (Flat): g_ij V^j -> V_i
+    # Tensor Product: g[-1,-1] * V[1] -> Rank 3 [-1,-1,1]
+    # Contract: index 1 (g_col) with index 2 (V)
+    # 結果: [-1] (V_i)
+    mixed = tm.tensor_product(V)
+    V_flat = mixed.contract(1, 2)
     
-    assert sp.simplify(V_sharp_comps - V_orig_comps) == sp.zeros(3, 1), \
-        r"指標升降運算應為逆運算"
+    assert V_flat.index_config == [-1]
+    
+    # 4. 執行升指標 (Sharp): g^ik V_k -> V^i
+    # 需要逆度規 g^ik
+    g_inv = tm.inverse() # [1, 1]
+    
+    # Tensor Product: g^[1,1] * V_flat[-1] -> Rank 3 [1,1,-1]
+    # Contract: index 1 (g_inv_col) with index 2 (V_flat)
+    # 結果: [1] (V^i)
+    mixed_up = g_inv.tensor_product(V_flat)
+    V_sharp = mixed_up.contract(1, 2)
+    
+    assert V_sharp.index_config == [1]
+    
+    # 5. 驗證 V_sharp == V (逆運算成立)
+    # 比較 data (NDimArray)
+    diff_data = V_sharp.data - V.data
+    for val in np.array(diff_data).flatten():
+        assert sp.simplify(val) == 0
 
-import numpy as np
-import matplotlib.pyplot as plt
+# ===================================================================
+# 測試 4: 測地線 (Geodesic)
+# ===================================================================
 
-def test_geodesic():
-    # 1. 建立球坐標度規
-    metric = get_spherical_metric()
-    # 坐標: [r, theta, phi]
-    # 我們固定 r = 1 (單位球)，只在 theta, phi 上移動
-    # 但因為我們的度規是 3D 的，我們需要給出 3D 坐標，並讓 r 保持恆定。
-    # 實際上，為了解得漂亮，最好直接建立一個 2D 球面度規，或者在 3D 中給定 r=1 的邊界條件。
-    # 為了簡單演示，我們這裡建立一個 2D 球面度規 (r=1)
-
-    # --- 建立 2D 球面度規 (Unit Sphere) ---
+def test_geodesic_equations_symbolic():
+    """
+    驗證 TensorMetric 能正確生成測地線微分方程 (符號)。
+    使用 2D 球面 (r=1) 為例。
+    """
+    # 1. 手動建立 2D 球面 TensorMetric
     theta, phi = sp.symbols('theta phi', real=True)
-    coords_2d = [theta, phi]
+    coords = [theta, phi]
     # ds^2 = dtheta^2 + sin^2(theta) dphi^2
-    g_matrix_2d = sp.diag(1, sp.sin(theta)**2)
-    sphere_metric = Metric(g_matrix_2d, coords_2d)
+    g_data = sp.diag(1, sp.sin(theta)**2)
+    
+    tm = TensorMetric(g_data, coords)
+    
+    # 2. 生成方程式
+    tau = sp.Symbol('tau')
+    eqs = tm.get_geodesic_equations(param_var=tau)
+    
+    # 3. 驗證 theta 方程: theta'' - sin(theta)cos(theta) * (phi')^2 = 0
+    # TensorMetric 回傳形式: Eq(theta'', RHS) => theta'' = RHS
+    theta_func = sp.Function('theta')(tau)
+    phi_func = sp.Function('phi')(tau)
+    
+    theta_rhs = eqs[0].rhs
+    
+    # 預期 RHS = sin(theta)*cos(theta) * (phi')^2
+    # 注意: christoffel symbol 算出來 Gamma^theta_phi,phi = -sin cos
+    # geodesic eq: theta'' + (-sin cos) phi' phi' = 0
+    # theta'' = sin cos (phi')^2
+    expected_rhs = sp.sin(theta_func) * sp.cos(theta_func) * sp.diff(phi_func, tau)**2
+    
+    assert sp.simplify(theta_rhs - expected_rhs) == 0
 
-    print("--- 測地線方程式 (符號) ---")
-    eqs = sphere_metric.get_geodesic_equations()
-    for eq in eqs:
-        sp.pprint(eq)
-    print("\n")
-
-    # --- 數值求解測地線 (BVP) ---
-    # 定義起點 A: 北極附近 (theta=0.1, phi=0)
-    # 定義終點 B: 赤道上某點 (theta=pi/2, phi=pi/2)
-    start = [0.1, 0] 
-    end = [np.pi/2, np.pi/2]
-
-    print(f"正在計算從 {start} 到 {end} 的測地線...")
-    path = sphere_metric.solve_geodesic_bvp(start, end, num_points=50)
-
-    # path[0] 是 theta 陣列, path[1] 是 phi 陣列
+@pytest.mark.skipif(not pytest.importorskip("scipy"), reason="需要 scipy")
+def test_geodesic_bvp_numerical():
+    """
+    數值驗證：球面上的測地線 (大圓)。
+    從北極附近走到赤道，路徑應沿著經線。
+    """
+    # 1. 建立 2D 球面 TensorMetric
+    theta, phi = sp.symbols('theta phi', real=True)
+    coords = [theta, phi]
+    g_data = sp.diag(1, sp.sin(theta)**2)
+    tm = TensorMetric(g_data, coords)
+    
+    # 2. 設定邊界條件 (沿經線 phi=0 走)
+    start = [0.1, 0.0]
+    end = [np.pi/2, 0.0]
+    
+    # 3. 求解
+    path = tm.solve_geodesic_bvp(start, end, num_points=21)
+    
     thetas = path[0]
     phis = path[1]
+    
+    # 4. 驗證
+    # A. phi 應該保持恆定 (約為 0)
+    assert np.allclose(phis, 0.0, atol=1e-4), "經線測地線的 phi 應保持不變"
+    
+    # B. theta 應該線性增加 (增量一致)
+    theta_diffs = np.diff(thetas)
+    assert np.std(theta_diffs) < 1e-4, "theta 應線性變化"
 
-    # --- 視覺化 (轉換回直角坐標繪圖) ---
-    X = np.sin(thetas) * np.cos(phis)
-    Y = np.sin(thetas) * np.sin(phis)
-    Z = np.cos(thetas)
 
-    # 畫出球體網格
-    u, v = np.mgrid[0:2*np.pi:20j, 0:np.pi:10j]
-    x_sphere = np.cos(u)*np.sin(v)
-    y_sphere = np.sin(u)*np.sin(v)
-    z_sphere = np.cos(v)
+# ===================================================================
+# 視覺化演示 (手動執行時顯示)
+# ===================================================================
 
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    ax.plot_wireframe(x_sphere, y_sphere, z_sphere, color="gray", alpha=0.3)
+if __name__ == "__main__":
+    print("正在執行球面測地線視覺化...")
+    
+    # 準備度規
+    theta, phi = sp.symbols('theta phi', real=True)
+    g_data = sp.diag(1, sp.sin(theta)**2)
+    tm = TensorMetric(g_data, [theta, phi])
+    
+    # 設定路徑: 從 (0.2, 0) 走到 (pi/2, pi/2) 的斜向大圓
+    start = [0.2, 0.0]
+    end = [np.pi/2, np.pi/2]
+    
+    try:
+        import scipy
+        path = tm.solve_geodesic_bvp(start, end, num_points=50)
+        thetas = path[0]
+        phis = path[1]
 
-    # 畫出測地線
-    ax.plot(X, Y, Z, color='r', linewidth=2, label='Geodesic')
-    ax.scatter([X[0]], [Y[0]], [Z[0]], color='g', s=50, label='Start')
-    ax.scatter([X[-1]], [Y[-1]], [Z[-1]], color='b', s=50, label='End')
+        # 轉換為 3D 直角坐標以便繪圖
+        X = np.sin(thetas) * np.cos(phis)
+        Y = np.sin(thetas) * np.sin(phis)
+        Z = np.cos(thetas)
 
-    ax.legend()
-    plt.show()
+        # 繪圖
+        fig = plt.figure(figsize=(8, 8))
+        ax = fig.add_subplot(111, projection='3d')
+        
+        # 畫球網格
+        u, v = np.mgrid[0:2*np.pi:30j, 0:np.pi:15j]
+        x_sphere = np.cos(u)*np.sin(v)
+        y_sphere = np.sin(u)*np.sin(v)
+        z_sphere = np.cos(v)
+        ax.plot_wireframe(x_sphere, y_sphere, z_sphere, color="gray", alpha=0.1)
+        
+        # 畫路徑
+        ax.plot(X, Y, Z, color='r', linewidth=3, label='Geodesic Path')
+        ax.scatter([X[0]], [Y[0]], [Z[0]], color='g', s=100, label='Start')
+        ax.scatter([X[-1]], [Y[-1]], [Z[-1]], color='b', s=100, label='End')
+        
+        ax.set_title("Geodesic on TensorMetric Sphere")
+        ax.legend()
+        plt.show()
+        
+    except ImportError:
+        print("缺少 numpy/scipy/matplotlib，無法執行視覺化。")
+    except Exception as e:
+        print(f"執行錯誤: {e}")

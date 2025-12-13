@@ -1,86 +1,126 @@
 import sympy as sp
-import itertools
-from functools import reduce
+from sympy import MutableDenseNDimArray
+from ._tensor_metric import GeometricTensor
 
-# 外微分相關模組：TangentVector / lie_bracket / d_operator / Form
-# AI 解說：https://gemini.google.com/share/ad4fdede0c8f
+# ===================================================================
+# 1. 切向量 (Tangent Vector) - 新版
+# ===================================================================
 
-class TangentVector:
+class TangentVector(GeometricTensor):
     """
-    符號切向量場
-    components: SymPy 表達式列表/矩陣，例如 [y, -x, 0]
-    coords: 定義流形的座標符號，例如 [x, y, z]
+    符號切向量場 V = v^i * (d/dx^i)
+    繼承自 GeometricTensor，固定為 Rank 1 逆變張量 ([1])。
     """
     def __init__(self, components, coords, name="V"):
-        self.components = sp.Matrix(components) # 轉為直列向量
-        self.coords = sp.Matrix(coords)
-        self.dim = len(coords)
+        # 確保輸入是 NDimArray
+        if not isinstance(components, MutableDenseNDimArray):
+            # 處理 Matrix 或 list
+            if hasattr(components, 'tolist'): # Matrix
+                data = MutableDenseNDimArray(components.tolist())
+                # Matrix 轉過來通常是二維 (n, 1)，需要壓平
+                if data.rank() == 2:
+                    data = MutableDenseNDimArray([x for x in data])
+            else: # list
+                data = MutableDenseNDimArray(components)
+        else:
+            data = components
+
+        # 初始化父類別: Rank 1, Contravariant (+1)
+        super().__init__(data, coords, [1])
         self.name = name
-        
-        if len(self.components) != self.dim:
-            raise ValueError("向量維度與座標維度不符")
 
     def __call__(self, f):
         """
         作用於純量函數 f (SymPy 表達式) -> 方向導數 V(f)
-        V(f) = sum v^i * (df/dx^i)
+        V(f) = v^i * (df/dx^i)
         """
-        # 計算梯度 (符號微分)
-        grad_f = sp.Matrix([sp.diff(f, var) for var in self.coords])
-        # 內積
-        res = self.components.dot(grad_f)
+        # 如果 f 也是 GeometricTensor (Rank 0 scalar)，取其數據
+        if hasattr(f, 'data') and hasattr(f, 'rank'):
+             if f.rank == 0:
+                 f = f.data[()]
+        
+        # 方向導數計算: sum( v[i] * diff(f, x[i]) )
+        res = 0
+        for i, x in enumerate(self.coords):
+            res += self.data[i] * sp.diff(f, x)
+            
         return sp.simplify(res)
 
     def at(self, point_dict):
         """
         在特定點評估向量數值
-        point_dict: {x: 1, y: 2}
         """
-        return self.components.subs(point_dict)
+        # 利用 GeometricTensor 內建的 substitute 機制 (需自行實作或手動 subs)
+        # 這裡手動處理 NDimArray 的 subs
+        try:
+            new_data = self.data.applyfunc(lambda x: x.subs(point_dict))
+        except AttributeError: # 針對 Rank 0 或純量元素 (較少見)
+            new_data = self.data.subs(point_dict)
+            
+        return TangentVector(new_data, self.coords, self.name)
+
+# ===================================================================
+# 2. 李括號 (Lie Bracket)
+# ===================================================================
 
 def lie_bracket(u, v):
     """
-    計算李括號 [u, v] = v.jacobian * u - u.jacobian * v
-    這是解析解，無需數值近似
+    計算李括號 [u, v]。
+    定義: [u, v](f) = u(v(f)) - v(u(f))
+    分量公式: [u, v]^k = u^j (dv^k/dx^j) - v^j (du^k/dx^j)
+    這等價於: [u, v]^k = u(v^k) - v(u^k)
     """
     if u.coords != v.coords:
         raise ValueError("向量場必須定義在相同的座標系")
     
-    coords = u.coords
-    # 計算 Jacobian 矩陣: J_ij = d(v_i)/d(x_j)
-    J_u = u.components.jacobian(coords)
-    J_v = v.components.jacobian(coords)
+    # 利用 TangentVector.__call__ (方向導數) 來計算分量變化
+    # w^k = u(v^k) - v(u^k)
+    w_comps = []
+    dim = len(u.coords)
     
-    # [u, v] = (v \cdot \nabla) u - (u \cdot \nabla) v
-    # 注意：在矩陣乘法表示中，通常寫作 J_v * u - J_u * v
-    # J_v 是 v 的導數矩陣，乘上 u 向量代表在 u 方向的變化率
-    w_components = J_v * u.components - J_u * v.components
-    
-    return TangentVector(w_components, coords, name=f"[{u.name},{v.name}]")
+    for k in range(dim):
+        # u 作用在 v 的第 k 個分量上 (視為純量場)
+        term1 = u(v.data[k])
+        # v 作用在 u 的第 k 個分量上
+        term2 = v(u.data[k])
+        
+        w_comps.append(term1 - term2)
+        
+    return TangentVector(w_comps, u.coords, name=f"[{u.name},{v.name}]")
+
+# ===================================================================
+# 3. 微分形式 (Differential Form) - 運算子觀點
+# ===================================================================
+# Form 類別本身是「函數的容器」，它不需要繼承 GeometricTensor，
+# 因為它的 .op 是動態計算的。但它的輸入必須接受新的 TangentVector。
 
 class Form:
     """
-    k-Form
+    k-Form (Operator View)
     k: 階數
-    op: 函數，接受 k 個 TangentVector，回傳一個 SymPy 表達式
+    op: 函數，接受 k 個 TangentVector，回傳 SymPy 表達式
     """
     def __init__(self, degree, evaluator):
         self.k = degree
         self.op = evaluator 
         
     def __call__(self, *vectors):
-        # [修正] 針對 0-form (純量場)
         if self.k == 0: 
-            # 如果 op 是函數 (例如 lambda)，執行它以取得表達式
-            if callable(self.op):
-                return self.op()
-            # 如果 op 本身已經是表達式，直接回傳
+            if callable(self.op): return self.op()
             return self.op
             
         if len(vectors) != self.k: 
             raise ValueError(f"Need {self.k} vectors, got {len(vectors)}")
-        # 這裡回傳的是 SymPy 表達式
+        
+        # 確保傳入的是 TangentVector (雖然鴨子型別也可以)
         return sp.simplify(self.op(*vectors))
+    
+    # TODO: 未來可以增加 .to_tensor() 方法，將 Operator 轉換為 GeometricTensor (Rank k Covariant)
+
+# ===================================================================
+# 4. 外微分算子 (Exterior Derivative)
+# ===================================================================
+# 邏輯不變，完全依賴 TangentVector.__call__ 和 lie_bracket
 
 def d_operator(omega):
     """
@@ -94,25 +134,23 @@ def d_operator(omega):
         n = len(vectors)
         
         # Part A: X_i(omega(...))
-        # 這項代表向量場 X_i 作用在 (k-1) form 評估後的純量場上
         for i in range(n):
             X_i = vectors[i]
             others = vectors[:i] + vectors[i+1:]
             
-            # omega(*others) 是一個 SymPy 表達式
             scalar_field = omega(*others)
             
-            # X_i(scalar_field) 是方向導數
+            # 這裡呼叫的是新版 TangentVector.__call__ (方向導數)
             val = X_i(scalar_field)
             
             term = val if i % 2 == 0 else -val
             total += term
             
         # Part B: omega([X_i, X_j], ...)
-        # 使用李括號修正項
         if n >= 2:
             for i in range(n):
                 for j in range(i + 1, n):
+                    # 這裡呼叫的是新版 lie_bracket
                     bracket = lie_bracket(vectors[i], vectors[j])
                     others = vectors[:i] + vectors[i+1:j] + vectors[j+1:]
                     
@@ -124,4 +162,3 @@ def d_operator(omega):
         return sp.simplify(total)
     
     return Form(k + 1, d_omega_evaluator)
-

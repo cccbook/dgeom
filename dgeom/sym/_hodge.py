@@ -1,25 +1,25 @@
 import sympy as sp
 import itertools
 from sympy import MutableDenseNDimArray, Matrix
-from ._metric import TensorMetric
+from ._metric import MetricTensor
 from ._exterior_derivative import TangentVector, Form, d_operator
 
 # ==========================================
 # 霍奇星算子 Hodge Star (Refactored)
 # ==========================================
 
-class HodgeMetric(TensorMetric):
+class HodgeMetric(MetricTensor):
     """
     支援 Hodge Star (*) 運算與指標升降的度規物件。
-    繼承自 TensorMetric。
+    繼承自 MetricTensor。
     """
     def __init__(self, data, coords):
-        # 初始化父類別 (TensorMetric)
+        # 初始化父類別 (MetricTensor)
         super().__init__(data, coords)
         
         # 預計算 Hodge Star 所需的純量與逆度規數據
-        # 雖然 TensorMetric 有 inverse()，但為了 star() 迴圈效能，我們緩存純數據
-        # 注意: TensorMetric.data 是 NDimArray
+        # 雖然 MetricTensor 有 inverse()，但為了 star() 迴圈效能，我們緩存純數據
+        # 注意: MetricTensor.data 是 NDimArray
         
         # 計算行列式 (轉為 Matrix 計算較方便)
         g_mat = Matrix(self.data.tolist())
@@ -91,7 +91,7 @@ class HodgeMetric(TensorMetric):
     def star(self, form):
         """
         通用 Hodge Star Operator (*): k-Form -> (n-k)-Form
-        (TensorMetric Version)
+        (MetricTensor Version)
         """
         k = form.k
         n = self.dim

@@ -41,7 +41,7 @@ def test_time_dilation_integration():
     path = [t, v*t, 0, 0]
     
     # 計算原時 (Proper Time)
-    # 呼叫 TensorMetric 的 arc_length
+    # 呼叫 MetricTensor 的 arc_length
     proper_time = st.metric.arc_length(path, param_var=t, start_val=0, end_val=T)
     
     # 執行積分

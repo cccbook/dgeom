@@ -1,5 +1,5 @@
 import sympy as sp
-from ._metric import TensorMetric, GeometricTensor
+from ._metric import MetricTensor, GeometricTensor
 
 class Spacetime:
     """
@@ -9,9 +9,9 @@ class Spacetime:
     (如愛因斯坦張量、能量動量張量關係等)。
     """
     
-    def __init__(self, metric: TensorMetric, name="Unknown Spacetime"):
-        if not isinstance(metric, TensorMetric):
-            raise TypeError("Spacetime 必須基於一個 TensorMetric。")
+    def __init__(self, metric: MetricTensor, name="Unknown Spacetime"):
+        if not isinstance(metric, MetricTensor):
+            raise TypeError("Spacetime 必須基於一個 MetricTensor。")
             
         self.metric = metric
         self.coords = metric.coords
@@ -101,7 +101,7 @@ def minkowski_metric():
     g_matrix = sp.diag(1, -1, -1, -1)
     
     # 1. 建立幾何層 (Math)
-    tm = TensorMetric(g_matrix, coords)
+    tm = MetricTensor(g_matrix, coords)
     
     # 2. 回傳物理層 (Physics)
     return Spacetime(tm, name="Minkowski")
@@ -140,7 +140,7 @@ def schwarzschild_metric():
     
     coords = [t, r, theta, phi]
     
-    tm = TensorMetric(g_matrix, coords)
+    tm = MetricTensor(g_matrix, coords)
     return Spacetime(tm, name="Schwarzschild")
 
 # ===================================================================
@@ -188,7 +188,7 @@ def flrw_metric(k_val=None):
     
     coords = [t, r, theta, phi]
     
-    tm = TensorMetric(g_matrix, coords)
+    tm = MetricTensor(g_matrix, coords)
     
     # 名稱加上 k 的狀態以便識別
     name = f"FLRW (k={k_val if k_val is not None else 'sym'})"
@@ -257,7 +257,7 @@ def kerr_metric():
 
     coords = [t, r, theta, phi]
     
-    # 注意: 這裡傳入的是嵌套列表 (List of Lists)，TensorMetric 應該要能處理
-    tm = TensorMetric(g_data, coords)
+    # 注意: 這裡傳入的是嵌套列表 (List of Lists)，MetricTensor 應該要能處理
+    tm = MetricTensor(g_data, coords)
     
     return Spacetime(tm, name="Kerr (Rotating Black Hole)")

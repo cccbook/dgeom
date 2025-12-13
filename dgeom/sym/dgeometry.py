@@ -1,7 +1,7 @@
 import sympy as sp
 import itertools
 from sympy import MutableDenseNDimArray, Matrix, diff
-from ._metric import TensorMetric, GeometricTensor, euclidean_metric
+from ._metric import MetricTensor, GeometricTensor, euclidean_metric
 from ._exterior_derivative import TangentVector, Form 
 
 # 預設歐幾里得度規 (新版)
@@ -147,7 +147,7 @@ class ParametricPatch(HyperCube):
         return real_boundaries
 
 # ==========================================
-# Part 3: 向量微積分 (TensorMetric Version)
+# Part 3: 向量微積分 (MetricTensor Version)
 # ==========================================
 
 def d_gradient(f, metric):
@@ -156,8 +156,8 @@ def d_gradient(f, metric):
     回傳: Rank 1 協變張量 (Covariant Vector) [-1]
     分量: ∂f/∂x^i
     """
-    if not isinstance(metric, TensorMetric):
-        raise TypeError("Metric 必須是 TensorMetric 物件")
+    if not isinstance(metric, MetricTensor):
+        raise TypeError("Metric 必須是 MetricTensor 物件")
         
     coords = metric.coords
     # 計算偏導數
@@ -195,7 +195,7 @@ def d_divergence(F, metric):
     dim = metric.dim
     
     # 2. 計算行列式 det(g)
-    # TensorMetric.data 是 NDimArray，轉為 Matrix 計算行列式較方便
+    # MetricTensor.data 是 NDimArray，轉為 Matrix 計算行列式較方便
     g_mat = Matrix(metric.data.tolist())
     det_g = g_mat.det()
     sqrt_g = sp.sqrt(sp.Abs(det_g))
@@ -275,7 +275,7 @@ def d_line_integral(F, path_r, t, ta, tb, metric=None):
         path_r: 路徑參數式 [x(t), y(t), z(t)]
         t: 參數符號
         ta, tb: 積分範圍
-        metric: TensorMetric (若為 None 則假設歐幾里得)
+        metric: MetricTensor (若為 None 則假設歐幾里得)
     """
     # 1. 處理度規與坐標
     if metric is None:

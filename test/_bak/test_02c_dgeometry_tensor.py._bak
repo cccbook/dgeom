@@ -13,14 +13,14 @@ def test_dvcalculus_curl_of_gradient_is_zero():
     """
     ### 🧪 驗證：梯度的旋度為零 (Euclidean)
     """
-    # 1. 使用新版工廠函數取得 TensorMetric
+    # 1. 使用新版工廠函數取得 MetricTensor
     tm = euclidean_metric()
     x, y, z = tm.coords 
 
     # 2. 定義純量場 f
     f = x**2 * y * sp.cos(z)
     
-    # 3. 計算 (新版 d_gradient/d_curl 支援 TensorMetric)
+    # 3. 計算 (新版 d_gradient/d_curl 支援 MetricTensor)
     # 結果是 GeometricTensor (Rank 1)
     grad_f = d_gradient(f, tm)      
     curl_grad_f = d_curl(grad_f, tm) 
@@ -84,7 +84,7 @@ def test_dvector_exterior_derivative_dd_is_zero():
 def test_hodge_flat_sharp_inversion():
     """
     ### 🧪 驗證：指標升降 (Musical Isomorphisms)
-    使用新版 HodgeMetric (繼承自 TensorMetric)
+    使用新版 HodgeMetric (繼承自 MetricTensor)
     """
     # 1. 準備度規
     tm = euclidean_metric()
@@ -111,23 +111,23 @@ def test_hodge_flat_sharp_inversion():
 
 
 # ===================================================================
-# 核心測試：TensorMetric 內建的測地線功能
+# 核心測試：MetricTensor 內建的測地線功能
 # ===================================================================
 
 def test_geodesic_equations_generation():
     """
-    驗證 TensorMetric 能正確生成測地線微分方程 (符號)。
+    驗證 MetricTensor 能正確生成測地線微分方程 (符號)。
     """
     theta, phi = sp.symbols('theta phi', real=True)
     coords = [theta, phi]
     g_data = sp.diag(1, sp.sin(theta)**2)
     
-    tm = TensorMetric(g_data, coords)
+    tm = MetricTensor(g_data, coords)
     
     tau = sp.Symbol('tau')
     eqs = tm.get_geodesic_equations(param_var=tau)
     
-    # TensorMetric 回傳形式: Eq(acc, -gamma_term)
+    # MetricTensor 回傳形式: Eq(acc, -gamma_term)
     # 即 theta'' = RHS
     theta_func = sp.Function('theta')(tau)
     phi_func = sp.Function('phi')(tau)
@@ -147,7 +147,7 @@ def test_geodesic_bvp_numerical_solution():
     theta, phi = sp.symbols('theta phi', real=True)
     coords = [theta, phi]
     g_data = sp.diag(1, sp.sin(theta)**2)
-    tm = TensorMetric(g_data, coords)
+    tm = MetricTensor(g_data, coords)
     
     # 沿經線走 (phi 固定)
     start = [0.1, 0.0]
@@ -173,7 +173,7 @@ if __name__ == "__main__":
     print("正在執行球面測地線視覺化...")
     theta, phi = sp.symbols('theta phi', real=True)
     g_data = sp.diag(1, sp.sin(theta)**2)
-    tm = TensorMetric(g_data, [theta, phi])
+    tm = MetricTensor(g_data, [theta, phi])
     
     start = [0.2, 0.0]
     end = [np.pi/2, np.pi/2] # 斜向走

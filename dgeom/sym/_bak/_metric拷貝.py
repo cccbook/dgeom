@@ -3,7 +3,7 @@ import numpy as np
 from sympy import MutableDenseNDimArray, Matrix, diff
 from ._tensor import GeometricTensor
 
-class TensorMetric(GeometricTensor):
+class MetricTensor(GeometricTensor):
     """
     度規張量 (Metric Tensor)。
     
@@ -208,19 +208,19 @@ class TensorMetric(GeometricTensor):
 
 def euclidean_metric():
     x, y, z = sp.symbols('x y z')
-    return TensorMetric(sp.eye(3), [x, y, z])
+    return MetricTensor(sp.eye(3), [x, y, z])
 
 def spherical_metric():
     r, theta, phi = sp.symbols('r theta phi', real=True, positive=True)
     g = sp.diag(1, r**2, r**2 * sp.sin(theta)**2)
-    return TensorMetric(g, [r, theta, phi])
+    return MetricTensor(g, [r, theta, phi])
 
 def cylindrical_metric():
     rho, phi, z = sp.symbols(r'\rho \phi z', real=True, positive=True)
     g = sp.diag(1, rho**2, 1)
-    return TensorMetric(g, [rho, phi, z])
+    return MetricTensor(g, [rho, phi, z])
 
 def polar_metric():
     r, theta = sp.symbols('r theta', real=True, positive=True)
     g = sp.diag(1, r**2)
-    return TensorMetric(g, [r, theta])
+    return MetricTensor(g, [r, theta])

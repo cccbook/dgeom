@@ -16,7 +16,7 @@ def test_calculus_curl_of_gradient_spherical():
     這個測試非常有價值，因為它同時驗證了：
     1. d_gradient (協變導數)
     2. d_curl (包含 sqrt(g) 和 Levi-Civita 運算)
-    3. TensorMetric 在非笛卡爾坐標系的正確性
+    3. MetricTensor 在非笛卡爾坐標系的正確性
     """
     # 1. 取得新版球坐標度規
     tm = spherical_metric()
@@ -33,7 +33,7 @@ def test_calculus_curl_of_gradient_spherical():
     curl_grad_f = d_curl(grad_f, tm) 
 
     # 4. 驗證所有分量為 0
-    # 注意: TensorMetric 使用 NDimArray，需展開檢查
+    # 注意: MetricTensor 使用 NDimArray，需展開檢查
     for val in np.array(curl_grad_f.data).flatten():
         assert sp.simplify(val) == 0, f"球坐標下 Curl(Grad) 分量應為 0，得到 {val}"
 
@@ -81,7 +81,7 @@ def test_hodge_flat_sharp_inversion():
     tm = euclidean_metric()
     x, y, z = tm.coords
     
-    # 建立 HodgeMetric 介面 (若 TensorMetric 已實作 flat/sharp 可直接用，這裡假設用 HodgeWrapper)
+    # 建立 HodgeMetric 介面 (若 MetricTensor 已實作 flat/sharp 可直接用，這裡假設用 HodgeWrapper)
     # 若 dgeom.sym 有直接導出 HodgeMetric，則使用它
     h_metric = HodgeMetric(tm.data, tm.coords)
 
@@ -113,7 +113,7 @@ def test_geodesic_equations_symbolic():
     coords = [theta, phi]
     g_data = sp.diag(1, sp.sin(theta)**2)
     
-    tm = TensorMetric(g_data, coords)
+    tm = MetricTensor(g_data, coords)
     
     tau = sp.Symbol('tau')
     eqs = tm.get_geodesic_equations(param_var=tau)
@@ -123,7 +123,7 @@ def test_geodesic_equations_symbolic():
     theta_func = sp.Function('theta')(tau)
     phi_func = sp.Function('phi')(tau)
     
-    # TensorMetric 回傳 Eq(lhs, rhs) -> lhs - rhs = 0
+    # MetricTensor 回傳 Eq(lhs, rhs) -> lhs - rhs = 0
     # 我們檢查 rhs 是否符合預期 (-Gamma term)
     theta_rhs = eqs[0].rhs
     expected_rhs = sp.sin(theta_func) * sp.cos(theta_func) * sp.diff(phi_func, tau)**2
@@ -139,7 +139,7 @@ def test_geodesic_bvp_numerical():
     theta, phi = sp.symbols('theta phi', real=True)
     coords = [theta, phi]
     g_data = sp.diag(1, sp.sin(theta)**2)
-    tm = TensorMetric(g_data, coords)
+    tm = MetricTensor(g_data, coords)
     
     # 設定邊界：沿著經線走 (phi 固定為 0)
     # 從北極附近 (0.1) 到赤道 (pi/2)
@@ -167,7 +167,7 @@ def test_geodesic_bvp_numerical():
 if __name__ == "__main__":
     print("正在執行球面測地線視覺化...")
     theta, phi = sp.symbols('theta phi', real=True)
-    tm = TensorMetric(sp.diag(1, sp.sin(theta)**2), [theta, phi])
+    tm = MetricTensor(sp.diag(1, sp.sin(theta)**2), [theta, phi])
     
     # 走一條斜向大圓
     path = tm.solve_geodesic_bvp([0.2, 0.0], [np.pi/2, np.pi/2], num_points=50)

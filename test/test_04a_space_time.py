@@ -2,7 +2,7 @@ import pytest
 import sympy as sp
 import numpy as np
 from sympy import symbols, sin, cos, simplify, Function, diag
-from dgeom.sym import TensorMetric, Spacetime
+from dgeom.sym import MetricTensor, Spacetime
 
 # ===================================================================
 # Fixtures: 建立標準時空模型
@@ -16,7 +16,7 @@ def minkowski_spacetime():
     # diag(1, -1, -1, -1)
     g_data = diag(1, -1, -1, -1)
     
-    metric = TensorMetric(g_data, coords)
+    metric = MetricTensor(g_data, coords)
     return Spacetime(metric, name="Minkowski")
 
 @pytest.fixture
@@ -35,7 +35,7 @@ def schwarzschild_spacetime():
         -r**2 * sin(theta)**2
     )
     coords = [t, r, theta, phi]
-    metric = TensorMetric(g_data, coords)
+    metric = MetricTensor(g_data, coords)
     return Spacetime(metric, name="Schwarzschild")
 
 @pytest.fixture
@@ -55,7 +55,7 @@ def flrw_spacetime():
         -a**2 * r**2 * sin(theta)**2
     )
     coords = [t, r, theta, phi]
-    metric = TensorMetric(g_data, coords)
+    metric = MetricTensor(g_data, coords)
     return Spacetime(metric, name="FLRW")
 
 # ===================================================================
@@ -70,19 +70,19 @@ def test_initialization(minkowski_spacetime):
     
     assert st.name == "Minkowski"
     assert st.dim == 4
-    # 確保 metric 屬性是 TensorMetric
-    assert isinstance(st.metric, TensorMetric)
+    # 確保 metric 屬性是 MetricTensor
+    assert isinstance(st.metric, MetricTensor)
     # 確保 coords 正確傳遞
     assert str(st.coords[0]) == 't'
 
 def test_type_error_on_init():
     """
-    測試錯誤處理：Spacetime 必須接收 TensorMetric
+    測試錯誤處理：Spacetime 必須接收 MetricTensor
     """
     x, y = symbols('x y')
-    invalid_metric = [[1, 0], [0, 1]] # 這只是 list，不是 TensorMetric
+    invalid_metric = [[1, 0], [0, 1]] # 這只是 list，不是 MetricTensor
     
-    with pytest.raises(TypeError, match="必須基於一個 TensorMetric"):
+    with pytest.raises(TypeError, match="必須基於一個 MetricTensor"):
         Spacetime(invalid_metric)
 
 def test_delegation(minkowski_spacetime):

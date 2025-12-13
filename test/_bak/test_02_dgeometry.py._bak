@@ -13,7 +13,7 @@ def test_calculus_curl_of_gradient_euclidean():
     ### 🧪 驗證：梯度的旋度為零 (Euclidean)
     數學公式: ∇ × (∇f) = 0
     """
-    # 1. 取得新版 TensorMetric
+    # 1. 取得新版 MetricTensor
     tm = euclidean_metric()
     x, y, z = tm.coords 
 
@@ -145,23 +145,23 @@ def test_tensor_index_raising_lowering():
 
 def test_geodesic_equations_symbolic():
     """
-    驗證 TensorMetric 能正確生成測地線微分方程 (符號)。
+    驗證 MetricTensor 能正確生成測地線微分方程 (符號)。
     使用 2D 球面 (r=1) 為例。
     """
-    # 1. 手動建立 2D 球面 TensorMetric
+    # 1. 手動建立 2D 球面 MetricTensor
     theta, phi = sp.symbols('theta phi', real=True)
     coords = [theta, phi]
     # ds^2 = dtheta^2 + sin^2(theta) dphi^2
     g_data = sp.diag(1, sp.sin(theta)**2)
     
-    tm = TensorMetric(g_data, coords)
+    tm = MetricTensor(g_data, coords)
     
     # 2. 生成方程式
     tau = sp.Symbol('tau')
     eqs = tm.get_geodesic_equations(param_var=tau)
     
     # 3. 驗證 theta 方程: theta'' - sin(theta)cos(theta) * (phi')^2 = 0
-    # TensorMetric 回傳形式: Eq(theta'', RHS) => theta'' = RHS
+    # MetricTensor 回傳形式: Eq(theta'', RHS) => theta'' = RHS
     theta_func = sp.Function('theta')(tau)
     phi_func = sp.Function('phi')(tau)
     
@@ -181,11 +181,11 @@ def test_geodesic_bvp_numerical():
     數值驗證：球面上的測地線 (大圓)。
     從北極附近走到赤道，路徑應沿著經線。
     """
-    # 1. 建立 2D 球面 TensorMetric
+    # 1. 建立 2D 球面 MetricTensor
     theta, phi = sp.symbols('theta phi', real=True)
     coords = [theta, phi]
     g_data = sp.diag(1, sp.sin(theta)**2)
-    tm = TensorMetric(g_data, coords)
+    tm = MetricTensor(g_data, coords)
     
     # 2. 設定邊界條件 (沿經線 phi=0 走)
     start = [0.1, 0.0]
@@ -216,7 +216,7 @@ if __name__ == "__main__":
     # 準備度規
     theta, phi = sp.symbols('theta phi', real=True)
     g_data = sp.diag(1, sp.sin(theta)**2)
-    tm = TensorMetric(g_data, [theta, phi])
+    tm = MetricTensor(g_data, [theta, phi])
     
     # 設定路徑: 從 (0.2, 0) 走到 (pi/2, pi/2) 的斜向大圓
     start = [0.2, 0.0]
@@ -249,7 +249,7 @@ if __name__ == "__main__":
         ax.scatter([X[0]], [Y[0]], [Z[0]], color='g', s=100, label='Start')
         ax.scatter([X[-1]], [Y[-1]], [Z[-1]], color='b', s=100, label='End')
         
-        ax.set_title("Geodesic on TensorMetric Sphere")
+        ax.set_title("Geodesic on MetricTensor Sphere")
         ax.legend()
         plt.show()
         

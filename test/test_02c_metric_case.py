@@ -2,7 +2,7 @@ import pytest
 import sympy as sp
 import numpy as np
 from sympy import Function, symbols, sin, cos, pi, simplify
-from dgeom.sym import TensorMetric, GeometricTensor
+from dgeom.sym import MetricTensor, GeometricTensor
 
 # ==========================================
 # Fixtures: 準備常用的幾何場景
@@ -18,7 +18,7 @@ def polar_metric_setup():
     coords = [r, theta]
     # g_ij
     data = [[1, 0], [0, r**2]]
-    metric = TensorMetric(data, coords)
+    metric = MetricTensor(data, coords)
     return metric, coords
 
 @pytest.fixture
@@ -34,7 +34,7 @@ def sphere_metric_setup():
     
     coords = [theta, phi]
     data = [[1, 0], [0, sin(theta)**2]]
-    metric = TensorMetric(data, coords)
+    metric = MetricTensor(data, coords)
     return metric, coords
 
 # ==========================================
@@ -54,7 +54,7 @@ def test_initialization_checks(polar_metric_setup):
     
     # 【修正】: 預期錯誤訊息改為匹配父類別的訊息 (只要包含 "維度" 關鍵字即可)
     with pytest.raises(ValueError, match="維度"):
-        TensorMetric([[1, 0, 0], [0, 1, 0]], coords) # 2x3 matrix
+        MetricTensor([[1, 0, 0], [0, 1, 0]], coords) # 2x3 matrix
 
 def test_inverse_metric(polar_metric_setup):
     """測試逆度規計算"""
@@ -170,7 +170,7 @@ def test_solve_geodesic_bvp_euclidean():
     pytest.importorskip("scipy")
     
     x, y = symbols('x y')
-    metric = TensorMetric([[1, 0], [0, 1]], [x, y])
+    metric = MetricTensor([[1, 0], [0, 1]], [x, y])
     
     start = [0.0, 0.0]
     end = [1.0, 1.0]

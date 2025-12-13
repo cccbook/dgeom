@@ -21,7 +21,7 @@ def test_metric_validation_singular():
     
     # 預期拋出 ValueError，訊息包含 "退化" 或 "Singular"
     with pytest.raises(ValueError, match="退化|Singular"):
-        TensorMetric(g_data, coords)
+        MetricTensor(g_data, coords)
 
 def test_metric_validation_nonsquare():
     """
@@ -34,7 +34,7 @@ def test_metric_validation_nonsquare():
     # [修正] 預期錯誤訊息改為匹配父類別 GeometricTensor 拋出的訊息
     # 原本是 match="方陣"，現在改為 match="維度" 或 "不一致"
     with pytest.raises(ValueError, match="維度"):
-        TensorMetric(g_data, coords)
+        MetricTensor(g_data, coords)
 
 # ===================================================================
 # 測試 2: 歐幾里得空間的測量 (Euclidean Measurements)
@@ -46,7 +46,7 @@ def test_euclidean_norm_and_angle():
     """
     tm = euclidean_metric() # x, y, z
     
-    # 定義兩個向量 (使用 list，TensorMetric 會自動轉為逆變張量)
+    # 定義兩個向量 (使用 list，MetricTensor 會自動轉為逆變張量)
     # u = 3 dx + 4 dy
     u = [3, 4, 0]
     # v = 0 dx + 5 dy
@@ -136,7 +136,7 @@ def test_minkowski_light_cone():
     # (+, -, -, -)
     g_data = sp.diag(1, -1, -1, -1)
     
-    tm = TensorMetric(g_data, coords)
+    tm = MetricTensor(g_data, coords)
     
     # 定義光速運動的向量 (c=1)
     # v = (1, 1, 0, 0) -> dt=1, dx=1

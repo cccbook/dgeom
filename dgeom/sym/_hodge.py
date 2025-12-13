@@ -1,14 +1,8 @@
 import sympy as sp
 import itertools
 from sympy import MutableDenseNDimArray, Matrix
-
-# 引入新版核心
-try:
-    from ._tensor_metric import TensorMetric
-    from ._exterior_derivative import TangentVector, Form, d_operator
-except ImportError:
-    from dgeom.sym._tensor_metric import TensorMetric
-    from dgeom.sym._exterior_derivative import TangentVector, Form, d_operator
+from ._metric import TensorMetric
+from ._exterior_derivative import TangentVector, Form, d_operator
 
 # ==========================================
 # 霍奇星算子 Hodge Star (Refactored)

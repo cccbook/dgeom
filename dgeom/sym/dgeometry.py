@@ -1,7 +1,7 @@
 import sympy as sp
 import itertools
 from sympy import MutableDenseNDimArray, Matrix, diff
-from ._tensor_metric import TensorMetric, GeometricTensor, euclidean_metric
+from ._metric import TensorMetric, GeometricTensor, euclidean_metric
 from ._exterior_derivative import TangentVector, Form 
 
 # 預設歐幾里得度規 (新版)

@@ -1,5 +1,5 @@
 import sympy as sp
-from ._tensor_metric import TensorMetric, GeometricTensor
+from ._metric import TensorMetric, GeometricTensor
 
 class Spacetime:
     """

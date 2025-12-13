@@ -1,6 +1,6 @@
 import sympy as sp
 from sympy import MutableDenseNDimArray
-from ._tensor_metric import GeometricTensor
+from ._tensor import GeometricTensor
 
 # ===================================================================
 # 1. 切向量 (Tangent Vector) - 新版

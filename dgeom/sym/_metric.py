@@ -1,6 +1,5 @@
 import sympy as sp
 import numpy as np
-# from sympy.tensor.array import MutableDenseNDimArray
 from sympy import MutableDenseNDimArray, Matrix, diff
 from ._tensor import GeometricTensor
 # 度規 metrics
@@ -299,6 +298,8 @@ class TensorMetric(GeometricTensor):
     # 如果你的 Metric 是非平直的 (如球面)，這些公式需要改寫為協變導數形式。
     # 為了保持類別的一致性，建議只有在確認是 "Euclidean Embedding" 時才使用這兩個函式，
     # 或者將其標註為 utility method。
+
+Metric = TensorMetric
 
 # --------------------------------------------------
 # Factory Functions (度規工廠函數)

@@ -5,7 +5,7 @@ from ._tensor import GeometricTensor
 
 class MetricTensor(GeometricTensor):
     """
-    度規張量 (Metric Tensor)。
+    度規張量 (self Tensor)。
     
     數學定義：
     1. Rank 2 協變張量 (Covariant)
@@ -237,6 +237,75 @@ class MetricTensor(GeometricTensor):
             y_guess[dim+i] = end_point[i] - start_point[i]
         res = solve_bvp(ode_system, bc, x, y_guess, tol=1e-3)
         return res.y[:dim]
+
+    def _apply_index_map(self, tensor, pos, new_type):
+        """
+        對給定的張量物件執行指標升降操作。
+        """
+        
+        if not isinstance(tensor, GeometricTensor):
+            raise TypeError("輸入必須是 GeometricTensor 實例。")
+            
+        rank = tensor.rank
+        if pos < 0 or pos >= rank:
+            raise IndexError("指標位置超出範圍。")
+            
+        current_type = tensor.index_config[pos]
+        
+        if current_type == new_type:
+            # print(f"指標位置 {pos} 已是類型 {new_type}，無需操作。")
+            return tensor.tensor_product(GeometricTensor([], tensor.coords, [])) 
+        
+        # 選擇度規
+        if current_type == -1 and new_type == 1:
+            Metric = self.inverse() # g^ij
+        elif current_type == 1 and new_type == -1:
+            Metric = self # g_ij
+        else:
+            raise ValueError("new_type 必須是 1 (升) 或 -1 (降)")
+            
+        # 1. 張量積：索引順序變為 (Metric_1, Metric_2, Tensor_1, Tensor_2, ...)
+        product = Metric.tensor_product(tensor)
+        
+        # 2. 縮併：Metric 的第 2 個指標 (idx 1) 與 Tensor 的目標指標 (idx pos+2)
+        contracted = product.contract(1, pos + 2)
+        
+        # 3. 指標重排 (Permute)：
+        # 縮併後的 array 索引結構：
+        #   Index 0: 來自 Metric 的新指標
+        #   Index 1 ~ (rank-1): 來自 Tensor 的其餘指標 (保持原本相對順序)
+        
+        # 我們需要建立一個 permutation list，告訴 permutedims 新的軸要取自舊的哪個軸
+        # 目標：
+        #   將舊軸 0 (Metric index) 放到位置 pos
+        #   將舊軸 1 ~ rank-1 依序填入剩餘位置
+        
+        # 步驟 A: 取出除了 Metric index 以外的所有舊軸索引 (即 1 到 rank-1)
+        perm_list = list(range(1, rank))
+        
+        # 步驟 B: 將 Metric index (0) 插入到目標位置 pos
+        perm_list.insert(pos, 0)
+        
+        # 執行重排
+        final_data = sp.permutedims(contracted.data, perm_list)
+
+        # 4. 更新指標配置
+        new_config = list(tensor.index_config)
+        new_config[pos] = new_type
+        
+        return GeometricTensor(final_data, tensor.coords, new_config)
+
+    def raise_index(self, tensor, pos):
+        """將張量在 pos 位置的協變指標 (下標) 升為逆變指標 (上標)"""
+        if tensor.index_config[pos] == 1:
+            return tensor # 已經是上標
+        return self._apply_index_map(tensor, pos, new_type=1)
+
+    def lower_index(self, tensor, pos):
+        """將張量在 pos 位置的逆變指標 (上標) 降為協變指標 (下標)"""
+        if tensor.index_config[pos] == -1:
+            return tensor # 已經是下標
+        return self._apply_index_map(tensor, pos, new_type=-1)
 
 # ==========================================
 # 工廠函數 (Factory Functions)

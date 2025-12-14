@@ -1,0 +1,218 @@
+import sympy as sp
+from sympy import MutableDenseNDimArray, Matrix, diff
+from ._tensor import GeometricTensor
+from ._metric import MetricTensor
+
+def tensor_product(t1, t2):
+    """
+    張量積 (Outer Product): T1 (x) T2
+    結果階數為兩者之和，分量為兩者分量的簡單乘積。
+    """
+    if not isinstance(t1, GeometricTensor) or not isinstance(t2, GeometricTensor):
+        raise TypeError("張量積必須作用於 GeometricTensor 物件。")
+        
+    if t1.coords != t2.coords:
+        raise ValueError("必須在相同座標系下進行運算")
+        
+    # 使用 SymPy 的 tensorproduct 函數計算外積
+    new_data = sp.tensorproduct(t1.data, t2.data)
+    # 新的指標組態是將兩者的指標配置列表串接起來
+    new_config = t1.index_config + t2.index_config
+    return GeometricTensor(new_data, t1.coords, new_config)
+
+def tensor_contract(tensor, pos1, pos2):
+    """
+    張量縮併 (Contraction/Trace)
+    操作：選擇一對上標和下標，進行愛因斯坦求和約定，階數減少 2 階。
+    :param tensor: 要縮併的張量物件 (GeometricTensor)。
+    :param pos1: 要縮併的第一個指標位置 (0-based)。
+    :param pos2: 要縮併的第二個指標位置 (0-based)。
+    """
+    if not isinstance(tensor, GeometricTensor):
+        raise TypeError("張量縮併必須作用於 GeometricTensor 物件。")
+        
+    # 縮併要求必須是一上標 (1) 一下標 (-1) 的配對
+    if tensor.index_config[pos1] + tensor.index_config[pos2] != 0:
+        raise ValueError(f"必須縮併一上一下指標: {pos1}, {pos2}")
+    
+    # 使用 SymPy 的 tensorcontraction 函數
+    new_data = sp.tensorcontraction(tensor.data, (pos1, pos2))
+    
+    # 移除已縮併的兩個指標組態
+    indices_to_keep = [i for i, c in enumerate(tensor.index_config) if i not in (pos1, pos2)]
+    new_config = [tensor.index_config[i] for i in indices_to_keep]
+    
+    # 如果縮併後變為純量 (Rank 0)
+    if not new_config: 
+        if not isinstance(new_data, MutableDenseNDimArray):
+             new_data = MutableDenseNDimArray(new_data)
+        
+    return GeometricTensor(new_data, tensor.coords, new_config)
+
+def jacobian(old_coords, new_coords, old_coords_funcs):
+    """
+    計算座標變換所需的 Jacobian 矩陣 (J) 和其逆矩陣 (J_inv)。
+    
+    Args:
+        old_coords (list): 舊座標系中的變數列表。
+        new_coords (list): 新座標系中的變數列表。
+        old_coords_funcs (dict): 舊座標用新座標表示的規則 (e.g., {x: r*cos(theta)}).
+        
+    Returns:
+        tuple: (J_contra, J_cov) - 反變 Jacobian 矩陣 和 協變 Jacobian 矩陣。
+    """
+    # J_cov[i, j] = d(old_i) / d(new_j)
+    matrix_rows = []
+    for old_var in old_coords: # 遍歷舊座標變數 (e.g., x)
+        if old_var not in old_coords_funcs:
+            raise ValueError(f"缺少座標 {old_var} 的變換規則")
+        expr = old_coords_funcs[old_var] # 舊座標用新座標表示的表達式
+        # row = [ d(old_var) / d(new_var_1), d(old_var) / d(new_var_2), ... ]
+        row = [diff(expr, new_var) for new_var in new_coords] # 計算偏導數
+        matrix_rows.append(row)
+        
+    # 協變變換矩陣 J_cov: (J_cov)^i_j = d(x^i) / d(x'^j)
+    jacobian_cov = Matrix(matrix_rows)
+    # 反變變換矩陣 J_contra: (J_contra)^i_j = d(x'^i) / d(x^j) = (J_cov)^-1
+    jacobian_contra = jacobian_cov.inv()
+    return jacobian_contra, jacobian_cov
+
+def tensor_transform(tensor, new_coords, transformation_rules):
+    """
+    執行張量的座標變換: T' = J * T * J...
+    
+    每個上標指標與 J_contra 縮併，每個下標指標與 J_cov.T 縮併。
+    
+    Args:
+        tensor (GeometricTensor): 要變換的張量物件。
+        new_coords (list): 目標座標系中的變數列表。
+        transformation_rules (dict): 舊座標用新座標表示的規則。
+        
+    Returns:
+        GeometricTensor: 在新座標系下的張量物件。
+    """
+    if not isinstance(tensor, GeometricTensor):
+        raise TypeError("座標變換必須作用於 GeometricTensor 物件。")
+
+    # 取得反變 Jacobian 和協變 Jacobian
+    J_contra, J_cov = jacobian(tensor.coords, new_coords, transformation_rules)
+    
+    # 1. 變數替換 (將張量分量從舊座標表示替換為新座標表示)
+    try:
+        # 對 NDimArray 中的每個元素應用 subs 替換規則
+        current_data = tensor.data.applyfunc(lambda x: sp.sympify(x).subs(transformation_rules))
+    except TypeError: 
+        # 處理 Rank 0 (純量) 的特殊情況
+        val = tensor.data[()].subs(transformation_rules)
+        current_data = MutableDenseNDimArray(val)
+
+    temp_array = current_data
+    
+    # 2. 逐指標縮併
+    rank = tensor.rank
+    for idx_pos, idx_type in enumerate(tensor.index_config):
+        # 選擇變換矩陣 M
+        # 上標 (1): 使用 J_contra
+        # 下標 (-1): 使用 J_cov 的轉置 (J_cov.T)
+        M = J_contra if idx_type == 1 else J_cov.T
+        
+        # Product: M (rank 2) * T (rank N) -> Rank N+2
+        product = sp.tensorproduct(M, temp_array)
+        
+        # Contract: 將 M 的舊指標 (索引 1) 與 張量的目標舊指標 (索引 idx_pos + 2) 進行縮併
+        contracted = sp.tensorcontraction(product, (1, idx_pos + 2))
+        
+        # Permute: 將變換後的新指標 (目前在索引 0) 移回其在張量中的原始位置 idx_pos
+        if idx_pos > 0:
+            # 建立新的排列順序
+            # 總共 N 個指標。舊指標順序 (1, 2, ..., N-1)，新指標在 0
+            new_perm = []
+            for i in range(rank):
+                if i < idx_pos: new_perm.append(i + 1)
+                elif i == idx_pos: new_perm.append(0) 
+                else: new_perm.append(i + 1)
+            
+            # 執行指標重排
+            temp_array = sp.permutedims(contracted, new_perm)
+        else:
+            # 如果是第一個指標 (idx_pos=0)，新指標已經在位置 0
+            temp_array = contracted
+
+    # 3. 簡化
+    if temp_array.rank() == 0:
+        final_data = MutableDenseNDimArray(sp.simplify(temp_array[()]))
+    else:
+        final_data = sp.simplify(temp_array)
+    
+    # 使用新的數據和新的座標返回張量物件，指標組態不變
+    return GeometricTensor(final_data, new_coords, tensor.index_config)
+
+def raise_lower_index_function(tensor, metric, pos, new_type):
+    """
+    對給定的張量物件執行指標升降操作。
+    
+    透過與度規張量 (g_ij 或 g^ij) 進行張量積和縮併，來改變單一指標的協/反變屬性。
+    
+    Args:
+        tensor (GeometricTensor): 要變動指標的張量物件。
+        metric (MetricTensor): 張量所在空間的協變度規 g_ij。
+        pos (int): 要變動的指標位置 (0-based)。
+        new_type (int): 目標指標類型，1 (反變/上標) 或 -1 (協變/下標)。
+        
+    Returns:
+        GeometricTensor: 變動指標後的新張量物件。
+    """
+    
+    if not isinstance(tensor, GeometricTensor) or not isinstance(metric, MetricTensor):
+        raise TypeError("輸入必須是 GeometricTensor 和 MetricTensor 實例。")
+        
+    rank = tensor.rank
+    if pos < 0 or pos >= rank:
+        raise IndexError("指標位置超出範圍。")
+        
+    current_type = tensor.index_config[pos]
+    
+    if current_type == new_type:
+        print(f"指標位置 {pos} 已是類型 {new_type}，無需操作。")
+        return tensor.tensor_product(GeometricTensor([], tensor.coords, [])) # 返回複製
+    
+    # 判斷是升指標還是降指標，並選擇要使用的度規
+    if current_type == -1 and new_type == 1:
+        # 降指標 (-1) -> 升指標 (1)：使用反變度規 g^ij
+        Metric = metric.inverse() # 呼叫 MetricTensor 的 inverse() 得到 g^ij
+        # 升指標公式：T^{i...}_{\dots j \dots} = g^{ik} T_{k\dots}^{\dots j \dots}
+        
+    elif current_type == 1 and new_type == -1:
+        # 升指標 (1) -> 降指標 (-1)：使用協變度規 g_ij
+        Metric = metric # MetricTensor 本身就是 g_ij
+        # 降指標公式：T_{\dots j \dots}^{\dots i \dots} = g_{ij} T_{\dots}^{\dots i \dots}
+        
+    else:
+        raise ValueError("new_type 必須是 1 (升) 或 -1 (降)")
+        
+    # 1. 張量積：Metric (rank 2) (x) Tensor (rank N) -> Rank N+2
+    # Metric 的指標 i, j 放在最前面 (索引 0, 1)。
+    product = Metric.tensor_product(tensor)
+    
+    # 2. 縮併 (Contraction)：
+    # 縮併 Metric 的第二個指標 (索引 1) 和 Tensor 的目標指標 (索引 pos + 2)。
+    # 這是因為 product 的指標順序是 (Metric_idx1, Metric_idx2, Tensor_idx1, Tensor_idx2, ...)
+    contracted = product.contract(1, pos + 2)
+    
+    # 3. 指標重排 (Permute)：
+    # 縮併後的新張量 (Rank N) 的新指標 (Metric_idx1) 位於索引 0。
+    # 需要將這個新指標移回其在張量中的原始位置 pos。
+    
+    # 建立新的排列順序 (從 (0, 1, 2, ..., N-1) 變為 (1, 2, ..., pos, 0, pos+1, ...))
+    new_perm = [i for i in range(1, rank + 1) if i != pos + 1] # 移除被縮併的指標
+    new_perm.insert(pos, 0) # 將新指標 (在 0) 插入到目標位置 pos
+    
+    # 執行指標重排 (使用 SymPy 的 permutedims 函數)
+    final_data = sp.permutedims(contracted.data, new_perm)
+
+    # 4. 更新指標配置
+    new_config = list(tensor.index_config)
+    new_config[pos] = new_type
+    
+    # 5. 返回新的張量物件
+    return GeometricTensor(final_data, tensor.coords, new_config)

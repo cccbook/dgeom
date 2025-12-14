@@ -5,6 +5,7 @@ from .vcalculus import * # 梯度、散度、旋度等函式
 from ._manifold import * # 流形
 from ._tensor import * # 張量
 from ._metric import * # 度規與基本符號
+# from ._tensor_op import * # 張量代數
 from ._exterior_derivative import * # 外微分
 from ._hodge import * # Hodge 指標升降與星算子
 from .dgeometry import * # 通用微分幾何函式

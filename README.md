@@ -36,8 +36,7 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 [test_02_dgeometry.py]:test/test_02_dgeometry.py
 [test_02a_tensor.py]:test/test_02a_tensor.py
 [test_02b_metric.py]:test/test_02b_metric.py
-[test_03_s_relativity.py]:test/test_03_s_relativity.py
-[test_04_g_relativity.py]:test/test_04_g_relativity.py
+[test_03_relativity.py]:test/test_03_relativity.py
 
 主題 | 程式模組 | 測試範例
 ----|---------|-------
@@ -45,10 +44,8 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 2-微分幾何 |  [dgeometry.py] | [test_02_dgeometry.py]
 2a-張量 | [tensor.py] | [test_02a_tensor.py]
 2b-度規 | [metric.py] | [test_02b_metric.py]
-2c-外微分 | [exterior_derivative.py] | 
-3-相對論 | [relativity.py] | 
-3a-狹義相對論 |  | [test_03_s_relativity.py]
-3b-廣義相對論 |  | [test_04_g_relativity.py]
+3-相對論 | [relativity.py] | [test_03_relativity.py]
+
 
 
 <!--

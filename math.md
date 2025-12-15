@@ -15,8 +15,7 @@
 [度規張量] | MetricTensor | [metric.py] | $g_p(\mathbf{u}, \mathbf{v}) \in \mathbb{R}$
 [相對論時空] | Spacetime | [relativity.py] | $G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu}$
 
-
-## 數學函數實作
+## 數學的程式實作
 
 概念 | 符號公式 | 函數 | 模組
 ----|------|----------|------------
@@ -26,9 +25,13 @@
 [線積分] | $\int_C f(x, y, z) \, ds$ | line_integral | 
 [外微分] | $d\omega = \sum_I df_I \wedge dx_I$ | d_operator
 
+[幾何張量] |$T^{\mu_1\cdots\mu_k}{}_{\nu_1\cdots\nu_l}$  | GeometricTensor | [tensor.py]
+[度規張量] | $g_p(\mathbf{u}, \mathbf{v}) \in \mathbb{R}$ | MetricTensor | [metric.py]
+[相對論時空] | $G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu}$ | Spacetime | [relativity.py]
+
 ## 向量微積分定理驗證
 
-向量微積分的測試都在 [test_01_vcalculus.py] 中
+向量微積分的測試都在 [test_01_v_calculus.py] 中
 
 概念 | 符號公式 | 函數
 ----|------|----------
@@ -43,9 +46,9 @@
 [龐加萊引理] | $d(d\omega) = 0$ | test_ddf_is_zero()
 [廣義史托克定理] | $\int_{M} d\omega = \int_{\partial M} \omega$ | test_g_stoke_theorem()
 
-## 狹義相對論物理法則驗證
+## 相對論物理法則驗證
 
-狹義相對論的測試都在 [test_03_s_relativity.py] 中
+相對論的測試都在 [test_03_relativity.py] 中
 
 概念 | 符號公式 | 函數
 ----|------|----------
@@ -54,13 +57,6 @@
 [閔可夫斯基空間:鐘慢] (時間膨脹) | $d\tau = dt \sqrt{1 - \frac{v^2}{c^2}}$ | test_time_dilation()
 [閔可夫斯基空間:平坦性] | $G_{\mu\nu} = 0$ | test_minkowski_flat()
 [狹義相對論：雙生子佯謬] | $t_B = \frac{2L}{v} \sqrt{1 - \frac{v^2}{c^2}}$ | test_twin_paradox()
-
-## 廣義相對論物理法則驗證
-
-[廣義相對論] 的測試都在 [test_04_g_relativity.py] 中
-
-概念 | 符號公式 | 函數
-----|------|----------
 [重力場方程式：左右相等] | $G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$ | test_einstein_field_equation()
 [史瓦西黑洞：真空性] | $G_{\mu\nu}=0$ | test_schwarzschild_vacuum()
 [史瓦西黑洞：半徑] | $R_s = \frac{2 G M}{c^2}$ | 

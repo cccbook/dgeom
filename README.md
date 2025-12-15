@@ -120,7 +120,7 @@ $G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$
 [史瓦西黑洞：半徑] | $R_s = \frac{2 G M}{c^2}$ | 
 [水星進動] (差43秒角) | $\Delta \phi = \frac{24 \pi^3 a^2}{T^2 c^2 (1 - e^2)}$ | test_metest_mercury_precession()
 [FLRW宇宙膨脹] (膨脹＋各向同性) | | test_flrw_expansion() | 
-[Kerr旋轉黑洞] (自旋+對稱) | $g_t_{\phi}=g_{\phi}_t$ , $a \in g_{\phi}_t$ | test_kerr_black_hole()
+[Kerr旋轉黑洞] (自旋+對稱) | $g_{t,\phi}=g_{\phi,t}$ , $a \in g_{\phi,t}$ | test_kerr_black_hole()
 
 ## 📝 License
 

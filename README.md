@@ -10,12 +10,15 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
 * [AI 電子書：向量微積分+微分幾何+相對論 (第一版)](https://gemini.google.com/share/d13c1e93468b)
 * [AI 電子書：向量微積分+微分幾何+相對論 (第二版)](doc/book_v2.md)
+    * 第一部分：向量微積分
     * [第 1 章：向量場與純量場 (Vector and Scalar Fields)](https://gemini.google.com/share/0a63a7f9080f)
     * [第 2 章：向量微分運算子 (Vector Differential Operators)](https://gemini.google.com/share/2d6251fbd9dd)
     * [第 3 章：向量積分定理 (Vector Integral Theorems)](https://gemini.google.com/share/82fb86743540)
+    * 第二部分：微分幾何
     * [第 4 章：曲線與曲面的基礎 (Fundamentals of Curves and Surfaces)](https://gemini.google.com/share/a24bd9a52fcb)
     * [第 5 章：流形與張量 (Manifolds and Tensors)](https://gemini.google.com/share/6d2b62fc5bd1)
     * [第 6 章：彎曲時空幾何 (Geometry of Curved Spacetime)](https://gemini.google.com/share/4595f6614491)
+    * 第三部分：相對論
     * [第 7 章：狹義相對論的原理 (The Principles of Special Relativity)](https://gemini.google.com/share/f305a4d555bb)
     * [第 8 章：閔可夫斯基時空 (Minkowski Spacetime)](https://gemini.google.com/share/2ca1e0f4eaee)
     * [第 9 章：相對論性動力學 (Relativistic Dynamics)](https://gemini.google.com/share/31e416511eac)

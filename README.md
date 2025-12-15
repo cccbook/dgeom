@@ -85,16 +85,16 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
 概念 | 符號公式 | 函數
 ----|------|----------
-[格林定理] | $\oint_C (P dx + Q dy) = \iint_D \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) dA$ | test_green_theorem
-[史托克旋度定理] | $\oint_{\partial S} \mathbf{F} \cdot d\mathbf{r} = \iint_S (\nabla \times \mathbf{F}) \cdot \mathbf{n} \, dS$ | test_stoke_theorem
-[高斯散度定理] | $\iint_S \mathbf{F} \cdot \mathbf{n} \, dS = \iiint_V (\nabla \cdot \mathbf{F}) \, dV$ | test_div_theorem
+[格林定理] | $\oint_C (P dx + Q dy) = \iint_D \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) dA$ | test_green_theorem()
+[史托克旋度定理] | $\oint_{\partial S} \mathbf{F} \cdot d\mathbf{r} = \iint_S (\nabla \times \mathbf{F}) \cdot \mathbf{n} \, dS$ | test_stoke_theorem()
+[高斯散度定理] | $\iint_S \mathbf{F} \cdot \mathbf{n} \, dS = \iiint_V (\nabla \cdot \mathbf{F}) \, dV$ | test_div_theorem()
 
 ## 微分幾何定理驗證
 
 概念 | 符號公式 | 函數 | 測試模組
 ----|------|----------|------------
-[龐加萊引理] | $d(d\omega) = 0$ | test_ddf_is_zero
-[廣義史托克定理] | $\int_{M} d\omega = \int_{\partial M} \omega$ | test_g_stoke_theorem
+[龐加萊引理] | $d(d\omega) = 0$ | test_ddf_is_zero()
+[廣義史托克定理] | $\int_{M} d\omega = \int_{\partial M} \omega$ | test_g_stoke_theorem()
 
 ## 狹義相對論物理法則驗證
 
@@ -105,7 +105,7 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 [閔可夫斯基空間:時空度規] | $ds^2 = c^2 dt^2 - dx^2 - dy^2 - dz^2$ | test_minkowski_ds()
 [閔可夫斯基空間:尺縮] (長度收縮) | $L = L_0 \sqrt{1 - \frac{v^2}{c^2}}$ | test_length_contraction()
 [閔可夫斯基空間:鐘慢] (時間膨脹) | $d\tau = dt \sqrt{1 - \frac{v^2}{c^2}}$ | test_time_dilation()
-[閔可夫斯基空間:平坦性] | $G_{\mu\nu} = 0$ | test_minkowski_flat
+[閔可夫斯基空間:平坦性] | $G_{\mu\nu} = 0$ | test_minkowski_flat()
 [狹義相對論：雙生子佯謬] | $t_B = \frac{2L}{v} \sqrt{1 - \frac{v^2}{c^2}}$ | test_twin_paradox()
 
 ## 廣義相對論：重力場方程式驗證

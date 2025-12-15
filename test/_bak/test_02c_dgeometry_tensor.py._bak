@@ -54,7 +54,7 @@ def test_dvcalculus_curl_of_gradient_spherical():
         assert sp.simplify(val) == 0, f"球坐標下 Curl(Grad) 分量 {val} 應為 0"
 
 
-def test_dvector_exterior_derivative_dd_is_zero():
+def test_dvectorexterior_derivative_dd_is_zero():
     """
     ### 🧪 驗證：外微分的平方為零 d(d(omega)) = 0
     """

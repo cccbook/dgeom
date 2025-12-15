@@ -25,44 +25,40 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
 ## 主模組
 
-主題 | 程式模組 | 測試範例
-----|---------|-------
-[向量微積分] | [vcalculus.py](dgeom/sym/vcalculus.py) | [test_01_vcalculus.py](test/test_01_vcalculus.py)
-[微分幾何] |  [dgeometry.py](dgeom/sym/dgeometry.py) | [test_02_dgeometry.py](test/test_02_dgeometry.py)
-[相對論] | [relativity.py](dgeom/sym/relativity.py) | [test_03_special_relativity.py](test/test_03_special_relativity.py) <br/> [test_04_general_relativity.py](test/test_04_general_relativity.py) 
-
-## 重要物件
-
 [vcalculus.py]:dgeom/sym/vcalculus.py
 [dgeometry.py]:dgeom/sym/dgeometry.py
 [relativity.py]:dgeom/sym/
-[_metric.py]:dgeom/sym/_metric.py
-[_exterior_derivative.py]:dgeom/sym/_exterior_derivative.py
-[_tensor.py]:dgeom/sym/_tensor.py
-[_hodge.py]:dgeom/sym/_hodge.py
-[_manifold.py]:dgeom/sym/_manifold.py
+[metric.py]:dgeom/sym/metric.py
+[exterior_derivative.py]:dgeom/sym/exterior_derivative.py
+[tensor.py]:dgeom/sym/tensor.py
+[hodge.py]:dgeom/sym/hodge.py
+[test_01_vcalculus.py]:dgeom/test/test_01_vcalculus.py
+[test_02_dgeometry.py]:dgeom/test/test_02_dgeometry.py
+[test_03_s_relativity.py]:dgeom/test/test_03_s_relativity.py
+[test_04_g_relativity.py]:dgeom/test/test_04_g_relativity.py
+
+主題 | 程式模組 | 測試範例
+----|---------|-------
+[向量微積分] | [vcalculus.py] | [test_01_vcalculus.py]
+[微分幾何] |  [dgeometry.py] | [test_02_dgeometry.py]
+[相對論] | [relativity.py] | [test_03_s_relativity.py] <br/> [test_04_g_relativity.py]
+
+<!--
+## 重要物件
 
 [幾何張量]:https://gemini.google.com/share/3cf638068d2e
 [度規張量]:https://gemini.google.com/share/844b156e3149
 [相對論時空]:https://gemini.google.com/share/43e3d66179e0
-[class GeometricTensor]:dgeom/sym/_tensor.py
-[class MetricTensor(GeometricTensor)]:dgeom/sym/_metric.py
+[class GeometricTensor]:dgeom/sym/tensor.py
+[class MetricTensor(GeometricTensor)]:dgeom/sym/metric.py
 [class Spacetime]:dgeom/sym/relativity.py
 
 概念 | 類別 (class) | 模組 | 符號公式
 -----|------------|------|-----
-[幾何張量] | GeometricTensor | [_tensor.py] |$T^{\mu_1\cdots\mu_k}{}_{\nu_1\cdots\nu_l}$ 
-[度規張量] | MetricTensor | [_metric.py] | $g_p(\mathbf{u}, \mathbf{v}) \in \mathbb{R}$
+[幾何張量] | GeometricTensor | [tensor.py] |$T^{\mu_1\cdots\mu_k}{}_{\nu_1\cdots\nu_l}$ 
+[度規張量] | MetricTensor | [metric.py] | $g_p(\mathbf{u}, \mathbf{v}) \in \mathbb{R}$
 [相對論時空] | Spacetime | [relativity.py] | $G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu}$
 
-<!--
-[class Form]() |
-[class TangentVector]() |
-[class ParametrizedDomain]() |
-[class HyperCube(ParametrizedDomain)]() |
-[class ParametricPatch(HyperCube)]() |
-[class TangentVector]() |
--->
 
 ## 數學函數實作
 
@@ -120,11 +116,13 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 [水星進動] (差43秒角) | $\Delta \phi = \frac{24 \pi^3 a^2}{T^2 c^2 (1 - e^2)}$ | test_metest_mercury_precession()
 [FLRW宇宙膨脹] (膨脹＋各向同性) | $d\Omega^2 = d\theta^2 + \sin^2 \theta d\phi^2$ | test_flrw_expansion() | $G_{\phi\phi} = G_{\theta\theta} \sin^2 \theta$
 [Kerr旋轉黑洞] (自旋+對稱) | $g_{t,\phi}=g_{\phi,t}$ , $a \in g_{\phi,t}$ | test_kerr_black_hole()
+-->
 
 ## 📝 License
 
 MIT License
 
+<!--
 [向量微積分]:https://gemini.google.com/share/696c3b3e23d4
 [微分幾何]:https://gemini.google.com/share/5b5da9a9a179
 [相對論]:https://gemini.google.com/share/53f1d73cc51c
@@ -141,3 +139,4 @@ MIT License
 [黎曼度規]:https://gemini.google.com/share/c094e1f36905
 [龐加萊引理]:https://gemini.google.com/share/1073261c1e39
 [張量]:https://gemini.google.com/share/80764d8ab893
+-->

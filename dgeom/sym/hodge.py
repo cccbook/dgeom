@@ -1,8 +1,8 @@
 import sympy as sp
 import itertools
 from sympy import MutableDenseNDimArray, Matrix
-from ._metric import MetricTensor
-from ._exterior_derivative import TangentVector, Form, d_operator
+from .metric import MetricTensor
+from .exterior_derivative import TangentVector, Form, d_operator
 
 # ==========================================
 # 霍奇星算子 Hodge Star (Refactored)

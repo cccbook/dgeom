@@ -1,7 +1,7 @@
 import sympy as sp
 import numpy as np
 from sympy import MutableDenseNDimArray, Matrix, diff
-from ._tensor import GeometricTensor
+from .tensor import GeometricTensor
 
 class MetricTensor(GeometricTensor):
     """

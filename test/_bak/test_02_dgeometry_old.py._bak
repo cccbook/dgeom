@@ -53,7 +53,7 @@ def test_dvcalculus_curl_of_gradient_spherical():
         r"在球坐標下，d_curl(d_gradient(f)) 應為零向量"
 
 
-def test_dvector_exterior_derivative_dd_is_zero():
+def test_dvectorexterior_derivative_dd_is_zero():
     """
     ### 🧪 驗證 dvector.py：外微分的平方為零
     數學公式: $d(d(\omega)) = 0$

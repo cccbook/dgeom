@@ -39,9 +39,9 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
 主題 | 程式模組 | 測試範例
 ----|---------|-------
-[向量微積分] | [vcalculus.py] | [test_01_vcalculus.py]
-[微分幾何] |  [dgeometry.py] | [test_02_dgeometry.py]
-[相對論] | [relativity.py] | [test_03_s_relativity.py] <br/> [test_04_g_relativity.py]
+向量微積分 | [vcalculus.py] | [test_01_vcalculus.py]
+微分幾何 |  [dgeometry.py] | [test_02_dgeometry.py]
+相對論 | [relativity.py] | [test_03_s_relativity.py] <br/> [test_04_g_relativity.py]
 
 <!--
 ## 重要物件

@@ -60,7 +60,7 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 張量 | [tensor.py] | [test_02a_tensor.py]
 度規 | [metric.py] | [test_02b_metric.py]
 外微分 | [d_operator.py] | [test_02c_d_operator.py]
-霍奇星算子 | [hodge.py] | [test_02d_hodge.py]
+霍奇星 | [hodge.py] | [test_02d_hodge.py]
 流形 | [manifold.py] | [test_02e_manifold.py]
 
 <!--

@@ -36,17 +36,22 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 [test_02_dgeometry.py]:test/test_02_dgeometry.py
 [test_02a_tensor.py]:test/test_02a_tensor.py
 [test_02b_metric.py]:test/test_02b_metric.py
+[test_02c_exterior_derivative.py]:test/test_02c_exterior_derivative.py
 [test_03_relativity.py]:test/test_03_relativity.py
 
 主題 | 程式模組 | 測試範例
 ----|---------|-------
 1-向量微積分 | [vcalculus.py] | [test_01_vcalculus.py]
 2-微分幾何 |  [dgeometry.py] | [test_02_dgeometry.py]
-2a-張量 | [tensor.py] | [test_02a_tensor.py]
-2b-度規 | [metric.py] | [test_02b_metric.py]
 3-相對論 | [relativity.py] | [test_03_relativity.py]
 
+## 子模組
 
+主題 | 程式模組 | 測試範例
+----|---------|-------
+張量 | [tensor.py] | [test_02a_tensor.py]
+度規 | [metric.py] | [test_02b_metric.py]
+外微分 | [metric.py] | [test_02c_exterior_derivative.py]
 
 <!--
 ## 重要物件

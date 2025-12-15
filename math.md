@@ -1,30 +1,15 @@
 # dgeom 背後的數學
 
-## 重要物件
-
-[幾何張量]:https://gemini.google.com/share/3cf638068d2e
-[度規張量]:https://gemini.google.com/share/844b156e3149
-[相對論時空]:https://gemini.google.com/share/43e3d66179e0
-[class GeometricTensor]:dgeom/sym/tensor.py
-[class MetricTensor(GeometricTensor)]:dgeom/sym/metric.py
-[class Spacetime]:dgeom/sym/relativity.py
-
-概念 | 類別 (class) | 模組 | 符號公式
------|------------|------|-----
-[幾何張量] | GeometricTensor | [tensor.py] |$T^{\mu_1\cdots\mu_k}{}_{\nu_1\cdots\nu_l}$ 
-[度規張量] | MetricTensor | [metric.py] | $g_p(\mathbf{u}, \mathbf{v}) \in \mathbb{R}$
-[相對論時空] | Spacetime | [relativity.py] | $G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu}$
-
 ## 數學的程式實作
 
 概念 | 符號公式 | 函數 | 模組
 ----|------|----------|------------
-[梯度] | $\nabla f(\mathbf{x})$ | gradient | 
-[散度] | $\nabla \cdot \mathbf{F}$ | divergence | 
-[旋度] | $\nabla \times \mathbf{F}$ | curl | 
-[線積分] | $\int_C f(x, y, z) \, ds$ | line_integral | 
-[外微分] | $d\omega = \sum_I df_I \wedge dx_I$ | d_operator
-
+[梯度] | $\nabla f(\mathbf{x})$ | gradient | [v_calculus.py]
+[散度] | $\nabla \cdot \mathbf{F}$ | divergence | [v_calculus.py]
+[旋度] | $\nabla \times \mathbf{F}$ | curl | [v_calculus.py]
+[線積分] | $\int_C f(x, y, z) \, ds$ | line_integral | [v_calculus.py]
+[外微分] | $d\omega = \sum_I df_I \wedge dx_I$ | d_operator | [d_operator.py]
+[霍奇星算子] |  | hodge_star | [hodge.py]
 [幾何張量] |$T^{\mu_1\cdots\mu_k}{}_{\nu_1\cdots\nu_l}$  | GeometricTensor | [tensor.py]
 [度規張量] | $g_p(\mathbf{u}, \mathbf{v}) \in \mathbb{R}$ | MetricTensor | [metric.py]
 [相對論時空] | $G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu}$ | Spacetime | [relativity.py]
@@ -81,3 +66,7 @@
 [黎曼度規]:https://gemini.google.com/share/c094e1f36905
 [龐加萊引理]:https://gemini.google.com/share/1073261c1e39
 [張量]:https://gemini.google.com/share/80764d8ab893
+
+[幾何張量]:https://gemini.google.com/share/3cf638068d2e
+[度規張量]:https://gemini.google.com/share/844b156e3149
+[相對論時空]:https://gemini.google.com/share/43e3d66179e0

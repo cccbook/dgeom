@@ -111,7 +111,7 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
 [廣義相對論] [重力場方程式] 的測試都在 [test_04_g_relativity.py] 中
 
-$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$
+$$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
 概念 | 符號公式 | 函數
 ----|------|----------

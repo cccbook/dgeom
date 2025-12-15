@@ -50,7 +50,7 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 [class Spacetime]:dgeom/sym/relativity.py
 
 概念 | 類別 (class) | 模組 | 符號公式
------|-----|------|---------|-----
+-----|------------|------|-----
 [幾何張量] | GeometricTensor | [_tensor.py] |$T^{\mu_1\cdots\mu_k}{}_{\nu_1\cdots\nu_l}$ 
 [度規張量] | MetricTensor | [_metric.py] | $g_p(\mathbf{u}, \mathbf{v}) \in \mathbb{R}$
 [相對論時空] | Spacetime | [relativity.py] | $G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu}$

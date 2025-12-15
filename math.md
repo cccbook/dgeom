@@ -18,7 +18,7 @@
 
 [向量微積分] 的測試都在 [test_01_v_calculus.py] 中
 
-概念 | 符號公式 | 函數
+概念 | 符號公式 | 測試函數
 ----|------|----------
 [格林定理] | $\oint_C (P dx + Q dy) = \iint_D \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) dA$ | test_green_theorem()
 [史托克旋度定理] | $\oint_{\partial S} \mathbf{F} \cdot d\mathbf{r} = \iint_S (\nabla \times \mathbf{F}) \cdot \mathbf{n} \, dS$ | test_stoke_theorem()
@@ -28,8 +28,8 @@
 
 [微分幾何] 的測試都在 [test_02_d_geometry.py] 中
 
-概念 | 符號公式 | 函數 | 測試模組
-----|------|----------|------------
+概念 | 符號公式 | 測試函數
+----|---------|----------------
 [龐加萊引理] | $d(d\omega) = 0$ | test_ddf_is_zero()
 [廣義史托克定理] | $\int_{M} d\omega = \int_{\partial M} \omega$ | test_g_stoke_theorem()
 
@@ -54,7 +54,7 @@
 [狹義相對論] (雙生子佯謬) | $t_B = \frac{2L}{v} \sqrt{1 - \frac{v^2}{c^2}}$ | test_twin_paradox()
 [重力場方程式] (左右相等) | $G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$ | test_einstein_field_equation()
 [史瓦西黑洞] (真空性) | $G_{\mu\nu}=0$ | test_schwarzschild_vacuum()
-[史瓦西黑洞] (史瓦西半徑) | $R_s = \frac{2 G M}{c^2}$ | 
+[史瓦西黑洞] (史瓦西半徑) | $R_s = \frac{2 G M}{c^2}$ | test_schwarzschild_radius()
 [水星進動] (差43秒角) | $\Delta \phi = \frac{24 \pi^3 a^2}{T^2 c^2 (1 - e^2)}$ | test_metest_mercury_precession()
 [FLRW宇宙膨脹] (膨脹＋各向同性) | $d\Omega^2 = d\theta^2 + \sin^2 \theta d\phi^2$ | test_flrw_expansion() | $G_{\phi\phi} = G_{\theta\theta} \sin^2 \theta$
 [Kerr旋轉黑洞] (自旋+對稱) | $g_{t,\phi}=g_{\phi,t}$ , $a \in g_{\phi,t}$ | test_kerr_black_hole()

@@ -108,9 +108,7 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 [閔可夫斯基空間:平坦性] | $G_{\mu\nu} = 0$ | test_minkowski_flat()
 [狹義相對論：雙生子佯謬] | $t_B = \frac{2L}{v} \sqrt{1 - \frac{v^2}{c^2}}$ | test_twin_paradox()
 
-## 廣義相對論：重力場方程式驗證
-
-$$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
+## 廣義相對論物理法則驗證
 
 [廣義相對論] 的測試都在 [test_04_g_relativity.py] 中
 

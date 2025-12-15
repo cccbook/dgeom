@@ -1,7 +1,6 @@
 import sympy as sp
 # 引入 SymPy 庫，用於所有的符號運算，如微分、簡化、矩陣求逆等。
 from sympy import MutableDenseNDimArray, Matrix, diff
-
 # 從 SymPy 引入特定的類和函數
 # MutableDenseNDimArray: 用於儲存張量分量的 N 維可變數組。
 # Matrix: 用於處理 Jacobian 矩陣的運算。
@@ -144,7 +143,7 @@ class GeometricTensor:
     # 座標變換 (Coordinate Transformation)
     # ==========================================
 
-    def _get_jacobian(self, new_coords, old_coords_funcs):
+    def _get_contra_cov_jacobian(self, new_coords, old_coords_funcs):
         """
         計算座標變換所需的 Jacobian 矩陣 (J) 和其逆矩陣 (J_inv)。
         J_cov (協變變換矩陣) 和 J_contra (反變變換矩陣)。
@@ -171,7 +170,7 @@ class GeometricTensor:
         每個上標指標與 J_contra 縮併，每個下標指標與 J_cov.T 縮併。
         """
         # 取得反變 Jacobian 和協變 Jacobian
-        J_contra, J_cov = self._get_jacobian(new_coords, transformation_rules)
+        J_contra, J_cov = self._get_contra_cov_jacobian(new_coords, transformation_rules)
         
         # 1. 變數替換 (將張量分量從舊座標表示替換為新座標表示)
         try:

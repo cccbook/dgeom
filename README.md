@@ -8,7 +8,8 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
 ## 書籍
 
-* [AI 電子書：向量微積分+微分幾何+相對論](https://gemini.google.com/share/d13c1e93468b)
+* [AI 電子書：向量微積分+微分幾何+相對論 (第一版)](https://gemini.google.com/share/d13c1e93468b)
+* [AI 電子書：向量微積分+微分幾何+相對論 (第二版)](doc/book_v2.md)
     * [第 1 章：向量場與純量場 (Vector and Scalar Fields)](https://gemini.google.com/share/0a63a7f9080f)
     * [第 2 章：向量微分運算子 (Vector Differential Operators)](https://gemini.google.com/share/2d6251fbd9dd)
     * [第 3 章：向量積分定理 (Vector Integral Theorems)](https://gemini.google.com/share/82fb86743540)
@@ -23,8 +24,6 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
     * [第 12 章：愛因斯坦場方程式的解與應用 (Solutions and Applications of EFE)](https://gemini.google.com/share/3fab28b2e5b4)
 
 ## 主要模組
-
-
 
 主題 | 程式模組 | 測試範例
 ----|---------|-------

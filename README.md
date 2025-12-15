@@ -28,24 +28,24 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
 ## 主模組
 
-[vcalculus.py]:dgeom/sym/vcalculus.py
-[dgeometry.py]:dgeom/sym/dgeometry.py
+[v_calculus.py]:dgeom/sym/v_calculus.py
+[d_geometry.py]:dgeom/sym/d_geometry.py
 [relativity.py]:dgeom/sym/
 [metric.py]:dgeom/sym/metric.py
-[exterior_derivative.py]:dgeom/sym/exterior_derivative.py
+[d_operator.py]:dgeom/sym/d_operator.py
 [tensor.py]:dgeom/sym/tensor.py
 [hodge.py]:dgeom/sym/hodge.py
 [test_01_vcalculus.py]:test/test_01_vcalculus.py
-[test_02_dgeometry.py]:test/test_02_dgeometry.py
+[test_02_d_geometry.py]:test/test_02_d_geometry.py
 [test_02a_tensor.py]:test/test_02a_tensor.py
 [test_02b_metric.py]:test/test_02b_metric.py
-[test_02c_exterior_derivative.py]:test/test_02c_exterior_derivative.py
+[test_02c_d_operator.py]:test/test_02c_d_operator.py
 [test_03_relativity.py]:test/test_03_relativity.py
 
 主題 | 程式模組 | 測試範例
 ----|---------|-------
-1-向量微積分 | [vcalculus.py] | [test_01_vcalculus.py]
-2-微分幾何 |  [dgeometry.py] | [test_02_dgeometry.py]
+1-向量微積分 | [v_calculus.py] | [test_01_vcalculus.py]
+2-微分幾何 |  [d_geometry.py] | [test_02_d_geometry.py]
 3-相對論 | [relativity.py] | [test_03_relativity.py]
 
 ## 子模組
@@ -54,7 +54,7 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 ----|---------|-------
 張量 | [tensor.py] | [test_02a_tensor.py]
 度規 | [metric.py] | [test_02b_metric.py]
-外微分 | [metric.py] | [test_02c_exterior_derivative.py]
+外微分 | [d_operator.py] | [test_02c_d_operator.py]
 
 <!--
 ## 重要物件
@@ -84,7 +84,7 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 [外微分] | $d\omega = \sum_I df_I \wedge dx_I$ | d_operator
 
 [test_01_vcalculus.py]:test/test_01_vcalculus.py
-[test_02_dgeometry.py]:test/test_02_dgeometry.py
+[test_02_d_geometry.py]:test/test_02_d_geometry.py
 [test_03_s_relativity.py]:test/test_03_s_relativity.py
 [test_04_g_relativity.py]:test/test_04_g_relativity.py
 

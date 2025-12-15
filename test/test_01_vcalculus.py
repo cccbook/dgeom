@@ -25,15 +25,15 @@ t = sp.symbols('t')
 
 def test_vcalculus_curl_of_gradient_is_zero():
     """
-    ### 🧪 驗證 vcalculus.py：梯度的旋度為零
+    ### 🧪 驗證 v_calculus.py：梯度的旋度為零
     數學公式: $\nabla \times (\nabla f) = \mathbf{0}$
     """
     f = x**2 * y * sp.cos(z)
     
-    # 1. 呼叫 vcalculus.py 的 gradient 函式
+    # 1. 呼叫 v_calculus.py 的 gradient 函式
     grad_f = gradient(f)      # 回傳 TangentVector (假設)
     
-    # 2. 呼叫 vcalculus.py 的 curl 函式
+    # 2. 呼叫 v_calculus.py 的 curl 函式
     curl_grad_f = curl(grad_f) # 回傳 TangentVector (假設)
     print('curl_grad_f:', curl_grad_f)
     # 3. 取出 components 進行簡化和比較
@@ -44,7 +44,7 @@ def test_vcalculus_curl_of_gradient_is_zero():
 
 def test_vcalculus_divergence_of_curl_is_zero():
     """
-    ### 🧪 驗證 vcalculus.py：旋度的散度為零
+    ### 🧪 驗證 v_calculus.py：旋度的散度為零
     數學公式: $\nabla \cdot (\nabla \times \mathbf{F}) = 0$
     """
     # 原始向量場 (SymPy Matrix)
@@ -60,7 +60,7 @@ def test_vcalculus_divergence_of_curl_is_zero():
 
 def test_vcalculus_line_integral_gradient_theorem():
     r"""
-    ### 🧪 驗證 vcalculus.py：線積分的梯度定理 (Fundamental Theorem of Calculus)
+    ### 🧪 驗證 v_calculus.py：線積分的梯度定理 (Fundamental Theorem of Calculus)
     數學公式: $\int_{C} \nabla f \cdot d\mathbf{r} = f(\mathbf{r}_B) - f(\mathbf{r}_A)$
     """
     

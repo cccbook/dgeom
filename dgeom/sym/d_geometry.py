@@ -2,7 +2,7 @@ import sympy as sp
 import itertools
 from sympy import MutableDenseNDimArray, Matrix, diff
 from .metric import MetricTensor, GeometricTensor, euclidean_metric
-from .exterior_derivative import TangentVector, Form 
+from .d_operator import TangentVector, Form 
 
 # 預設歐幾里得度規 (新版)
 EUCLIDEAN_METRIC = euclidean_metric()

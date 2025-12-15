@@ -2,7 +2,7 @@ import sympy as sp
 import itertools
 from sympy import MutableDenseNDimArray, Matrix
 from .metric import MetricTensor
-from .exterior_derivative import TangentVector, Form, d_operator
+from .d_operator import TangentVector, Form, d_operator
 
 # ==========================================
 # 霍奇星算子 Hodge Star (Refactored)

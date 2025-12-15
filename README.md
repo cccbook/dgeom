@@ -49,11 +49,11 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 [class MetricTensor(GeometricTensor)]:dgeom/sym/_metric.py
 [class Spacetime]:dgeom/sym/relativity.py
 
-概念 | 類別 (class) | 模組 | 符號公式 | 說明
+概念 | 類別 (class) | 模組 | 符號公式
 -----|-----|------|---------|-----
-[幾何張量] | GeometricTensor | [_tensor.py] |$T^{\mu_1\cdots\mu_k}{}_{\nu_1\cdots\nu_l}$ | 座標轉換的函數 (用『高維陣列』表示)
-[度規張量] | MetricTensor | [_metric.py] | $g_p(\mathbf{u}, \mathbf{v}) \in \mathbb{R}$ | 對稱正定的二階協變張量，用來測量（長度、角度、體積...）
-[相對論時空] | Spacetime | [relativity.py] | $G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu}$ | 愛因斯坦重力場方程式
+[幾何張量] | GeometricTensor | [_tensor.py] |$T^{\mu_1\cdots\mu_k}{}_{\nu_1\cdots\nu_l}$ 
+[度規張量] | MetricTensor | [_metric.py] | $g_p(\mathbf{u}, \mathbf{v}) \in \mathbb{R}$
+[相對論時空] | Spacetime | [relativity.py] | $G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu}$
 
 <!--
 [class Form]() |

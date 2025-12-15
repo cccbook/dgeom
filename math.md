@@ -14,7 +14,7 @@
 [度規張量] | $g_p(\mathbf{u}, \mathbf{v}) \in \mathbb{R}$ | MetricTensor | [metric.py]
 [相對論時空] | $G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu}$ | Spacetime | [relativity.py]
 
-## 向量微積分定理驗證
+## 向量微積分 - 定理驗證
 
 [向量微積分] 的測試都在 [test_01_v_calculus.py] 中
 
@@ -24,7 +24,7 @@
 [史托克旋度定理] | $\oint_{\partial S} \mathbf{F} \cdot d\mathbf{r} = \iint_S (\nabla \times \mathbf{F}) \cdot \mathbf{n} \, dS$ | test_stoke_theorem()
 [高斯散度定理] | $\iint_S \mathbf{F} \cdot \mathbf{n} \, dS = \iiint_V (\nabla \cdot \mathbf{F}) \, dV$ | test_div_theorem()
 
-## 微分幾何定理驗證
+## 微分幾何 - 定理驗證
 
 [微分幾何] 的測試都在 [test_02_d_geometry.py] 中
 
@@ -33,7 +33,7 @@
 [龐加萊引理] | $d(d\omega) = 0$ | test_ddf_is_zero()
 [廣義史托克定理] | $\int_{M} d\omega = \int_{\partial M} \omega$ | test_g_stoke_theorem()
 
-## 相對論物理法則驗證
+## 相對論 - 物理法則驗證
 
 相對論的測試都在 [test_03_relativity.py] 中
 

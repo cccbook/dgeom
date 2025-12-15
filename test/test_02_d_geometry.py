@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from dgeom.sym import *
 
 # ===================================================================
-# 向量微積分 (Vector Calculus)
+# 外微分版的向量微積分 (Vector Calculus based on d-operator)
 # ===================================================================
 
 def test_calculus_curl_of_gradient_spherical():

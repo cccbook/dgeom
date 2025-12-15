@@ -31,15 +31,9 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 [v_calculus.py]:dgeom/sym/v_calculus.py
 [d_geometry.py]:dgeom/sym/d_geometry.py
 [relativity.py]:dgeom/sym/
-[metric.py]:dgeom/sym/metric.py
-[d_operator.py]:dgeom/sym/d_operator.py
-[tensor.py]:dgeom/sym/tensor.py
-[hodge.py]:dgeom/sym/hodge.py
+
 [test_01_v_calculus.py]:test/test_01_v_calculus.py
 [test_02_d_geometry.py]:test/test_02_d_geometry.py
-[test_02a_tensor.py]:test/test_02a_tensor.py
-[test_02b_metric.py]:test/test_02b_metric.py
-[test_02c_d_operator.py]:test/test_02c_d_operator.py
 [test_03_relativity.py]:test/test_03_relativity.py
 
 主題 | 程式模組 | 測試範例
@@ -50,13 +44,28 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
 ## 子模組
 
+[metric.py]:dgeom/sym/metric.py
+[d_operator.py]:dgeom/sym/d_operator.py
+[tensor.py]:dgeom/sym/tensor.py
+[hodge.py]:dgeom/sym/hodge.py
+[manifold.py]:dgeom/sym/manifold.py
+[test_02a_tensor.py]:test/test_02a_tensor.py
+[test_02b_metric.py]:test/test_02b_metric.py
+[test_02c_d_operator.py]:test/test_02c_d_operator.py
+[test_02d_hodge.py]:test/test_02c_hodge.py
+[test_02e_manifold.py]:test/test_02e_manifold.py
+
 主題 | 程式模組 | 測試範例
 ----|---------|-------
 張量 | [tensor.py] | [test_02a_tensor.py]
 度規 | [metric.py] | [test_02b_metric.py]
 外微分 | [d_operator.py] | [test_02c_d_operator.py]
 霍奇星算子 | [hodge.py] | [test_02d_hodge.py]
+流形 | [manifold.py] | [test_02e_manifold.py]
+
+<!--
 李括號 | [lie_bracket.py] | [test_02e_lie_bracket.py]
+-->
 
 ## 背後的數學觀念
 

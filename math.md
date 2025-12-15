@@ -71,6 +71,11 @@
 [度規張量]:https://gemini.google.com/share/844b156e3149
 [相對論時空]:https://gemini.google.com/share/43e3d66179e0
 
+[格林定理]:https://gemini.google.com/share/1a1e89bb4bbf
+[史托克旋度定理]:https://gemini.google.com/share/199c4917addc
+[高斯散度定理]:https://gemini.google.com/share/6c7252352c3e
+
+
 
 [metric.py]:dgeom/sym/metric.py
 [d_operator.py]:dgeom/sym/d_operator.py

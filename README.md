@@ -83,8 +83,8 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
 向量微積分的測試都在 [test_01_vcalculus.py] 中
 
-概念 | 符號公式 | 函數 | 測試模組
-----|------|----------|------------
+概念 | 符號公式 | 函數
+----|------|----------
 [格林定理] | $\oint_C (P dx + Q dy) = \iint_D \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) dA$ | test_green_theorem
 [史托克旋度定理] | $\oint_{\partial S} \mathbf{F} \cdot d\mathbf{r} = \iint_S (\nabla \times \mathbf{F}) \cdot \mathbf{n} \, dS$ | test_stoke_theorem
 [高斯散度定理] | $\iint_S \mathbf{F} \cdot \mathbf{n} \, dS = \iiint_V (\nabla \cdot \mathbf{F}) \, dV$ | test_div_theorem
@@ -93,8 +93,8 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
 概念 | 符號公式 | 函數 | 測試模組
 ----|------|----------|------------
-[龐加萊引理] | $d(d\omega) = 0$ | test_ddf_is_zero | [test_02_dgeometry.py]
-[廣義史托克定理] | $\int_{M} d\omega = \int_{\partial M} \omega$ | test_g_stoke_theorem | [test_02_dgeometry.py]
+[龐加萊引理] | $d(d\omega) = 0$ | test_ddf_is_zero
+[廣義史托克定理] | $\int_{M} d\omega = \int_{\partial M} \omega$ | test_g_stoke_theorem
 
 ## 狹義相對論物理法則驗證
 

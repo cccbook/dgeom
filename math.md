@@ -58,7 +58,7 @@
 [廣義史托克定理]:https://gemini.google.com/share/548c3712f2f7
 [度規]:https://gemini.google.com/share/ae5f5d47714d
 [外微分]:https://gemini.google.com/share/1202f0099ce2
-[霍奇星算子]:https://gemini.google.com/share/867983c498e6
+[霍奇星]:https://gemini.google.com/share/867983c498e6
 [梯度]:https://gemini.google.com/share/7a3b689e32b0
 [散度]:https://gemini.google.com/share/8e63457e5dca
 [旋度]:https://gemini.google.com/share/4c454d319204

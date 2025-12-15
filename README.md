@@ -32,12 +32,12 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 [exterior_derivative.py]:dgeom/sym/exterior_derivative.py
 [tensor.py]:dgeom/sym/tensor.py
 [hodge.py]:dgeom/sym/hodge.py
-[test_01_vcalculus.py]:dgeom/test/test_01_vcalculus.py
-[test_02_dgeometry.py]:dgeom/test/test_02_dgeometry.py
-[test_02a_tensor.py]:dgeom/test/test_02a_tensor.py
-[test_02b_metric.py]:dgeom/test/test_02b_metric.py
-[test_03_s_relativity.py]:dgeom/test/test_03_s_relativity.py
-[test_04_g_relativity.py]:dgeom/test/test_04_g_relativity.py
+[test_01_vcalculus.py]:test/test_01_vcalculus.py
+[test_02_dgeometry.py]:test/test_02_dgeometry.py
+[test_02a_tensor.py]:test/test_02a_tensor.py
+[test_02b_metric.py]:test/test_02b_metric.py
+[test_03_s_relativity.py]:test/test_03_s_relativity.py
+[test_04_g_relativity.py]:test/test_04_g_relativity.py
 
 主題 | 程式模組 | 測試範例
 ----|---------|-------

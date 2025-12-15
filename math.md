@@ -67,11 +67,7 @@
 [水星進動] (差43秒角) | $\Delta \phi = \frac{24 \pi^3 a^2}{T^2 c^2 (1 - e^2)}$ | test_metest_mercury_precession()
 [FLRW宇宙膨脹] (膨脹＋各向同性) | $d\Omega^2 = d\theta^2 + \sin^2 \theta d\phi^2$ | test_flrw_expansion() | $G_{\phi\phi} = G_{\theta\theta} \sin^2 \theta$
 [Kerr旋轉黑洞] (自旋+對稱) | $g_{t,\phi}=g_{\phi,t}$ , $a \in g_{\phi,t}$ | test_kerr_black_hole()
--->
 
-## 📝 License
-
-MIT License
 
 [向量微積分]:https://gemini.google.com/share/696c3b3e23d4
 [微分幾何]:https://gemini.google.com/share/5b5da9a9a179

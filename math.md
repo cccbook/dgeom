@@ -16,7 +16,7 @@
 
 ## 向量微積分定理驗證
 
-向量微積分的測試都在 [test_01_v_calculus.py] 中
+[向量微積分] 的測試都在 [test_01_v_calculus.py] 中
 
 概念 | 符號公式 | 函數
 ----|------|----------
@@ -25,6 +25,8 @@
 [高斯散度定理] | $\iint_S \mathbf{F} \cdot \mathbf{n} \, dS = \iiint_V (\nabla \cdot \mathbf{F}) \, dV$ | test_div_theorem()
 
 ## 微分幾何定理驗證
+
+[向量微積分] 的測試都在 [test_02_d_geometry.py] 中
 
 概念 | 符號公式 | 函數 | 測試模組
 ----|------|----------|------------
@@ -35,16 +37,24 @@
 
 相對論的測試都在 [test_03_relativity.py] 中
 
+[閔可夫斯基空間]:https://gemini.google.com/share/98e0f9a0df9f
+[狹義相對論]:https://gemini.google.com/share/7aa859f58771
+[重力場方程式]:https://gemini.google.com/share/a1d91f1a442f
+[史瓦西黑洞]:https://gemini.google.com/share/7f4edd0b14bf
+[水星進動]:https://gemini.google.com/share/1354a9f88c99
+[FLRW宇宙膨脹]:https://gemini.google.com/share/ae8faad15c5f
+[Kerr旋轉黑洞]:https://gemini.google.com/share/10ebe28fe0ee
+
 概念 | 符號公式 | 函數
 ----|------|----------
-[閔可夫斯基空間:時空度規] | $ds^2 = c^2 dt^2 - dx^2 - dy^2 - dz^2$ | test_minkowski_ds()
-[閔可夫斯基空間:尺縮] (長度收縮) | $L = L_0 \sqrt{1 - \frac{v^2}{c^2}}$ | test_length_contraction()
-[閔可夫斯基空間:鐘慢] (時間膨脹) | $d\tau = dt \sqrt{1 - \frac{v^2}{c^2}}$ | test_time_dilation()
-[閔可夫斯基空間:平坦性] | $G_{\mu\nu} = 0$ | test_minkowski_flat()
-[狹義相對論：雙生子佯謬] | $t_B = \frac{2L}{v} \sqrt{1 - \frac{v^2}{c^2}}$ | test_twin_paradox()
-[重力場方程式：左右相等] | $G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$ | test_einstein_field_equation()
-[史瓦西黑洞：真空性] | $G_{\mu\nu}=0$ | test_schwarzschild_vacuum()
-[史瓦西黑洞：半徑] | $R_s = \frac{2 G M}{c^2}$ | 
+[閔可夫斯基空間] (時空度規) | $ds^2 = c^2 dt^2 - dx^2 - dy^2 - dz^2$ | test_minkowski_ds()
+[閔可夫斯基空間] (尺縮:長度收縮) | $L = L_0 \sqrt{1 - \frac{v^2}{c^2}}$ | test_length_contraction()
+[閔可夫斯基空間] (鐘慢:時間膨脹) | $d\tau = dt \sqrt{1 - \frac{v^2}{c^2}}$ | test_time_dilation()
+[閔可夫斯基空間] (平坦性) | $G_{\mu\nu} = 0$ | test_minkowski_flat()
+[狹義相對論] (雙生子佯謬) | $t_B = \frac{2L}{v} \sqrt{1 - \frac{v^2}{c^2}}$ | test_twin_paradox()
+[重力場方程式] (左右相等) | $G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$ | test_einstein_field_equation()
+[史瓦西黑洞] (真空性) | $G_{\mu\nu}=0$ | test_schwarzschild_vacuum()
+[史瓦西黑洞] (史瓦西半徑) | $R_s = \frac{2 G M}{c^2}$ | 
 [水星進動] (差43秒角) | $\Delta \phi = \frac{24 \pi^3 a^2}{T^2 c^2 (1 - e^2)}$ | test_metest_mercury_precession()
 [FLRW宇宙膨脹] (膨脹＋各向同性) | $d\Omega^2 = d\theta^2 + \sin^2 \theta d\phi^2$ | test_flrw_expansion() | $G_{\phi\phi} = G_{\theta\theta} \sin^2 \theta$
 [Kerr旋轉黑洞] (自旋+對稱) | $g_{t,\phi}=g_{\phi,t}$ , $a \in g_{\phi,t}$ | test_kerr_black_hole()

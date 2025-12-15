@@ -35,7 +35,7 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 [d_operator.py]:dgeom/sym/d_operator.py
 [tensor.py]:dgeom/sym/tensor.py
 [hodge.py]:dgeom/sym/hodge.py
-[test_01_vcalculus.py]:test/test_01_vcalculus.py
+[test_01_v_calculus.py]:test/test_01_v_calculus.py
 [test_02_d_geometry.py]:test/test_02_d_geometry.py
 [test_02a_tensor.py]:test/test_02a_tensor.py
 [test_02b_metric.py]:test/test_02b_metric.py

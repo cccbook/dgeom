@@ -58,6 +58,9 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 霍奇星算子 | [hodge.py] | [test_02d_hodge.py]
 李括號 | [lie_bracket.py] | [test_02e_lie_bracket.py]
 
+## 背後的數學觀念
+
+請參考 [math.md](math.md) !
 
 ## 📝 License
 

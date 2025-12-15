@@ -42,7 +42,7 @@ def test_calculus_curl_of_gradient_spherical():
 # 測試 2: 外微分 (Exterior Derivative)
 # ===================================================================
 
-def test_exterior_derivative_squared_is_zero():
+def test_ddf_is_zero():
     """
     ### 🧪 驗證：外微分的平方為零 d(d(omega)) = 0
     驗證 TangentVector, Form 與 d_operator 的整合。

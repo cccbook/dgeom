@@ -23,7 +23,7 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
     * [第 11 章：愛因斯坦場方程式 (Einstein Field Equations, EFE)](https://gemini.google.com/share/9a1dc5850b8c)
     * [第 12 章：愛因斯坦場方程式的解與應用 (Solutions and Applications of EFE)](https://gemini.google.com/share/3fab28b2e5b4)
 
-## 主要模組
+## 主模組
 
 主題 | 程式模組 | 測試範例
 ----|---------|-------
@@ -33,12 +33,27 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 
 ## 重要物件
 
-概念 | 類別 | 符號公式 | 說明
------|----|------|----------
-流形 | [class Manifold](https://gemini.google.com/share/4cd49f6f253f) | 高維可微分曲面
-張量 | [class GeometricTensor](https://gemini.google.com/share/3cf638068d2e) | $T^{\mu_1\cdots\mu_k}{}_{\nu_1\cdots\nu_l}$ | 座標轉換的函數 (用『高維陣列』表示)
-度規張量 | [class MetricTensor(GeometricTensor)](https://gemini.google.com/share/844b156e3149) | $g_p(\mathbf{u}, \mathbf{v}) \in \mathbb{R}$ | 對稱正定的二階協變張量，用來測量（長度、角度、體積...）
-相對論時空 | [class Spacetime](https://gemini.google.com/share/43e3d66179e0) | $G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu}$ | 愛因斯坦重力場方程式
+[vcalculus.py]:dgeom/sym/vcalculus.py
+[dgeometry.py]:dgeom/sym/dgeometry.py
+[relativity.py]:dgeom/sym/
+[_metric.py]:dgeom/sym/_metric.py
+[_exterior_derivative.py]:dgeom/sym/_exterior_derivative.py
+[_tensor.py]:dgeom/sym/_tensor.py
+[_hodge.py]:dgeom/sym/_hodge.py
+[_manifold.py]:dgeom/sym/_manifold.py
+
+[幾何張量]:https://gemini.google.com/share/3cf638068d2e
+[度規張量]:https://gemini.google.com/share/844b156e3149
+[相對論時空]:https://gemini.google.com/share/43e3d66179e0
+[class GeometricTensor]:dgeom/sym/_tensor.py
+[class MetricTensor(GeometricTensor)]:dgeom/sym/_metric.py
+[class Spacetime]:dgeom/sym/relativity.py
+
+概念 | 類別 | 模組 | 符號公式 | 說明
+-----|-----|------|---------|-----
+[幾何張量] | class GeometricTensor | [_tensor.py] |$T^{\mu_1\cdots\mu_k}{}_{\nu_1\cdots\nu_l}$ | 座標轉換的函數 (用『高維陣列』表示)
+[度規張量] | class MetricTensor(GeometricTensor) | [_metric.py] | $g_p(\mathbf{u}, \mathbf{v}) \in \mathbb{R}$ | 對稱正定的二階協變張量，用來測量（長度、角度、體積...）
+[相對論時空] | [class Spacetime] | [relativity.py] | $G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu}$ | 愛因斯坦重力場方程式
 
 <!--
 [class Form]() |
@@ -49,21 +64,63 @@ $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
 [class TangentVector]() |
 -->
 
-## 數學
+## 數學函數實作
 
-概念 | 符號公式 | 實作
-----|------|----------
-[梯度] | $\nabla f(\mathbf{x})$ | gradient
-[散度] | $\nabla \cdot \mathbf{F}$ | divergence
-[旋度] | $\nabla \times \mathbf{F}$ | curl
-[線積分] | $\int_C f(x, y, z) \, ds$ | line_integral
+概念 | 符號公式 | 函數 | 模組
+----|------|----------|------------
+[梯度] | $\nabla f(\mathbf{x})$ | gradient | 
+[散度] | $\nabla \cdot \mathbf{F}$ | divergence | 
+[旋度] | $\nabla \times \mathbf{F}$ | curl | 
+[線積分] | $\int_C f(x, y, z) \, ds$ | line_integral | 
 [外微分] | $d\omega = \sum_I df_I \wedge dx_I$ | d_operator
-[龐加萊引理] | $d(d\omega) = 0$ | 
-[廣義史托克定理] | $\int_{M} d\omega = \int_{\partial M} \omega$ | 
-[張量] | $T^{\mu_1\cdots\mu_k}{}_{\nu_1\cdots\nu_l}$  | [numpy+sympy](https://gemini.google.com/share/012d20119bb9)
-[黎曼度規] | $g_{ij}(p) = g_p\left(\frac{\partial}{\partial x^i}, \frac{\partial}{\partial x^j}\right)$ | class Metrics
-[狹義相對論] | $ds^2 = -c^2 dt^2 + dx^2 + dy^2 + dz^2$  | minkowski_metric()
-[廣義相對論] | $G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$ | class RelativityMetrics
+
+[test_01_vcalculus.py]:test/test_01_vcalculus.py
+[test_02_dgeometry.py]:test/test_02_dgeometry.py
+[test_03_s_relativity.py]:test/test_03_s_relativity.py
+[test_04_g_relativity.py]:test/test_04_g_relativity.py
+
+## 向量微積分定理驗證
+
+向量微積分的測試都在 [test_01_vcalculus.py] 中
+
+概念 | 符號公式 | 函數 | 測試模組
+----|------|----------|------------
+[格林定理] | $\oint_C (P dx + Q dy) = \iint_D \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) dA$ | test_green_theorem
+[史托克旋度定理] | $\oint_{\partial S} \mathbf{F} \cdot d\mathbf{r} = \iint_S (\nabla \times \mathbf{F}) \cdot \mathbf{n} \, dS$ | test_stoke_theorem
+[高斯散度定理] | $\iint_S \mathbf{F} \cdot \mathbf{n} \, dS = \iiint_V (\nabla \cdot \mathbf{F}) \, dV$ | test_div_theorem
+
+
+概念 | 符號公式 | 函數 | 測試模組
+----|------|----------|------------
+[龐加萊引理] | $d(d\omega) = 0$ | test_ddf_is_zero | [test_02_dgeometry.py]
+[廣義史托克定理] | $\int_{M} d\omega = \int_{\partial M} \omega$ | test_g_stoke_theorem | [test_02_dgeometry.py]
+
+## 狹義相對論物理法則驗證
+
+狹義相對論的測試都在 [test_03_s_relativity.py] 中
+
+概念 | 符號公式 | 函數
+----|------|----------|------------
+[閔可夫斯基空間:時空度規] | $ds^2 = c^2 dt^2 - dx^2 - dy^2 - dz^2$ | test_minkowski_ds()
+[閔可夫斯基空間:尺縮] (長度收縮) | $L = L_0 \sqrt{1 - \frac{v^2}{c^2}}$ | test_length_contraction()
+[閔可夫斯基空間:鐘慢] (時間膨脹) | $d\tau = dt \sqrt{1 - \frac{v^2}{c^2}}$ | test_time_dilation()
+[閔可夫斯基空間:平坦性] | $G_{\mu\nu} = 0$ | test_minkowski_flat
+[狹義相對論：雙生子佯謬] | $t_B = \frac{2L}{v} \sqrt{1 - \frac{v^2}{c^2}}$ | test_twin_paradox()
+
+## 廣義相對論：重力場方程式驗證
+
+[廣義相對論] [重力場方程式] 的測試都在 [test_04_g_relativity.py] 中
+
+$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$
+
+概念 | 符號公式 | 函數
+----|------|----------
+[重力場方程式：左右相等] | $G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$ | test_einstein_field_equation()
+[史瓦西黑洞：真空性] | $G_{\mu\nu}=0$ | test_schwarzschild_vacuum()
+[史瓦西黑洞：半徑] | $R_s = \frac{2 G M}{c^2}$ | 
+[水星進動] (差43秒角) | $\Delta \phi = \frac{24 \pi^3 a^2}{T^2 c^2 (1 - e^2)}$ | test_metest_mercury_precession()
+[FLRW宇宙膨脹] (膨脹＋各向同性) | | test_flrw_expansion() | 
+[Kerr旋轉黑洞] (自旋+對稱) | $g_t_{\phi}=g_{\phi}_t$ , $a \in g_{\phi}_t$ | test_kerr_black_hole()
 
 ## 📝 License
 

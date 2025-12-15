@@ -4,54 +4,92 @@ import numpy as np
 from dgeom.sym import *
 
 # ===================================================================
+# 輔助工具: 動態符號提取
+# ===================================================================
+def get_symbols_map(spacetime):
+    """
+    從 Spacetime 物件中提取符號映射表。
+    解決 SymPy 中 'M' (由工廠函數建立) 與 'M' (測試中定義) 視為不同物件的問題。
+    回傳: {'M': Symbol('M'), 'c': Symbol('c'), ...}
+    """
+    return {s.name: s for s in spacetime.metric.data.free_symbols}
+
+# ===================================================================
 # 測試案例
 # ===================================================================
 
-def test_minkowski_structure():
+def test_einstein_field_equation():
     """
-    測試閔可夫斯基時空的基本結構與平直性。
+    測試 Spacetime 物件的場方程式介面是否正常工作。
     """
     st = minkowski_metric()
     
-    # 1. 檢查物件類型
-    assert isinstance(st, Spacetime)
-    assert st.name == "Minkowski"
-    assert st.dim == 4
+    # 測試 1: 真空 (None)
+    efe_vac = st.field_equations(T_uv=None)
+    # 結果應為 0 (因為 Minkowski G=0)
+    assert sp.simplify(efe_vac.data[0, 0]) == 0
     
-    # 2. 檢查度規簽名 (+, -, -, -)
-    # 取出對角線元素
-    diag_elements = [st.metric.data[i, i] for i in range(4)]
-    assert diag_elements[0] == 1
-    assert diag_elements[1] == -1
+    # 測試 2: 傳入 T_uv
+    # 模擬一個簡單的 T_uv = diag(rho, 0, 0, 0)
+    rho = sp.Symbol('rho')
+    T_matrix = sp.diag(rho, 0, 0, 0)
+    kappa = sp.Symbol('kappa')
     
-    # 3. 驗證愛因斯坦張量為 0 (平直時空)
-    G = st.einstein_tensor()
-    for val in np.array(G.data).flatten():
-        assert sp.simplify(val) == 0
+    efe_matter = st.field_equations(T_uv=T_matrix, kappa=kappa)
+    
+    # E = G - kappa * T = 0 - kappa * rho
+    expected_00 = -kappa * rho
+    assert sp.simplify(efe_matter.data[0, 0] - expected_00) == 0
 
-def test_schwarzschild_vacuum_property():
+
+# ===================================================================
+# 數學核心驗證: 史瓦西真空解
+# ===================================================================
+def test_schwarzschild_vacuum():
     """
-    測試史瓦西時空的真空特性。
-    這是一個高強度的整合測試，驗證從 Christoffel -> Riemann -> Ricci -> Einstein 的完整鏈條。
+    [數學驗證] 史瓦西度規必須嚴格滿足真空愛因斯坦場方程式 G_uv = 0。
+    這證明了微分幾何引擎的張量運算邏輯正確。
     """
+    # 1. Arrange (準備)
     st = schwarzschild_metric()
     
-    assert st.name == "Schwarzschild"
-    
-    # 取得度規中的符號以便檢查
-    # 技巧: 史瓦西度規依賴 mass M
-    assert any(s.name == 'M' for s in st.metric.data.free_symbols)
-    
-    # 計算愛因斯坦張量
+    # 2. Act (執行)
     G = st.einstein_tensor()
     
-    # 驗證 G_uv = 0 (真空解)
-    # 為了測試速度，我們檢查對角線分量
+    # 3. Assert (驗證)
+    # 檢查對角線分量是否全為 0
     for i in range(4):
-        val = G.data[i, i]
-        assert sp.simplify(val) == 0, f"G_{i}{i} 應為 0 (真空)，但得到 {val}"
+        val = sp.simplify(G.data[i, i])
+        assert val == 0, f"真空解破壞: G_{i}{i} 應為 0，但得到 {val}"
 
-def test_flrw_dynamics():
+# ===================================================================
+# 幾何結構驗證: 史瓦西半徑 (事件視界)
+# ===================================================================
+def test_schwarzschild_radius():
+    """
+    [幾何驗證] 從度規分量 g_tt = 0 導出史瓦西半徑 R_s = 2GM/c^2。
+    驗證度規的奇異點結構。
+    """
+    st = schwarzschild_metric()
+    t, r, theta, phi = st.coords
+    syms = get_symbols_map(st)
+    
+    # 提取 g_tt
+    g_tt = st.metric.data[0, 0]
+    
+    # 求解 g_tt = 0
+    solutions = sp.solve(g_tt, r)
+    
+    # 過濾出非零解
+    rs_solution = next((sol for sol in solutions if sol != 0), None)
+    assert rs_solution is not None, "未找到事件視界"
+    
+    # 預期結果
+    expected_Rs = 2 * syms['G'] * syms['M'] / syms['c']**2
+    
+    assert sp.simplify(rs_solution - expected_Rs) == 0
+
+def test_flrw_expansion():
     """
     測試 FLRW 宇宙學模型。
     重點驗證：這不是真空解，且包含時間導數 (宇宙膨脹)。
@@ -86,7 +124,7 @@ def test_flrw_symbolic_k():
     assert 'k' in symbol_names
     assert 'sym' in st.name
 
-def test_kerr_structure_off_diagonal():
+def test_kerr_black_hole():
     """
     測試克爾 (Kerr) 度規的結構。
     注意：不計算愛因斯坦張量，因為 Kerr 的符號運算非常耗時 (可能數分鐘)。
@@ -113,92 +151,10 @@ def test_kerr_structure_off_diagonal():
     symbol_names = {s.name for s in symbols_in_g03}
     assert 'a' in symbol_names, "非對角項應包含自旋參數 a"
 
-def test_spacetime_field_equations_interface():
-    """
-    測試 Spacetime 物件的場方程式介面是否正常工作。
-    """
-    st = minkowski_metric()
-    
-    # 測試 1: 真空 (None)
-    efe_vac = st.field_equations(T_uv=None)
-    # 結果應為 0 (因為 Minkowski G=0)
-    assert sp.simplify(efe_vac.data[0, 0]) == 0
-    
-    # 測試 2: 傳入 T_uv
-    # 模擬一個簡單的 T_uv = diag(rho, 0, 0, 0)
-    rho = sp.Symbol('rho')
-    T_matrix = sp.diag(rho, 0, 0, 0)
-    kappa = sp.Symbol('kappa')
-    
-    efe_matter = st.field_equations(T_uv=T_matrix, kappa=kappa)
-    
-    # E = G - kappa * T = 0 - kappa * rho
-    expected_00 = -kappa * rho
-    assert sp.simplify(efe_matter.data[0, 0] - expected_00) == 0
-
-
 # ===================================================================
-# 輔助工具: 動態符號提取
+# 動態時空驗證: FLRW 宇宙膨脹
 # ===================================================================
-def get_symbols_map(spacetime):
-    """
-    從 Spacetime 物件中提取符號映射表。
-    解決 SymPy 中 'M' (由工廠函數建立) 與 'M' (測試中定義) 視為不同物件的問題。
-    回傳: {'M': Symbol('M'), 'c': Symbol('c'), ...}
-    """
-    return {s.name: s for s in spacetime.metric.data.free_symbols}
-
-# ===================================================================
-# 1. 數學核心驗證: 史瓦西真空解
-# ===================================================================
-def test_schwarzschild_vacuum_exactness():
-    """
-    [數學驗證] 史瓦西度規必須嚴格滿足真空愛因斯坦場方程式 G_uv = 0。
-    這證明了微分幾何引擎的張量運算邏輯正確。
-    """
-    # 1. Arrange (準備)
-    st = schwarzschild_metric()
-    
-    # 2. Act (執行)
-    G = st.einstein_tensor()
-    
-    # 3. Assert (驗證)
-    # 檢查對角線分量是否全為 0
-    for i in range(4):
-        val = sp.simplify(G.data[i, i])
-        assert val == 0, f"真空解破壞: G_{i}{i} 應為 0，但得到 {val}"
-
-# ===================================================================
-# 2. 幾何結構驗證: 史瓦西半徑 (事件視界)
-# ===================================================================
-def test_event_horizon_derivation():
-    """
-    [幾何驗證] 從度規分量 g_tt = 0 導出史瓦西半徑 R_s = 2GM/c^2。
-    驗證度規的奇異點結構。
-    """
-    st = schwarzschild_metric()
-    t, r, theta, phi = st.coords
-    syms = get_symbols_map(st)
-    
-    # 提取 g_tt
-    g_tt = st.metric.data[0, 0]
-    
-    # 求解 g_tt = 0
-    solutions = sp.solve(g_tt, r)
-    
-    # 過濾出非零解
-    rs_solution = next((sol for sol in solutions if sol != 0), None)
-    assert rs_solution is not None, "未找到事件視界"
-    
-    # 預期結果
-    expected_Rs = 2 * syms['G'] * syms['M'] / syms['c']**2
-    
-    assert sp.simplify(rs_solution - expected_Rs) == 0
-
-# ===================================================================
-# 3. 動態時空驗證: FLRW 宇宙膨脹
-# ===================================================================
-def test_cosmic_expansion_dynamics():
+def test_flrw_expansion():
     """
     [動態驗證] 驗證 FLRW 度規描述的是一個動態膨脹的宇宙。
     愛因斯坦張量 G_00 必須包含標度因子 a(t) 的時間導數。
@@ -220,9 +176,9 @@ def test_cosmic_expansion_dynamics():
     assert sp.simplify(g_33 - g_22 * sp.sin(theta)**2) == 0, "宇宙各向同性破壞"
 
 # ===================================================================
-# 4. 經典實驗驗證: 水星近日點進動
+# 經典實驗驗證: 水星近日點進動
 # ===================================================================
-def test_mercury_precession_effective_potential():
+def test_mercury_precession():
     """
     [實驗驗證] 驗證史瓦西度規下的有效位勢包含 1/r^3 修正項。
     這是廣義相對論解釋水星軌道異常進動的關鍵。
@@ -262,7 +218,7 @@ def test_mercury_precession_effective_potential():
     assert check_val != 0, "未發現導致進動的 1/r^3 GR 修正項"
 
 # ===================================================================
-# 5. 工程應用驗證: GPS 時間膨脹
+# 工程應用驗證: GPS 時間膨脹
 # ===================================================================
 def test_gps_time_dilation_integration():
     """

@@ -1,0 +1,68 @@
+
+def test_schwarzschild_vacuum():
+    """
+    測試史瓦西時空的真空特性。
+    這是一個高強度的整合測試，驗證從 Christoffel -> Riemann -> Ricci -> Einstein 的完整鏈條。
+    """
+    st = schwarzschild_metric()
+    
+    assert st.name == "Schwarzschild"
+    
+    # 取得度規中的符號以便檢查
+    # 技巧: 史瓦西度規依賴 mass M
+    assert any(s.name == 'M' for s in st.metric.data.free_symbols)
+    
+    # 計算愛因斯坦張量
+    G = st.einstein_tensor()
+    
+    # 驗證 G_uv = 0 (真空解)
+    # 為了測試速度，我們檢查對角線分量
+    for i in range(4):
+        val = G.data[i, i]
+        assert sp.simplify(val) == 0, f"G_{i}{i} 應為 0 (真空)，但得到 {val}"
+
+
+def test_minkowski_flat():
+    """
+    測試閔可夫斯基時空的基本結構與平直性。
+    """
+    st = minkowski_metric()
+    
+    # 1. 檢查物件類型
+    assert isinstance(st, Spacetime)
+    assert st.name == "Minkowski"
+    assert st.dim == 4
+    
+    # 2. 檢查度規簽名 (+, -, -, -)
+    # 取出對角線元素
+    diag_elements = [st.metric.data[i, i] for i in range(4)]
+    assert diag_elements[0] == 1
+    assert diag_elements[1] == -1
+    
+    # 3. 驗證愛因斯坦張量為 0 (平直時空)
+    G = st.einstein_tensor()
+    for val in np.array(G.data).flatten():
+        assert sp.simplify(val) == 0
+
+
+def test_schwarzschild_vacuum():
+    """
+    測試史瓦西時空的真空特性。
+    這是一個高強度的整合測試，驗證從 Christoffel -> Riemann -> Ricci -> Einstein 的完整鏈條。
+    """
+    st = schwarzschild_metric()
+    
+    assert st.name == "Schwarzschild"
+    
+    # 取得度規中的符號以便檢查
+    # 技巧: 史瓦西度規依賴 mass M
+    assert any(s.name == 'M' for s in st.metric.data.free_symbols)
+    
+    # 計算愛因斯坦張量
+    G = st.einstein_tensor()
+    
+    # 驗證 G_uv = 0 (真空解)
+    # 為了測試速度，我們檢查對角線分量
+    for i in range(4):
+        val = G.data[i, i]
+        assert sp.simplify(val) == 0, f"G_{i}{i} 應為 0 (真空)，但得到 {val}"

@@ -4,7 +4,7 @@ import numpy as np
 from dgeom.sym import minkowski_metric
 
 # ===================================================================
-# 測試 1: 幾何平坦性驗證
+# 幾何平坦性驗證
 # ===================================================================
 def test_minkowski_flatness():
     """
@@ -21,9 +21,48 @@ def test_minkowski_flatness():
         assert sp.simplify(val) == 0, "平坦時空 Ricci 張量應為 0"
 
 # ===================================================================
-# 測試 2: 鐘慢效應 (Time Dilation) - 路徑積分法
+# 時空間距 ds 驗證
 # ===================================================================
-def test_time_dilation_integration():
+def test_minkowski_ds():
+    """
+    [數學驗證] 驗證線元素公式 ds^2。
+    目標公式: ds^2 = c^2 dt^2 - dx^2 - dy^2 - dz^2
+    注意: 若函式庫預設為自然單位制 (c=1)，則驗證 ds^2 = dt^2 - dx^2 - dy^2 - dz^2
+    """
+    st = minkowski_metric()
+    
+    # 1. 定義微分座標符號 (Differentials)
+    dt, dx, dy, dz = sp.symbols('dt dx dy dz', real=True)
+    dX = sp.Matrix([dt, dx, dy, dz])
+    
+    # 2. 取得度規張量矩陣 g (Metric Tensor)
+    # 假設 st.metric.data 是一個二維列表或陣列，將其轉換為 SymPy Matrix 以利運算
+    g_matrix = sp.Matrix(st.metric.data)
+    
+    # 3. 執行張量縮併計算 ds^2 = g_uv * dx^u * dx^v
+    # dX.T 是 (1x4), g_matrix 是 (4x4), dX 是 (4x1) -> 結果為 (1x1) 純量
+    ds_squared_calc = (dX.T * g_matrix * dX)[0]
+    
+    # 4. 建構預期的線元素公式
+    # 我們從度規的 g_00 分量動態獲取 c^2 (或是 1)，以相容不同的單位制設定
+    c_squared = g_matrix[0, 0] 
+    
+    # 預期形式: (c^2)dt^2 - dx^2 - dy^2 - dz^2
+    ds_squared_expected = c_squared * dt**2 - dx**2 - dy**2 - dz**2
+    
+    # 5. 驗證
+    # 檢查空間分量是否確實為 -1 (Signature Check)
+    assert g_matrix[1, 1] == -1 and g_matrix[2, 2] == -1 and g_matrix[3, 3] == -1, \
+        "閔可夫斯基空間的空間分量應為 -1 (使用 +--- 慣例)"
+        
+    # 檢查交叉項是否為 0 (例如 dtdx, dxdy 等) 且公式相符
+    assert sp.simplify(ds_squared_calc - ds_squared_expected) == 0, \
+        f"線元素形式錯誤。\n計算結果: {ds_squared_calc}\n預期結果: {ds_squared_expected}"
+
+# ===================================================================
+# 鐘慢效應 (Time Dilation) - 路徑積分法
+# ===================================================================
+def test_time_dilation():
     """
     [物理驗證] 鐘慢效應。
     驗證移動時鐘的原時 (Proper Time) 小於靜止時鐘。
@@ -57,9 +96,9 @@ def test_time_dilation_integration():
         f"鐘慢效應計算錯誤: 預期 {expected}, 得到 {result}"
 
 # ===================================================================
-# 測試 3: 尺縮效應 (Length Contraction) - 座標變換法
+# 尺縮效應 (Length Contraction) - 座標變換法
 # ===================================================================
-def test_length_contraction_lorentz():
+def test_length_contraction():
     """
     [物理驗證] 尺縮效應。
     利用勞倫茲變換驗證靜止長度 (L0) 與測量長度 (L) 的關係。
@@ -89,11 +128,12 @@ def test_length_contraction_lorentz():
     assert sp.simplify(L_proper - expected_relation) == 0
 
 # ===================================================================
-# 測試 4: 雙生子佯謬 (Twin Paradox) - 比較世界線長度
+# 雙生子佯謬 (Twin Paradox) - 比較世界線長度
 # ===================================================================
-def test_twin_paradox_path_comparison():
+def test_twin_paradox():
     """
     [物理驗證] 雙生子佯謬。
+    故事：雙胞胎AB兩人，A 留在原處，B 出去高速旅行，回來之後，B 比 A 年輕很多。
     證明：在 Minkowski 時空中，慣性路徑 (直線) 的原時最長。
     Home (慣性): 0 -> 2T
     Travel (折線): 0 -> T (v), T -> 2T (-v)

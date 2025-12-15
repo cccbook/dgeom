@@ -9,7 +9,7 @@
 [旋度] | $\nabla \times \mathbf{F}$ | curl | [v_calculus.py]
 [線積分] | $\int_C f(x, y, z) \, ds$ | line_integral | [v_calculus.py]
 [外微分] | $d\omega = \sum_I df_I \wedge dx_I$ | d_operator | [d_operator.py]
-[霍奇星] | $\star: \Omega^k(M) \to \Omega^{n-k}(M)$ | HodgeMetric | [hodge.py]
+[霍奇星] | $\star: \Omega^k(M) \to \Omega^{n-k}(M)$ | HodgeMetric.star | [hodge.py]
 [幾何張量] |$T^{\mu_1\cdots\mu_k}{}_{\nu_1\cdots\nu_l}$  | GeometricTensor | [tensor.py]
 [度規張量] | $g_p(\mathbf{u}, \mathbf{v}) \in \mathbb{R}$ | MetricTensor | [metric.py]
 [相對論時空] | $G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu}$ | Spacetime | [relativity.py]

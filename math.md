@@ -53,9 +53,10 @@
 [閔可夫斯基空間] (平坦性) | $G_{\mu\nu} = 0$ | test_minkowski_flat()
 [狹義相對論] (雙生子佯謬) | $t_B = \frac{2L}{v} \sqrt{1 - \frac{v^2}{c^2}}$ | test_twin_paradox()
 [重力場方程式] (左右相等) | $G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$ | test_einstein_field_equation()
+[質能等價公式] (質能轉換) | $E = mc^2$ | test_emc2()
 [史瓦西黑洞] (真空性) | $G_{\mu\nu}=0$ | test_schwarzschild_vacuum()
 [史瓦西黑洞] (史瓦西半徑) | $R_s = \frac{2 G M}{c^2}$ | test_schwarzschild_radius()
-[水星進動] (差43秒角) | $\Delta \phi = \frac{24 \pi^3 a^2}{T^2 c^2 (1 - e^2)}$ | test_metest_mercury_precession()
+[水星進動] (差43秒角) | $\Delta \phi = \frac{24 \pi^3 a^2}{T^2 c^2 (1 - e^2)}$ | test_mercury_precession()
 [FLRW宇宙膨脹] (膨脹＋各向同性) | $d\Omega^2 = d\theta^2 + \sin^2 \theta d\phi^2$ | test_flrw_expansion() | $G_{\phi\phi} = G_{\theta\theta} \sin^2 \theta$
 [Kerr旋轉黑洞] (自旋+對稱) | $g_{t,\phi}=g_{\phi,t}$ , $a \in g_{\phi,t}$ | test_kerr_black_hole()
 

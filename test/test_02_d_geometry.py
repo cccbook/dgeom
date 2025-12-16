@@ -4,6 +4,67 @@ import numpy as np
 import matplotlib.pyplot as plt
 from dgeom.sym import *
 
+def test_general_stoke():
+    r"""
+    ### 🧪 驗證廣義史托克定理 (Generalized Stokes' Theorem)
+    數學公式: $\int_{\Omega} d\omega = \int_{\partial\Omega} \omega$
+    
+    設定:
+      - 空間: 3D 歐氏空間 (x, y, z)
+      - 流形 $\Omega$: 參數化曲面 patch, map(u, v) -> (u, v, u*v)
+        (這是一個雙曲拋物面的一部分，定義域為單位正方形 [0,1]x[0,1])
+      - 微分形式 $\omega$: 1-Form, $\omega = z dx$
+        (其外微分 $d\omega = dz \wedge dx$)
+    """
+    # 1. 定義坐標與參數
+    x, y, z = sp.symbols('x y z', real=True)
+    coords = [x, y, z]
+    u, v = sp.symbols('u v', real=True)
+    
+    # 2. 定義微分形式 omega = z dx
+    # Form 的 evaluator 接受一個切向量 V，回傳數值
+    # omega(V) = z * (V 的 x 分量)
+    def omega_func(V):
+        # V.coords 對應 [x, y, z]
+        # V.data   對應 [Vx, Vy, Vz]
+        z_val = V.coords[2] # 符號 z
+        Vx = V.data[0]      # dx(V)
+        return z_val * Vx
+
+    omega = Form(1, omega_func) # 1-Form
+    
+    # 3. 計算外微分 d(omega) -> 2-Form
+    d_omega = d_operator(omega)
+    
+    # 4. 定義流形 (2D Parametric Patch in 3D)
+    # 映射: x=u, y=v, z=u*v
+    map_func = lambda params: [params[0], params[1], params[0] * params[1]]
+    
+    # 參數範圍: u in [0, 1], v in [0, 1]
+    patch = ParametricPatch([u, v], [(0, 1), (0, 1)], map_func)
+    
+    # 5. 計算 LHS: 區域積分 \int_Omega d(omega)
+    # integrate_form 會自動處理 pullback (代入 z=uv, dz=vdu+udv ...)
+    lhs_volume_integral = integrate_form(d_omega, patch, coords)
+    
+    # 6. 計算 RHS: 邊界積分 \int_{partial Omega} omega
+    # ParametricPatch.get_boundaries() 會回傳 4 個 1D 邊界及其定向符號
+    # 邊界分別對應 u=0, u=1, v=0, v=1 的四條曲線
+    rhs_boundary_integral = 0
+    boundaries = patch.get_boundaries()
+    
+    for boundary_domain, sign in boundaries:
+        # 對每個邊界進行線積分
+        val = integrate_form(omega, boundary_domain, coords)
+        rhs_boundary_integral += sign * val
+        
+    # 7. 驗證
+    print(f"\n[General Stokes] Volume Integral (d_omega): {lhs_volume_integral}")
+    print(f"[General Stokes] Boundary Integral (omega): {rhs_boundary_integral}")
+    
+    assert sp.simplify(lhs_volume_integral - rhs_boundary_integral) == 0, \
+        f"廣義史托克定理驗證失敗: LHS={lhs_volume_integral}, RHS={rhs_boundary_integral}"
+        
 # ===================================================================
 # 外微分版的向量微積分 (Vector Calculus based on d-operator)
 # ===================================================================

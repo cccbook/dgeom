@@ -31,7 +31,7 @@
 概念 | 符號公式 | 測試函數
 ----|---------|----------------
 [龐加萊引理] | $d(d\omega) = 0$ | test_ddf_is_zero()
-[廣義史托克定理] | $\int_{M} d\omega = \int_{\partial M} \omega$ | test_g_stoke_theorem()
+[廣義史托克定理] | $\int_{M} d\omega = \int_{\partial M} \omega$ | test_general_stoke()
 
 ## 相對論 - 物理法則驗證
 
